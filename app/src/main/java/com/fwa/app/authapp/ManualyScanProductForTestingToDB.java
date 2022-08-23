@@ -22,15 +22,15 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shoping_list_view);
+        setContentView(R.layout.activity_manualy_scan_product_for_testing_to_db);
 
 
 
         test_DB_Insert = (Button) findViewById(R.id.testDBBtn);
         test_DB_Insert.setOnClickListener(this);
 
-        //logout = (Button) findViewById(R.id.signOut);
-        //logout.setOnClickListener(this);
+        logout = (Button) findViewById(R.id.signOut);
+        logout.setOnClickListener(this);
 
 
     }
@@ -54,12 +54,20 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()){
 
             case R.id.testDBBtn:
-                startActivity(new Intent(this, ManualyScanProductForTestingToDB.class));
+                startActivity(new Intent(this, ShopingListView.class));
+                break;
+
+            case R.id.signOut:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
 
         }
+
+
     }
 }

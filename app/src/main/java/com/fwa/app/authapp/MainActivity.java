@@ -24,6 +24,15 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+<<<<<<< Updated upstream
+=======
+    private static final String ApiException = "ApiException: ";
+    //Sosial nettwork login
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    ImageView googleBtn;
+
+>>>>>>> Stashed changes
     private TextView register;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
@@ -39,6 +48,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+<<<<<<< Updated upstream
+=======
+        // Google - Sosial Nettwork login
+        googleBtn = findViewById(R.id.google_btn);
+        googleBtn.setOnClickListener(this);
+
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        gsc = GoogleSignIn.getClient(this, gso);
+
+/*
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
+
+ */
+
+        //GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        //if(acct!=null){
+            //navigateToSecondActivity();
+        //    startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
+        //}
+
+>>>>>>> Stashed changes
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
 
@@ -67,6 +103,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
+<<<<<<< Updated upstream
+=======
+    void signIn(){
+        Intent signInIntent = gsc.getSignInIntent();
+        startActivityForResult(signInIntent,1000);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+
+
+            try {
+                GoogleSignInAccount googleSignInAccount = task.getResult(ApiException.class); // new
+
+                task.getResult(ApiException.class); //old work with out Auth keep
+
+                startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
+/*
+
+                AuthCredential authCredential= GoogleAuthProvider
+                        .getCredential(   googleSignInAccount.getId()
+                                ,null);
+                mAuth.signInWithCredential(authCredential)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                // Check condition
+                                if(task.isSuccessful())
+                                {
+                                    startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(), "Auth Error: " + googleSignInAccount.getId(), Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Error Auth: "+ googleSignInAccount.getId());
+
+
+                                }
+                            }
+                        });
+*/
+                startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
+            } catch (ApiException e) {
+                Toast.makeText(getApplicationContext(), "ApiEx e: " + e, Toast.LENGTH_SHORT).show();
+                Log.e(ApiException, "Error e: " + e);
+            }
+        }
+
+    }
+
+>>>>>>> Stashed changes
 
     @Override
     public void onClick(View view) {
