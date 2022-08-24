@@ -5,34 +5,44 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-<<<<<<< Updated upstream
-=======
     private static final String ApiException = "ApiException: ";
     //Sosial nettwork login
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
     ImageView googleBtn;
 
->>>>>>> Stashed changes
     private TextView register;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
@@ -48,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< Updated upstream
-=======
         // Google - Sosial Nettwork login
         googleBtn = findViewById(R.id.google_btn);
         googleBtn.setOnClickListener(this);
@@ -74,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //    startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
         //}
 
->>>>>>> Stashed changes
         register = (TextView) findViewById(R.id.register);
         register.setOnClickListener(this);
 
@@ -103,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-<<<<<<< Updated upstream
-=======
     void signIn(){
         Intent signInIntent = gsc.getSignInIntent();
         startActivityForResult(signInIntent,1000);
@@ -152,13 +157,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
             } catch (ApiException e) {
                 Toast.makeText(getApplicationContext(), "ApiEx e: " + e, Toast.LENGTH_SHORT).show();
-                Log.e(ApiException, "Error e: " + e);
+                Log.e(ApiException, "ApiEx e: " + e);
             }
         }
 
     }
 
->>>>>>> Stashed changes
 
     @Override
     public void onClick(View view) {
@@ -168,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.signIn:
                 userLogIn();
+                break;
+            case R.id.google_btn:
+                signIn();
                 break;
         }
     }
@@ -214,7 +221,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                         if(user.isEmailVerified()){
-                            startActivity(new Intent(MainActivity.this, ShopingListView.class));
+                            //startActivity(new Intent(MainActivity.this, ShopingListView.class));
+                            startActivity(new Intent(MainActivity.this,ManualyScanProductForTestingToDB.class));
                         }else{
                             user.sendEmailVerification();
                             Toast.makeText(MainActivity.this, "Verify you account!! Please check your email account!!", Toast.LENGTH_LONG).show();

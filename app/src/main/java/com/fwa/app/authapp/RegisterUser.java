@@ -30,6 +30,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private EditText editTextFullname, editTextAge, editTextEmail, editTextPassword;
     private ProgressBar progressBar;
 
+    private Button backButtonRegUserBtn;
+
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -44,6 +46,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
         banner = (TextView) findViewById(R.id.banner);
         banner.setOnClickListener(this);
+
+        backButtonRegUserBtn = (Button) findViewById(R.id.backButtonRegUser);
+        backButtonRegUserBtn.setOnClickListener(this);
 
         registerUser = (Button) findViewById(R.id.registerUser);
         registerUser.setOnClickListener(this);
@@ -72,12 +77,16 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.banner:
-                startActivity(new Intent(this,MainActivity.class));
-                break;
+            //case R.id.banner:
+                //startActivity(new Intent(this,MainActivity.class));
+            //    break;
             case R.id.registerUser:
                 registerUser();
                 break;
+            case R.id.backButtonRegUser:
+                startActivity(new Intent(this,MainActivity.class));
+                break;
+
 
         }
     }

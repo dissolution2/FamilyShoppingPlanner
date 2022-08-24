@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ManualyScanProductForTestingToDB extends AppCompatActivity implements View.OnClickListener{
 
-    private Button logout, test_DB_Insert;
+    private Button logout, test_DB_Insert, test_show_DataDBBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,10 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
 
         test_DB_Insert = (Button) findViewById(R.id.testDBBtn);
         test_DB_Insert.setOnClickListener(this);
+
+        test_show_DataDBBtn = (Button) findViewById(R.id.show_DataDBBtn);
+        test_show_DataDBBtn.setOnClickListener(this);
+
 
         logout = (Button) findViewById(R.id.signOut);
         logout.setOnClickListener(this);
@@ -59,6 +63,9 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
 
             case R.id.testDBBtn:
                 startActivity(new Intent(this, ShopingListView.class));
+                break;
+            case R.id.show_DataDBBtn:
+                startActivity(new Intent(this, GetDataFromDB.class));
                 break;
 
             case R.id.signOut:

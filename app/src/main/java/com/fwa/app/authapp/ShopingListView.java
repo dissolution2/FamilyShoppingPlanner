@@ -61,7 +61,7 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
 
 
 
-        logout = (Button) findViewById(R.id.signOut);
+        logout = (Button) findViewById(R.id.backButtonShopping);
         logout.setOnClickListener(this);
     }
 
@@ -80,7 +80,7 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
 
         try{
             editTextCurrent_user.setText( mAuth.getCurrentUser().getUid() );
-            Log.d(TEST,"Getting Current User: " + mAuth.getCurrentUser().getUid() );
+            //Log.d(TEST,"Getting Current User: " + mAuth.getCurrentUser().getUid() );
         }
         catch (Exception e) {
             //editTextCurrent_user.setText( e.getMessage().trim() );
@@ -90,7 +90,7 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
 
 
     private void insertDataToDatabase(){
-        Toast.makeText(ShopingListView.this, "Test String!! ", Toast.LENGTH_LONG).show();
+        //Toast.makeText(ShopingListView.this, "Test String!! ", Toast.LENGTH_LONG).show();
 
         String productName = editTextAddProductName.getText().toString().trim();
         String barcode = editTextBarcode.getText().toString().trim();
@@ -119,6 +119,7 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
 
                     //Toast.makeText(ShopingListView.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
                     Log.d(ON_COMPLETE, "Added data to database");
+                    editTextCurrent_user.setText("Added Data To DB");
 
                     editTextBarcode.setText("");
                     editTextAddProductName.setText("");
@@ -152,10 +153,8 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
             case R.id.check_CurrentUserBtn:
                 getCurrentUser();
                 break;
-            case R.id.signOut:
-                startActivity(new Intent(ShopingListView.this,MainActivity.class));
-                finish();
-                //FirebaseAuth.getInstance().signOut();
+            case R.id.backButtonShopping:
+                startActivity(new Intent(ShopingListView.this,ManualyScanProductForTestingToDB.class));
                 break;
         }
     }

@@ -14,5 +14,8 @@ public class Product {
 
     }
 
+    public String getBarcode(){ return  this.barcode; }
+    public String getProductName(){ return this.productName; }
+    public int getProductAmount(){ return this.productAmount; }
 
 }
