@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,7 +44,7 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_data_from_db);
-
+        mAuth = FirebaseAuth.getInstance();
         editTextgetDBData = (EditText) findViewById(R.id.getDBData);
 
         show_dataBtn = (Button) findViewById(R.id.show_DataDBBtn);
@@ -60,7 +61,7 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
 
         //final FirebaseDatabase database = FirebaseDatabase.getInstance();
         //"kTDClQTUjRcjWZgxIkg7MtgJytA2/Family/Refrigerator/0/productName"
-        DatabaseReference ref = database.getReference("kTDClQTUjRcjWZgxIkg7MtgJytA2")
+        DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
                 child("Refrigerator");
@@ -72,13 +73,12 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
                 if(dataSnapshot.exists()){
 
                     List product_List = new ArrayList();
 
+                    //Toast.makeText(GetDataFromDB.this, "Children Count: " + dataSnapshot.getChildren().toString(), Toast.LENGTH_LONG).show();
+Log.d("CHILDREN COUNT", ": " + dataSnapshot.getChildrenCount() );
 
                     for (DataSnapshot child : dataSnapshot.getChildren() ) {
 
@@ -89,58 +89,14 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
                         product_List.add(new Product(barcode,product,amount));
                     }
 
-
-                    //((Product)product_List.get(0)).getProductName();
-
-
-
+                    //Log.d("PRODUCT LIST", ": " + ((Product)product_List.get(0)).getProductName() );
+                    // test for fun!!
                     editTextgetDBData.setText( "BareCode: " + ((Product)product_List.get(0)).getBarcode() +
                             "\nProductName: " + ((Product)product_List.get(0)).getProductName() +
                             "\nProductAmount: " + ((Product)product_List.get(0)).getProductAmount() + "\n"+
                             "BareCode: " + ((Product)product_List.get(1)).getBarcode() +
                             "\nProductName: " + ((Product)product_List.get(1)).getProductName() +
-                            "\nProductAmount: " + ((Product)product_List.get(1)).getProductAmount() + "\n"+
-                            "BareCode: " + ((Product)product_List.get(2)).getBarcode() +
-                            "\nProductName: " + ((Product)product_List.get(2)).getProductName() +
-                            "\nProductAmount: " + ((Product)product_List.get(2)).getProductAmount());
-
-
-
-                    //editTextgetDBData.setText( "BareCode: " + ((Product)product_List.get(0)).getBarcode() + "\nProductName: " + ((Product)product_List.get(0)).getProductName() + "\nProductAmount: " + ((Product)product_List.get(0)).getProductAmount() );
-
-
-                    //editTextgetDBData.setText( text.toString() );
-
-                    //editTextgetDBData.setText(dataSnapshot.toString()); // Get all the database from ref position??
-                    //editTextgetDBData.setText(dataSnapshot.getValue().toString()); // with last child("productName") got only milk
-
-                    //Product product = new Product();
-                    //Product product = dataSnapshot.getValue(Product.class);
-/*
-                    if (product != null) {
-
-                        String product_name = product.productName;
-                        editTextgetDBData.setText(product_name);
-
-
-                        //editTextgetDBData.setText("Not null Post class");
-                        //if (product.productName != null) {
-                        //    editTextgetDBData.setText("Product name Not null");
-                        //}
-
-
-                    }
-
- */
-
-                    //editTextgetDBData.setText( post.getProductName() ); // wrong!!
-
-
-
-                    //editTextgetDBData.setText("dataSnapshot exists " + dataSnapshot);
-
-
-
+                            "\nProductAmount: " + ((Product)product_List.get(1)).getProductAmount() );
                 }else{
                     editTextgetDBData.setText("Don't = dataSnapshot exists !!");
                 }
@@ -152,7 +108,6 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //System.out.println("The read failed: " + databaseError.getCode());
                 Log.e(ERORR,"data errror " + databaseError.toString());
             }
         });

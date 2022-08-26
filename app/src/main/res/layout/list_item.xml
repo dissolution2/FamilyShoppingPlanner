@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/list_item_thumbnail"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/list_item_textBareCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/list_item_thumbnail"
+        android:text="This is row number 15" />
+
+
+    <TextView
+        android:id="@+id/list_item_textProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="45dp"
+        android:layout_toEndOf="@+id/list_item_thumbnail"
+        android:text="ProductName: Milk" />
+
+    <TextView
+        android:id="@+id/list_item_textProductAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="22dp"
+        android:layout_toEndOf="@+id/list_item_thumbnail"
+        android:text="Amount: 10" />
+
+
+</RelativeLayout>

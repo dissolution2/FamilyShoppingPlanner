@@ -15,13 +15,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
-
-
-import java.util.Optional;
 
 public class ShopingListView extends AppCompatActivity implements View.OnClickListener{
 
@@ -33,10 +28,11 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
     private Button logout;
 
     private EditText editTextAddList, editTextAddProductName, editTextBarcode, productAmount, editTextCurrent_user;
-    private Button addDataButton, getCurrentUserButton;
+    private Button addDataButton, getCurrentUserButton, add_data_Frez_button;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
     private FirebaseAuth mAuth;
+    //DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +40,12 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_shoping_list_view);
 
         mAuth = FirebaseAuth.getInstance();
-
-
+/*
+        ref = database.getReference("kTDClQTUjRcjWZgxIkg7MtgJytA2")
+                .child("Family").
+                child("List").
+                child("Refrigerator");
+*/
         editTextAddList = (EditText) findViewById(R.id.list_name);
         editTextBarcode = (EditText) findViewById(R.id.barcode);
         productAmount = (EditText) findViewById(R.id.productAmount);
@@ -55,6 +55,9 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
 
         addDataButton = (Button) findViewById(R.id.add_dataBtn);
         addDataButton.setOnClickListener(this);
+
+        add_data_Frez_button = (Button) findViewById(R.id.add_data_FrezBtn);
+        add_data_Frez_button.setOnClickListener(this);
 
         getCurrentUserButton = (Button) findViewById(R.id.check_CurrentUserBtn);
         getCurrentUserButton.setOnClickListener(this);
@@ -88,15 +91,14 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
-    private void insertDataToDatabase(){
-        //Toast.makeText(ShopingListView.this, "Test String!! ", Toast.LENGTH_LONG).show();
-
+    private void insertDataToDatabaseToFreezer(){
         String productName = editTextAddProductName.getText().toString().trim();
         String barcode = editTextBarcode.getText().toString().trim();
         String amount = productAmount.getText().toString().trim();
-        //int amountX = Integer.parseInt(amount);
+        String id = database.getReference().push().getKey();
 
+
+        // this is only because i got Long from the snapshot ??!!! might take it bak to String!!!!
         int amountX;
         try {
             amountX = Integer.parseInt(amount);
@@ -107,12 +109,67 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
 
         Product product = new Product(barcode, productName, amountX);
 
-        // snapShop data to get number of products with in the list ?
-        // need to get the getUid()
+/** first do a search for child count then add + 1 be for we add a product to the shopping list  */
+/** But we will use the bareCode as the identifier right under the shopping list so the search will be smaller!!  */
+//ToDo: use a query !!?? after we scan the product!!
+//ToDo: We need to check if the product is all ready in the Refrigerator and ask to add count !!??
+        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("Freezer").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
 
-        // Remember first is a seek from scanned code with in a product database - if unknown then prompt to make a new entry to main db. with picture!!
+                            //Toast.makeText(ShopingListView.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
+                            Log.d(ON_COMPLETE, "Added data to database");
+                            editTextCurrent_user.setText("Added Data To DB");
 
-        database.getReference().child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("List").child("Refrigerator").child("1").setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            editTextBarcode.setText("");
+                            editTextAddProductName.setText("");
+                            productAmount.setText("");
+                            editTextBarcode.requestFocus();
+
+                        }
+                /*
+                else{
+                    Toast.makeText(ShopingListView.this, "Failed to added data!!", Toast.LENGTH_LONG).show();
+                }
+                */
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e(EXCEPTION,"Failed to add the data: " + e.getMessage());
+                    }
+                });
+    }
+
+
+
+
+    private void insertDataToDatabaseToRefrigerator(){
+        String productName = editTextAddProductName.getText().toString().trim();
+        String barcode = editTextBarcode.getText().toString().trim();
+        String amount = productAmount.getText().toString().trim();
+        String id = database.getReference().push().getKey();
+
+
+        // this is only because i got Long from the snapshot ??!!! might take it bak to String!!!!
+        int amountX;
+        try {
+            amountX = Integer.parseInt(amount);
+        }
+        catch (NumberFormatException e) {
+            amountX = 0;
+        }
+
+        Product product = new Product(barcode, productName, amountX);
+
+/** first do a search for child count then add + 1 be for we add a product to the shopping list  */
+/** But we will use the bareCode as the identifier right under the shopping list so the search will be smaller!!  */
+//ToDo: use a query !!?? after we scan the product!!
+//ToDo: We need to check if the product is all ready in the Refrigerator and ask to add count !!??
+        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
@@ -148,7 +205,10 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.add_dataBtn:
-                insertDataToDatabase();
+                insertDataToDatabaseToRefrigerator();
+                break;
+            case R.id.add_data_FrezBtn:
+                insertDataToDatabaseToFreezer();
                 break;
             case R.id.check_CurrentUserBtn:
                 getCurrentUser();

@@ -5,9 +5,15 @@
       <map>
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_get_data_from_db.xml" value="0.44114583333333335" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_main_view_gui_shopping.xml" value="0.25" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_manualy_scan_product_for_testing_to_db.xml" value="0.5401041666666667" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_recycle_view_test.xml" value="0.4703125" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_register_user.xml" value="0.39479166666666665" />
-        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_shoping_list_view.xml" value="0.5541666666666667" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_shoping_list_view.xml" value="0.25" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_user_list.xml" value="0.4703125" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/list_item.xml" value="0.5" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/userentry.xml" value="0.48957189901207465" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/menu/menu_main.xml" value="0.27685185185185185" />
       </map>
     </option>
   </component>

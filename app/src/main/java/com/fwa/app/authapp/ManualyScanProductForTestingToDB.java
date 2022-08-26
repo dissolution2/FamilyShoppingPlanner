@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ManualyScanProductForTestingToDB extends AppCompatActivity implements View.OnClickListener{
 
-    private Button logout, test_DB_Insert, test_show_DataDBBtn;
+    private Button logout, test_DB_Insert, test_show_DataDBBtn, test_guiListViewBtn, test_recycleViewBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,11 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
         test_show_DataDBBtn = (Button) findViewById(R.id.show_DataDBBtn);
         test_show_DataDBBtn.setOnClickListener(this);
 
+        test_guiListViewBtn = (Button) findViewById(R.id.guiListViewBtn);
+        test_guiListViewBtn.setOnClickListener(this);
+
+        test_recycleViewBtn = findViewById(R.id.recycleView);
+        test_recycleViewBtn.setOnClickListener(this);
 
         logout = (Button) findViewById(R.id.signOut);
         logout.setOnClickListener(this);
@@ -67,7 +72,12 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
             case R.id.show_DataDBBtn:
                 startActivity(new Intent(this, GetDataFromDB.class));
                 break;
-
+            case R.id.recycleView:
+                startActivity(new Intent(this, RecycleViewTest.class));
+                break;
+            case R.id.guiListViewBtn:
+                startActivity(new Intent(this, MainViewGuiShopping.class));
+                break;
             case R.id.signOut:
                 startActivity(new Intent(this, MainActivity.class));
                 finish();

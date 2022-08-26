@@ -38,7 +38,7 @@
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.838" />
+        app:layout_constraintVertical_bias="0.952" />
 
     <EditText
         android:id="@+id/list_name"
@@ -94,30 +94,50 @@
         />
 
     <Button
-        android:id="@+id/add_dataBtn"
+        android:id="@+id/add_data_FrezBtn"
         android:layout_width="203dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="88dp"
         android:backgroundTint="#0ED6B9"
-        android:text="Add Data"
+        android:text="Freezer"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/add_dataBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product" />
 
+    <Button
+        android:id="@+id/add_dataBtn"
+        android:layout_width="201dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#0ED6B9"
+        android:text="Refrigerator"
+        android:textColor="#FDFDFD"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/current_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.371"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_data_FrezBtn" />
+
     <EditText
         android:id="@+id/current_user"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="Get User / Data added"
         android:inputType="text"
@@ -133,14 +153,14 @@
         android:layout_width="203dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
         android:backgroundTint="#0ED6B9"
         android:text="Get User"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/backButtonShopping"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
+        app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
