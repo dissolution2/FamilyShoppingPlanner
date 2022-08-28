@@ -57,18 +57,10 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
     }
 
     private void readData() {
-        //editTextgetDBData.setText("Reading !!");
-
-        //final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //"kTDClQTUjRcjWZgxIkg7MtgJytA2/Family/Refrigerator/0/productName"
         DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
                 child("Refrigerator");
-                //.child("0").child("productName");
-
-
-        // this works to a degree not null but cant get one value out only every thing ??? have to maybe use trim ???
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,9 +68,6 @@ public class GetDataFromDB extends AppCompatActivity implements View.OnClickList
                 if(dataSnapshot.exists()){
 
                     List product_List = new ArrayList();
-
-                    //Toast.makeText(GetDataFromDB.this, "Children Count: " + dataSnapshot.getChildren().toString(), Toast.LENGTH_LONG).show();
-Log.d("CHILDREN COUNT", ": " + dataSnapshot.getChildrenCount() );
 
                     for (DataSnapshot child : dataSnapshot.getChildren() ) {
 
@@ -88,8 +77,6 @@ Log.d("CHILDREN COUNT", ": " + dataSnapshot.getChildrenCount() );
 
                         product_List.add(new Product(barcode,product,amount));
                     }
-
-                    //Log.d("PRODUCT LIST", ": " + ((Product)product_List.get(0)).getProductName() );
                     // test for fun!!
                     editTextgetDBData.setText( "BareCode: " + ((Product)product_List.get(0)).getBarcode() +
                             "\nProductName: " + ((Product)product_List.get(0)).getProductName() +
@@ -100,54 +87,13 @@ Log.d("CHILDREN COUNT", ": " + dataSnapshot.getChildrenCount() );
                 }else{
                     editTextgetDBData.setText("Don't = dataSnapshot exists !!");
                 }
-
-
-                //Post post = dataSnapshot.getValue(Post.class);
-                //System.out.println(post);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e(ERORR,"data errror " + databaseError.toString());
+                Log.e(ERORR,"data error " + databaseError.toString());
             }
         });
-
-        /*
-        reference = database.getReference("kTDClQTUjRcjWZgxIkg7MtgJytA2"); //.child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("List").child("Refrigerator").addOnCompleteListener(new OnCompleteListener<Void>() {
-        //reference = database.getReference("");
-        reference.child("List").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                if (task.isSuccessful()){
-
-                    editTextgetDBData.setText("Task Sucsses!!");
-
-                    if (task.getResult().exists()){
-
-                        editTextgetDBData.setText("Result Sucsses!!");
-                    }
-
-                    DataSnapshot dataSnapshot = task.getResult();
-                    String firstName = String.valueOf(dataSnapshot.child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("Refigerator").child("0").child("productName").getValue());
-                    editTextgetDBData.setText(firstName);
-
-                }else{
-                    editTextgetDBData.setText("Failed Sucsses!!");
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                editTextgetDBData.setText("Fail!! on Exc");
-            }
-        });
-
-         */
-
-
-
-
     }
 
     @Override

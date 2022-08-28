@@ -35,7 +35,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
-    //DatabaseReference myRef = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +96,8 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         String fullName = editTextFullname.getText().toString().trim();
         String age = editTextAge.getText().toString().trim();
 
+        String id = database.getReference().push().getKey();
+
         if(fullName.isEmpty()){
             editTextFullname.setError("Full name is required!");
             editTextFullname.requestFocus();
@@ -141,7 +142,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
 
                 if(task.isSuccessful()){
                     User user = new User(fullName, age, email);
-                    database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("UsersGroup").child("0").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("UsersGroup").child(id).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
@@ -160,25 +161,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                             progressBar.setVisibility(View.GONE);
                         }
                     });
-                   /*
-                    database.getReference("Family").child("Users")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(RegisterUser.this,"User has registerd successfully", Toast.LENGTH_LONG).show();
-
-                                        // redirect to login Layout! // to main app view not logInn as if user just mad a successfully user we don't have to
-                                        // log them inn one more time !!!
-                                    }else{
-                                        Toast.makeText(RegisterUser.this,"Faild to register! Pleas try again!", Toast.LENGTH_LONG).show();
-                                    }
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-
-                    */
                 }else{
                     Toast.makeText(RegisterUser.this,"Faild to register! Pleas try again!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);

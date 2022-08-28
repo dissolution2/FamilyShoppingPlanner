@@ -69,7 +69,7 @@ public class UserList extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //database.getReference().child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("UsersGroup").addListenerForSingleValueEvent(new ValueEventListener() {
-        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("UserGroup").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("UsersGroup").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){

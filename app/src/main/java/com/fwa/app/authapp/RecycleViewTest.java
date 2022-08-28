@@ -135,7 +135,7 @@ public class RecycleViewTest extends AppCompatActivity {
 
         /** this works but we only swap out child 1's data */
 
-        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("UserGroup").child(id).setValue(userTwo)
+        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("UsersGroup").child(id).setValue(userTwo)
 
         //database.getReference().child("Users").child(id).setValue(userTwo)
         //database.getReference().child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("UsersGroup").setValue(userTwo)

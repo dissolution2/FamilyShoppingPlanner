@@ -5,26 +5,40 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ManualyScanProductForTestingToDB extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String TAG = "TEST:";
     private Button logout, test_DB_Insert, test_show_DataDBBtn, test_guiListViewBtn, test_recycleViewBtn;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manualy_scan_product_for_testing_to_db);
 
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
 
+        mAuth = FirebaseAuth.getInstance();
 
         test_DB_Insert = (Button) findViewById(R.id.testDBBtn);
         test_DB_Insert.setOnClickListener(this);
@@ -42,6 +56,16 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
         logout.setOnClickListener(this);
 
 
+        /** Se how and what loggedIn !!! ???  */
+
+        if (gsc != null) {
+            //gsc.getSignInIntent().toString();
+            Log.d(TAG, "GOOGLE: " + gsc.getSignInIntent().toString());
+        }
+        if( mAuth.getCurrentUser() != null){
+            //
+            Log.d(TAG, "mAuth: " + mAuth.getUid().toString()) ;
+        }
     }
 
     @Override
@@ -79,8 +103,18 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
                 startActivity(new Intent(this, MainViewGuiShopping.class));
                 break;
             case R.id.signOut:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+
+                gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        finish();
+                        mAuth.signOut(); // new added to sign out of it downt know it this is ok or just to change user to what we want!!
+                        startActivity(new Intent(ManualyScanProductForTestingToDB.this, MainActivity.class));
+                    }
+                });
+
+                //startActivity(new Intent(this, MainActivity.class));
+                //finish();
                 break;
 
         }
