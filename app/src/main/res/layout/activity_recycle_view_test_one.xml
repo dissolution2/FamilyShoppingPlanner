@@ -54,8 +54,8 @@
         android:layout_below="@+id/edtage"
         android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
-        android:textColor="#FDFDFD"
-        android:text="Insert Data" />
+        android:text="Insert Data"
+        android:textColor="#FDFDFD" />
 
     <Button
         android:id="@+id/btview"

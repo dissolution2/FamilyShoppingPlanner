@@ -17,6 +17,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class ShopingListView extends AppCompatActivity implements View.OnClickListener{
 
@@ -28,11 +33,16 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
     private Button logout;
 
     private EditText editTextAddList, editTextAddProductName, editTextBarcode, productAmount, editTextCurrent_user;
-    private Button addDataButton, getCurrentUserButton, add_data_Frez_button;
+    private Button addDataButton, getCurrentUserButton, add_data_Frez_button; //, get_data_fireBaseBtn;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
     private FirebaseAuth mAuth;
-    //DatabaseReference ref;
+    private FirebaseFirestore firebaseFirestore_Product_DB = FirebaseFirestore.getInstance();
+    private FirebaseFirestore firebaseFirestore_User_add_to_DB = FirebaseFirestore.getInstance();
+    //private DocumentReference docRef;
+
+
+    private Product from_DB, from_User;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,7 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_shoping_list_view);
 
         mAuth = FirebaseAuth.getInstance();
+
 /*
         ref = database.getReference("kTDClQTUjRcjWZgxIkg7MtgJytA2")
                 .child("Family").
@@ -62,7 +73,8 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
         getCurrentUserButton = (Button) findViewById(R.id.check_CurrentUserBtn);
         getCurrentUserButton.setOnClickListener(this);
 
-
+        //get_data_fireBaseBtn = (Button) findViewById(R.id.testfirebaseBtn);
+        //get_data_fireBaseBtn.setOnClickListener(this);
 
         logout = (Button) findViewById(R.id.backButtonShopping);
         logout.setOnClickListener(this);
@@ -144,9 +156,6 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
                 });
     }
 
-
-
-
     private void insertDataToDatabaseToRefrigerator(){
         String productName = editTextAddProductName.getText().toString().trim();
         String barcode = editTextBarcode.getText().toString().trim();
@@ -201,6 +210,101 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
     }
 
 
+    // test 01 - general test - How to !!!  - Successful got doc exist -
+    private void getDocumentOne_test(){
+
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("database").document("1234567");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+                        Log.d("Document", "Suc");
+                        Toast.makeText(Main_t_manualy_add_products_to_db.this, "Successful to get data!!", Toast.LENGTH_LONG).show();
+                    }else{
+                        Log.d("Doument", "fail");
+                        Toast.makeText(Main_t_manualy_add_products_to_db.this, "Failed to get data!!", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+    }
+
+    // test 02 - getting { main DB || user DB }
+    /**
+     * 2022-08-31 04:44:36.563 5819-5819/com.fwa.app.authapp D/TAG: 123456432 => {product=Juce, company=Milba, storage=Cold}
+     * 2022-08-31 04:44:36.563 5819-5819/com.fwa.app.authapp D/TAG: 1234567 => {product=Milk, company=Tine, storage=Cold}
+     *
+     *  1. scan code -> Inn User_DB {product made||scanned be for} => add_to_user_DB
+     *  2. Else Unknown to User_DB then => query main_DB if/is in main_DB getData() -> add_to_user !!??
+     *  3. If/else Product is unknown to main_db {barcode =null} add product to user_add_to_db.
+     *  4. set flag to DB_Master -> very fy the Product if/is good -> add to main_DB.
+     *
+     * */
+    // Use String path to the db !!??
+    private void getDocumentTwo_test() {
+
+        firebaseFirestore_Product_DB.collection("database") //path)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task_one) {
+                        if (task_one.isSuccessful()) {
+                            //Toast.makeText(Main_t_manualy_add_products_to_db.this, "Successful to get data!! query one", Toast.LENGTH_LONG).show();
+
+                            /** First query Successful get now user_db */
+                            firebaseFirestore_User_add_to_DB.collection("user_add_to_db").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task_two) {
+                                    if (task_two.isSuccessful()) {
+                                        /** test if result from task_one and task_two Products match up with bareCode !!*/
+                                        query_FireCloud_Main_DB_and_User_DB_Check(task_one, task_two);
+                                    } else {
+                                        Log.w("TAG", "Error getting documents.", task_two.getException());
+                                        //Toast.makeText(Main_t_manualy_add_products_to_db.this, "Error to get data from user_db!!", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.w("TAG", "Error getting documents.", task_one.getException());
+                            //Toast.makeText(Main_t_manualy_add_products_to_db.this, "test_two Error to get data!!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+    }
+
+
+
+
+    public void query_FireCloud_Main_DB_and_User_DB_Check(Task<QuerySnapshot> task_one, Task<QuerySnapshot> task_two){
+
+        for (QueryDocumentSnapshot document_one : task_one.getResult()) {
+            Log.d("TAG DB", document_one.getId() + " => " + document_one.getData());
+
+            for (QueryDocumentSnapshot document_two : task_two.getResult()) {
+                Log.d("TAG USER", document_two.getId() + " => " + document_two.getData());
+
+
+                if(document_one.getId().equals(document_two.getId()) ){
+                    Log.d("TAG", "Doc 123.. are == to: " + document_one.getId() + " => " + document_one.getData());
+                    Log.d("TAG", "Doc 123.. are == to: " + document_two.getId() + " => " + document_two.getData());
+
+                    editTextBarcode.setText(document_one.getId());
+
+                    // sett the data to a HashMap<> if we want the data !!!
+                    //editTextAddProductName.setText(document_one.getData().getClass().getName());
+                    //productAmount.setText("");
+                }
+
+            }
+
+
+        }
+
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -212,6 +316,8 @@ public class ShopingListView extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.check_CurrentUserBtn:
                 getCurrentUser();
+                //getDocumentOne_test();
+                getDocumentTwo_test();
                 break;
             case R.id.backButtonShopping:
                 startActivity(new Intent(ShopingListView.this,ManualyScanProductForTestingToDB.class));

@@ -29,7 +29,14 @@
             android:name=".ManualyScanProductForTestingToDB"
             android:exported="false" />
         <activity
+<<<<<<< Updated upstream
             android:name=".ShopingListView"
+=======
+            android:name=".Main_t_User_Main_View"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_manualy_add_products_to_db"
+>>>>>>> Stashed changes
             android:exported="false" />
         <activity
             android:name=".RegisterUser"

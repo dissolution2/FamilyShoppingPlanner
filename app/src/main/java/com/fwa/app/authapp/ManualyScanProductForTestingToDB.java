@@ -83,6 +83,15 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
 
 
 
+<<<<<<< Updated upstream:app/src/main/java/com/fwa/app/authapp/ManualyScanProductForTestingToDB.java
+=======
+
+
+    public void scanToolbar(View view) {
+        ScanOptions options = new ScanOptions().setCaptureActivity(ToolbarCaptureActivity.class);
+        barcodeLauncher.launch(options);
+    }
+>>>>>>> Stashed changes:app/src/main/java/com/fwa/app/authapp/Main_t_gui_menu_view.java
 
 
     @Override
@@ -100,8 +109,18 @@ public class ManualyScanProductForTestingToDB extends AppCompatActivity implemen
                 startActivity(new Intent(this, RecycleViewTest.class));
                 break;
             case R.id.guiListViewBtn:
+<<<<<<< Updated upstream:app/src/main/java/com/fwa/app/authapp/ManualyScanProductForTestingToDB.java
                 startActivity(new Intent(this, MainViewGuiShopping.class));
+=======
+                startActivity(new Intent(this, Main_t_recycleview_one_test.class));
                 break;
+
+            case R.id.bareCodeReader:
+                //scanToolbar(v);  // test
+                startActivity(new Intent(this, Main_t_User_Main_View.class));
+>>>>>>> Stashed changes:app/src/main/java/com/fwa/app/authapp/Main_t_gui_menu_view.java
+                break;
+
             case R.id.signOut:
 
                 gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {

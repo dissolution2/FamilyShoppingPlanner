@@ -50,7 +50,7 @@ public class MainViewGuiShopping extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_view_gui_shopping);
+        setContentView(R.layout.activity_recycle_view_test_two);
 
         test_getDataToListBtn = findViewById(R.id.getDataToListBtn);
         test_getDataToListBtn.setOnClickListener(this);

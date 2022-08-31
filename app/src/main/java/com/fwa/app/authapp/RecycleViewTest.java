@@ -47,7 +47,7 @@ public class RecycleViewTest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycle_view_test);
+        setContentView(R.layout.activity_recycle_view_test_one);
         btnInsert = findViewById(R.id.btninsert);
         btnView = findViewById(R.id.btview);
         name = findViewById(R.id.edtname);

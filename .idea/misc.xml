@@ -5,11 +5,21 @@
       <map>
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_get_data_from_db.xml" value="0.44114583333333335" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_main_t_user_main_view.xml" value="0.46944444444444444" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_main_view_gui_shopping.xml" value="0.25" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_manualy_scan_product_for_testing_to_db.xml" value="0.5401041666666667" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_recycle_view_test.xml" value="0.4703125" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_recycle_view_test_one.xml" value="0.4759259259259259" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_recycle_view_test_two.xml" value="0.4759259259259259" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_register_user.xml" value="0.39479166666666665" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_shoping_list_view.xml" value="0.25" />
+<<<<<<< Updated upstream
+=======
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_t_add_product_to_list_db.xml" value="0.4703125" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_t_main_menu_view.xml" value="0.4390625" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_t_main_test_menu.xml" value="0.25" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_toolbar_capture.xml" value="0.4322916666666667" />
+>>>>>>> Stashed changes
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/activity_user_list.xml" value="0.4703125" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/list_item.xml" value="0.5" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/AuthApp/app/src/main/res/layout/userentry.xml" value="0.48957189901207465" />
