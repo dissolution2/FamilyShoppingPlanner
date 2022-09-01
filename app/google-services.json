@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "628276245349",
+    "firebase_url": "https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "authapp-e8559",
+    "storage_bucket": "authapp-e8559.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628276245349:android:37fd679260cde4c6e3278c",
+        "android_client_info": {
+          "package_name": "com.fwa.app.authapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628276245349-kp3h3vu0go3m7cidl75vsumbfpjgj2lu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fwa.app.authapp",
+            "certificate_hash": "357a162eedf4657c8b9e83693714094e02dcf067"
+          }
+        },
+        {
+          "client_id": "628276245349-0ifcse0jhnf9mbco7dnbo8vmfkcng9im.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuwxyskJBSEpGZcvXXlZmkL5Yz_fkU_ZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628276245349-0ifcse0jhnf9mbco7dnbo8vmfkcng9im.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628276245349:android:9e3d498db2c7315de3278c",
+        "android_client_info": {
+          "package_name": "com.fwa.app.familyshoppingplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628276245349-cvnnf341hd5bmleurh8lclm24cfmf943.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fwa.app.familyshoppingplanner",
+            "certificate_hash": "357a162eedf4657c8b9e83693714094e02dcf067"
+          }
+        },
+        {
+          "client_id": "628276245349-0ifcse0jhnf9mbco7dnbo8vmfkcng9im.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuwxyskJBSEpGZcvXXlZmkL5Yz_fkU_ZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628276245349-0ifcse0jhnf9mbco7dnbo8vmfkcng9im.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
