@@ -11,8 +11,39 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FamilyShoppingPlanner"
+        android:hardwareAccelerated="true"
+        android:theme="@style/Theme.Familyshoppingplanner"
         tools:targetApi="31">
+        <activity
+            android:name=".list_view_test"
+            android:exported="false" />
+        <activity
+            android:name=".ToolbarCaptureActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserList"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_recycleview_two_test"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_recycleview_one_test"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_simple_getdatafromdb"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_gui_menu_view"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_User_Main_View"
+            android:exported="false" />
+        <activity
+            android:name=".Main_t_manualy_add_products_to_db"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterUser"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

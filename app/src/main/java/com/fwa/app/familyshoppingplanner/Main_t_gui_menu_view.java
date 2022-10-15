@@ -25,7 +25,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 public class Main_t_gui_menu_view extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "TEST:";
-    private Button logout, test_DB_Insert, test_show_DataDBBtn, test_guiListViewBtn, test_recycleViewBtn, test_bareCodeReaderBtn;
+    private Button logout, test_DB_Insert, test_show_DataDBBtn, test_guiListViewBtn, test_recycleViewBtn, test_bareCodeReaderBtn, test_list_viewBtn;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
@@ -56,6 +56,9 @@ public class Main_t_gui_menu_view extends AppCompatActivity implements View.OnCl
 
         test_recycleViewBtn = findViewById(R.id.recycleView);
         test_recycleViewBtn.setOnClickListener(this);
+
+        test_list_viewBtn = findViewById(R.id.list_view_test);
+        test_list_viewBtn.setOnClickListener(this);
 
         logout = (Button) findViewById(R.id.signOut);
         logout.setOnClickListener(this);
@@ -136,7 +139,9 @@ public class Main_t_gui_menu_view extends AppCompatActivity implements View.OnCl
                 //scanToolbar(v);  // test
                 startActivity(new Intent(this, Main_t_User_Main_View.class));
                 break;
-
+            case R.id.list_view_test:
+                startActivity(new Intent(this, list_view_test.class));
+                break;
             case R.id.signOut:
 
                 gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {

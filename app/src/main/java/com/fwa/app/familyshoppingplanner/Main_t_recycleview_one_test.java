@@ -42,7 +42,8 @@ public class Main_t_recycleview_one_test extends AppCompatActivity implements Vi
     private Button test_getDataToListBtn;
 
 
-    public FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
+   public FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class Main_t_recycleview_one_test extends AppCompatActivity implements Vi
 
 
 
-        generateListContent();
+        //generateListContent(); // working on to change the list 02 Oktober 2022
         //getDataToViewList();
 
         lv.setAdapter(new MyListAdaper(this, R.layout.list_item, data));
@@ -108,10 +109,10 @@ public class Main_t_recycleview_one_test extends AppCompatActivity implements Vi
 
 
                         String barcode = child.getValue(Product.class).getBarcode();
-                        String product = child.getValue(Product.class).getProductName();
-                        int amount = child.getValue(Product.class).getProductAmount();
+                        String product = child.getValue(Product.class).getName();
+                        int amount = child.getValue(Product.class).getAmount();
 
-                        product_List.add(new Product(barcode,product,amount));
+                        //product_List.add(new Product(barcode,product,amount));
 
                         //Toast.makeText(MainViewGuiShopping.this, "List 0: " + product_List.get(0).getBarcode(), Toast.LENGTH_LONG).show();
 
@@ -231,8 +232,8 @@ public class Main_t_recycleview_one_test extends AppCompatActivity implements Vi
 
 
                             barcode = child.getValue(Product.class).getBarcode();
-                            product = child.getValue(Product.class).getProductName();
-                            amount = child.getValue(Product.class).getProductAmount();
+                            product = child.getValue(Product.class).getName();
+                            amount = child.getValue(Product.class).getAmount();
 
                            // product_List.add(new Product(barcode,product,amount));
 

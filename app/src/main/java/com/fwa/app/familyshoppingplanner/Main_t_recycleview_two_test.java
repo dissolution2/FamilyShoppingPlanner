@@ -35,6 +35,7 @@ public class Main_t_recycleview_two_test extends AppCompatActivity {
     EditText name, email, age;
     //DatabaseReference databaseUsers;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
+
     public FirebaseDatabase databaseUsers;
 
     @Override
@@ -48,9 +49,6 @@ public class Main_t_recycleview_two_test extends AppCompatActivity {
         age = findViewById(R.id.edtage);
 
         mAuth = FirebaseAuth.getInstance();
-
-        //databaseUsers.getInstance().getReference();//"https://recycleviewfirebase-38aa6-default-rtdb.europe-west1.firebasedatabase.app");
-        //databaseUsers.getReference("https://recycleviewfirebase-38aa6-default-rtdb.europe-west1.firebasedatabase.app");
 
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override

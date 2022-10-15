@@ -30,6 +30,8 @@ public class ToolbarCaptureActivity extends AppCompatActivity {
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.decode();
+
+
     }
 
     @Override

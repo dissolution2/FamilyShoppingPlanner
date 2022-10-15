@@ -21,6 +21,7 @@ public class UserList extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<User> list;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
+
     //DatabaseReference databaseReference;
 
     //DatabaseReference ref;

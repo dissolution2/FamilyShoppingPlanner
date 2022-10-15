@@ -1,169 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context=".Main_t_manualy_add_products_to_db">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="205dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="466dp"
-        android:text="Welcome to main app view!!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068" />
-
-    <Button
-        android:id="@+id/backButtonShopping"
-        android:layout_width="235dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#0ED6B9"
-        android:text="Back"
-        android:textColor="#FDFDFD"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.952" />
-
     <EditText
-        android:id="@+id/list_name"
-        android:layout_width="380dp"
+        android:id="@+id/editTextBarcode"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Shopping List to add"
-        android:inputType="text"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        />
-    <EditText
-        android:id="@+id/barcode"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="ProductBarcode"
         android:inputType="text"
         android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_name"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal" />
+
     <EditText
-        android:id="@+id/product"
-        android:layout_width="380dp"
+        android:id="@+id/editTextProduct"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/editTextBarcode"
         android:ems="10"
         android:hint="Product"
         android:inputType="text"
         android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barcode"
-        />
-    <EditText
-        android:id="@+id/productAmount"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextCompany"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextProduct"
+        android:ems="10"
+        android:hint="Company"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextProductAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextCompany"
         android:ems="10"
         android:hint="How many of the Product"
         android:inputType="number"
         android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextStorage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextProductAmount"
+        android:ems="10"
+        android:hint="Storage"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/add_data_FrezBtn"
-        android:layout_width="203dp"
-        android:layout_height="52dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextStorage"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="88dp"
         android:backgroundTint="#0ED6B9"
         android:text="Freezer"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/add_dataBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/add_dataBtn"
-        android:layout_width="201dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_data_FrezBtn"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
         android:text="Refrigerator"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/current_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.371"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_data_FrezBtn" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
 
     <EditText
-        android:id="@+id/current_user"
-        android:layout_width="380dp"
+        android:id="@+id/editTextCurrent_user"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/add_dataBtn"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="UserId || Test result"
         android:inputType="text"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/check_CurrentUserBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_dataBtn" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/check_CurrentUserBtn"
-        android:layout_width="203dp"
-        android:layout_height="52dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextCurrent_user"
         android:layout_marginStart="16dp"
         android:backgroundTint="#0ED6B9"
         android:text="UserId || Test"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/backButtonShopping"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_user" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

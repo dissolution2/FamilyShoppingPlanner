@@ -36,6 +36,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

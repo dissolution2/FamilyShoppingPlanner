@@ -2,33 +2,25 @@ package com.fwa.app.familyshoppingplanner;
 
 public class Product {
 
-    public String productName, barcode, company;//, productAmount;
-    public int productAmount;
+    public String name, barcode, company, storage;//, productAmount;
+    public int amount;
+
+
     public Product(){}
-
-    //public Product(String code){}
-
-    public Product(String code, String name, int amount){
-
-        this.barcode = code;
-        this.company = "Empty";
-        this.productName = name;
-        this.productAmount = amount;
-
-    }
-
-    public Product(String code,String company, String name, int amount){
+    public Product(String code, String name, String company, int amount, String storage){
 
         this.barcode = code;
         this.company = company;
-        this.productName = name;
-        this.productAmount = amount;
+        this.name = name;
+        this.amount = amount;
+        this.storage = storage;
 
     }
 
     public String getBarcode(){ return  this.barcode; }
-    public String getProductCompany(){ return this.company; }
-    public String getProductName(){ return this.productName; }
-    public int getProductAmount(){ return this.productAmount; }
+    public String getCompany(){ return this.company; }
+    public String getName(){ return this.name; }
+    public int getAmount(){ return this.amount; }
+    public String getStorage(){ return this.storage; }
 
 }

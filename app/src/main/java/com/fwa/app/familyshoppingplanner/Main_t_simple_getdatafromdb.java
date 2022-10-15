@@ -1,6 +1,7 @@
 package com.fwa.app.familyshoppingplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,11 +26,12 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
 
     private Button backBtn, show_dataBtn;
     private EditText editTextgetDBData;
-
+    private RecyclerView list_view;
 
 
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
+
     public DatabaseReference reference;
     public FirebaseAuth mAuth;
 
@@ -43,9 +45,11 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
         show_dataBtn = (Button) findViewById(R.id.show_DataDBBtn);
         show_dataBtn.setOnClickListener(this);
 
+        list_view = (RecyclerView) findViewById(R.id.list_view);
 
-        backBtn = (Button) (Button) findViewById(R.id.backButton);
-        backBtn.setOnClickListener(this);
+
+        //backBtn = (Button) (Button) findViewById(R.id.backButton);
+        //backBtn.setOnClickListener(this);
 
     }
 
@@ -65,18 +69,24 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
                     for (DataSnapshot child : dataSnapshot.getChildren() ) {
 
                         String barcode = child.getValue(Product.class).getBarcode();
-                        String product = child.getValue(Product.class).getProductName();
-                        int amount = child.getValue(Product.class).getProductAmount();
+                        String name = child.getValue(Product.class).getName();
+                        String company = child.getValue(Product.class).getCompany();
+                        int amount = child.getValue(Product.class).getAmount();
+                        String storage = child.getValue(Product.class).getStorage();
 
-                        product_List.add(new Product(barcode,product,amount));
+                        // ToDo: add this!!!
+                        String productCompany = "";
+                        String productStorage = "";
+
+                        product_List.add(new Product(barcode,name,company,amount, storage));
                     }
                     // test for fun!!
                     editTextgetDBData.setText( "BareCode: " + ((Product)product_List.get(0)).getBarcode() +
-                            "\nProductName: " + ((Product)product_List.get(0)).getProductName() +
-                            "\nProductAmount: " + ((Product)product_List.get(0)).getProductAmount() + "\n"+
+                            "\nProductName: " + ((Product)product_List.get(0)).getName() +
+                            "\nProductAmount: " + ((Product)product_List.get(0)).getAmount() + "\n"+
                             "BareCode: " + ((Product)product_List.get(1)).getBarcode() +
-                            "\nProductName: " + ((Product)product_List.get(1)).getProductName() +
-                            "\nProductAmount: " + ((Product)product_List.get(1)).getProductAmount() );
+                            "\nProductName: " + ((Product)product_List.get(1)).getName() +
+                            "\nProductAmount: " + ((Product)product_List.get(1)).getAmount() );
                 }else{
                     editTextgetDBData.setText("Don't = dataSnapshot exists !!");
                 }
@@ -96,9 +106,9 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
             case R.id.show_DataDBBtn:
                 readData();
                 break;
-            case R.id.backButton:
-                startActivity(new Intent(this, Main_t_gui_menu_view.class));
-                break;
+            //case R.id.backButton:
+                //startActivity(new Intent(this, Main_t_gui_menu_view.class));
+            //    break;
             }
 
 

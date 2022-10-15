@@ -3,7 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_get_data_from_db.xml" value="0.31354166666666666" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_list_view_test.xml" value="0.553125" />
         <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_main.xml" value="0.5401041666666667" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_main_t_user_main_view.xml" value="0.5" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_recycle_view_test_one.xml" value="0.4161458333333333" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_recycle_view_test_two.xml" value="0.4161458333333333" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_register_user.xml" value="0.4161458333333333" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_shopping_list_data_holder_view.xml" value="0.2671875" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_t_add_product_to_list_db.xml" value="0.5541666666666667" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_t_main_test_menu.xml" value="0.25" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/activity_user_list.xml" value="0.4161458333333333" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/barecode_capture_appcompat.xml" value="0.41944444444444445" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/list_item.xml" value="0.5541666666666667" />
+        <entry key="..\:/Prog/Programming/ProsjektFolders/androidStudioWorkspace/FamilyShoppingPlanner/app/src/main/res/layout/userentry.xml" value="0.5541666666666667" />
       </map>
     </option>
   </component>
