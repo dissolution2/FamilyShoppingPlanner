@@ -4,29 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main_t_simple_getdatafromdb">
+    tools:context="com.fwa.app.testingViews.testingViews.Main_t_simple_getdatafromdb">
 
     <EditText
         android:id="@+id/getDBData"
-        android:layout_width="150dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="286dp"
+        android:layout_height="259dp"
+        android:layout_marginTop="52dp"
+        android:autofillHints=""
         android:ems="10"
-        android:hint="Geting DB View From user"
+        android:hint="@string/geting_db_view_from_user"
         android:inputType="textMultiLine|text"
+        android:textColorHint="#78909C"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/show_DataDBBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeDBView" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeDBView"
+        app:layout_constraintVertical_bias="0.422" />
 
     <TextView
         android:id="@+id/welcomeDBView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Data Base View"
+        android:text="@string/data_base_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,27 +41,19 @@
         android:layout_width="308dp"
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="504dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="236dp"
         android:backgroundTint="#0ED6B9"
-        android:text="Get Data"
-        android:textColor="#FDFDFD"
+        android:text="@string/get_data"
+        android:textColor="#BF360C"
         android:textSize="21sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getDBData" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_view"
-        android:layout_width="394dp"
-        android:layout_height="414dp"
-
-        android:layout_marginTop="172dp"
-        app:layout_constraintStart_toStartOf="getDBData"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.testingViews.testingViews;
 
 
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fwa.app.familyshoppingplanner.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,10 +34,10 @@ public class list_view_test extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_shopping_list_data_holder_view);
 
         // initializing variables for listviews.
-        coursesLV = findViewById(R.id.idLVCourses);
+        //coursesLV = findViewById(R.id.idLVCourses);
 
         // initializing our array list
         coursesArrayList = new ArrayList<String>();

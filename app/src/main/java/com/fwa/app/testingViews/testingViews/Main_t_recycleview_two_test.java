@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.testingViews.testingViews;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.familyshoppingplanner.User;
+import com.fwa.app.familyshoppingplanner.UserList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -60,7 +63,7 @@ public class Main_t_recycleview_two_test extends AppCompatActivity {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Main_t_recycleview_two_test.this,UserList.class));
+                startActivity(new Intent(Main_t_recycleview_two_test.this, UserList.class));
                 finish();
             }
         });

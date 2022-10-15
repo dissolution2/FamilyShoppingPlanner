@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.testingViews.testingViews;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fwa.app.familyshoppingplanner.Product;
+import com.fwa.app.familyshoppingplanner.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

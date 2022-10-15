@@ -57,8 +57,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextInputSuccesses"
-        android:text="Scan Code"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
-        android:textColor="#FDFDFD"
-        android:layout_marginTop="20dp" />
+        android:text="Scan Product"
+        android:textColor="#FDFDFD" />
 </RelativeLayout>

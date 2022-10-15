@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.testingViews.testingViews;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fwa.app.familyshoppingplanner.MainActivity;
+import com.fwa.app.familyshoppingplanner.main_add_product_shopping_list_with_barcode_reader_db;
+import com.fwa.app.familyshoppingplanner.Main_t_manualy_add_products_to_db;
+import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.familyshoppingplanner.ToolbarCaptureActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -137,10 +142,11 @@ public class Main_t_gui_menu_view extends AppCompatActivity implements View.OnCl
 
             case R.id.bareCodeReader:
                 //scanToolbar(v);  // test
-                startActivity(new Intent(this, Main_t_User_Main_View.class));
+                startActivity(new Intent(this, main_add_product_shopping_list_with_barcode_reader_db.class));
                 break;
             case R.id.list_view_test:
-                startActivity(new Intent(this, list_view_test.class));
+                //startActivity(new Intent(this, list_view_test.class));
+                Toast.makeText(Main_t_gui_menu_view.this, "Not active for testing!!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.signOut:
 

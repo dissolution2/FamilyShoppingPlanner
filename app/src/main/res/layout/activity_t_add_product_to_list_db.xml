@@ -76,30 +76,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextStorage"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
-        android:text="Freezer"
+        android:gravity="center_horizontal"
+        android:text="Add to Freezer"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal" />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/add_dataBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/add_data_FrezBtn"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
-        android:text="Refrigerator"
+        android:gravity="center_horizontal"
+        android:text="Add toRefrigerator"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal" />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editTextCurrent_user"

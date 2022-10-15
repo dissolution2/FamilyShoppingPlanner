@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Familyshoppingplanner"
         tools:targetApi="31">
         <activity
-            android:name=".list_view_test"
+            android:name="com.fwa.app.testingViews.testingViews.list_view_test"
             android:exported="false" />
         <activity
             android:name=".ToolbarCaptureActivity"
@@ -24,19 +24,19 @@
             android:name=".UserList"
             android:exported="false" />
         <activity
-            android:name=".Main_t_recycleview_two_test"
+            android:name="com.fwa.app.testingViews.testingViews.Main_t_recycleview_two_test"
             android:exported="false" />
         <activity
-            android:name=".Main_t_recycleview_one_test"
+            android:name="com.fwa.app.testingViews.testingViews.Main_t_recycleview_one_test"
             android:exported="false" />
         <activity
-            android:name=".Main_t_simple_getdatafromdb"
+            android:name="com.fwa.app.testingViews.testingViews.Main_t_simple_getdatafromdb"
             android:exported="false" />
         <activity
-            android:name=".Main_t_gui_menu_view"
+            android:name="com.fwa.app.testingViews.testingViews.Main_t_gui_menu_view"
             android:exported="false" />
         <activity
-            android:name=".Main_t_User_Main_View"
+            android:name=".main_add_product_shopping_list_with_barcode_reader_db"
             android:exported="false" />
         <activity
             android:name=".Main_t_manualy_add_products_to_db"

@@ -43,7 +43,7 @@ dependencies {
 
     //implementation group: 'com.chauthai.swipereveallayout', name: 'swipe-reveal-layout', version: '1.4.1'
     //implementation 'com.github.amsiq:SwipeRevealLayout:1.4.1-x'
-    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+    //implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

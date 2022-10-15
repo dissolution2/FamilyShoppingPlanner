@@ -1,56 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android:com.chauthai.swipereveallayout.SwipeRevealLayout
-    xmlsn:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xmlsn="http://schemas.android.com/tools"
-    android:id="@+id/swipelayout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:drageEdge="right"
-    app:mode="same_level"
-    layout_height="wrap_content"
-    layout_width="match_parent">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textEdit"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="#d269le"
-            android:graity="center"
-            android:text="EDIT"
-            android:textColor="#ffffff" />
-        <TextView
-            android:id="@+id/texDelete"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="#d269le"
-            android:graity="center"
-            android:text="DELETE"
-            android:textColor="#ffffff" />
-
-    </LinearLayout>
-
-    <!--Main Layout-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-</android:com.chauthai.swipereveallayout.SwipeRevealLayout>
+    android:layout_height="match_parent"
+    tools:context="com.fwa.app.testingViews.testingViews.list_view_test">
+</androidx.constraintlayout.widget.ConstraintLayout>

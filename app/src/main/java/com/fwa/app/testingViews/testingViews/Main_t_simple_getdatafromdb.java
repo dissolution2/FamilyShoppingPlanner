@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.testingViews.testingViews;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.fwa.app.familyshoppingplanner.Product;
+import com.fwa.app.familyshoppingplanner.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,7 +28,7 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
 
     private Button backBtn, show_dataBtn;
     private EditText editTextgetDBData;
-    private RecyclerView list_view;
+    //private RecyclerView list_view;
 
 
 
@@ -40,12 +42,13 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_data_from_db);
         mAuth = FirebaseAuth.getInstance();
-        editTextgetDBData = (EditText) findViewById(R.id.getDBData);
+
+        editTextgetDBData = (EditText) findViewById(R.id.getDBData);// .getDBData);
 
         show_dataBtn = (Button) findViewById(R.id.show_DataDBBtn);
         show_dataBtn.setOnClickListener(this);
 
-        list_view = (RecyclerView) findViewById(R.id.list_view);
+        //list_view = (RecyclerView) findViewById(R.id.list_view);
 
 
         //backBtn = (Button) (Button) findViewById(R.id.backButton);

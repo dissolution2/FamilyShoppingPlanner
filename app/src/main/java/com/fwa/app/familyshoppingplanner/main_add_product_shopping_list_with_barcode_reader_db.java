@@ -26,7 +26,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main_t_User_Main_View extends AppCompatActivity implements View.OnClickListener{
+public class main_add_product_shopping_list_with_barcode_reader_db extends AppCompatActivity implements View.OnClickListener{
 
     private Button scanBarcodeBtn;
     private EditText editText_BarCode, editText_ProductName;
@@ -41,7 +41,7 @@ public class Main_t_User_Main_View extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_t_user_main_view);
+        setContentView(R.layout.activity_add_product_shopping_list_db_view);
 
         //queryUserIsProductKnownReturnValue = false;
 
@@ -293,7 +293,7 @@ public class Main_t_User_Main_View extends AppCompatActivity implements View.OnC
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                          Toast.makeText(Main_t_User_Main_View.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
+                          Toast.makeText(main_add_product_shopping_list_with_barcode_reader_db.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
                         }
                     }
                 })

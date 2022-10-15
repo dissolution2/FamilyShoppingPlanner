@@ -97,7 +97,7 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
     private void getCurrentUser() {
 
         try{
-            editText_current_user.setText( mAuth.getCurrentUser().getUid() );
+            editText_current_user.setText( mAuth.getCurrentUser().getEmail() );//.getUid() );
             //Log.d(TEST,"Getting Current User: " + mAuth.getCurrentUser().getUid() );
         }
         catch (Exception e) {
@@ -127,34 +127,42 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
         }
         Product product = new Product(barcode, name, company, amountX, storage);
 
-        //Log.d("TODATABASE", "WHAT ARE WE DOING: " + product.getBarcode() + " " + product.getName()
-        //        + " " + product.getCompany() + " " + product.getAmount() + " " + product.getStorage());
+        if(!editText_Barcode.getText().toString().trim().isEmpty() &&
+                !editText_Product.getText().toString().trim().isEmpty() &&
+                !editText_ProductAmount.getText().toString().trim().isEmpty() &&
+                !editText_Storage.getText().toString().trim().isEmpty()) {
 
-        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("Freezer")
-                .child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+            //Log.d("TODATABASE", "WHAT ARE WE DOING: " + product.getBarcode() + " " + product.getName()
+            //        + " " + product.getCompany() + " " + product.getAmount() + " " + product.getStorage());
 
-                            //Toast.makeText(ShopingListView.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
-                            Log.d("TODATABASE", "Added data to database");
-                            editText_current_user.setText("Added Data To DB");
-                            editText_Barcode.setText("");
-                            editText_Product.setText("");
-                            editText_Company.setText("");
-                            editText_ProductAmount.setText("");
-                            editText_Storage.setText("");
-                            editText_Barcode.requestFocus();
+            database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("Freezer")
+                    .child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+
+                                //Toast.makeText(ShopingListView.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
+                                Log.d("TODATABASE", "Added data to database");
+                                editText_current_user.setText("Added Data To DB");
+                                editText_Barcode.setText("");
+                                editText_Product.setText("");
+                                editText_Company.setText("");
+                                editText_ProductAmount.setText("");
+                                editText_Storage.setText("");
+                                editText_Barcode.requestFocus();
+                            }
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e(EXCEPTION,"Failed to add the data: " + e.getMessage());
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e(EXCEPTION, "Failed to add the data: " + e.getMessage());
+                        }
+                    });
+        }else{
+            Toast.makeText(Main_t_manualy_add_products_to_db.this, "BareCode, Product, Amount and Storage are empty!!", Toast.LENGTH_LONG).show();
+        }
 
 
     }
@@ -180,41 +188,49 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
 
         Product product = new Product(barcode, name, company, amountX, storage);
 
-/** first do a search for child count then add + 1 be for we add a product to the shopping list  */
-/** But we will use the bareCode as the identifier right under the shopping list so the search will be smaller!!  */
-//ToDo: use a query !!?? after we scan the product!!
-//ToDo: We need to check if the product is all ready in the Refrigerator and ask to add count !!??
-        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
+        if(!editText_Barcode.getText().toString().trim().isEmpty() &&
+                !editText_Product.getText().toString().trim().isEmpty() &&
+                !editText_ProductAmount.getText().toString().trim().isEmpty() &&
+                !editText_Storage.getText().toString().trim().isEmpty()) {
 
-                    //Toast.makeText(ShopingListView.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
-                    Log.d(ON_COMPLETE, "Added data to database");
-                    editText_current_user.setText("Added Data To DB");
+            /** first do a search for child count then add + 1 be for we add a product to the shopping list  */
+            /** But we will use the bareCode as the identifier right under the shopping list so the search will be smaller!!  */
+            //ToDo: use a query !!?? after we scan the product!!
+            //ToDo: We need to check if the product is all ready in the Refrigerator and ask to add count !!??
+            database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
 
-                    editText_Barcode.setText("");
-                    editText_Product.setText("");
-                    editText_Company.setText("");
-                    editText_ProductAmount.setText("");
-                    editText_Storage.setText("");
-                    editText_Barcode.requestFocus();
+                                //Toast.makeText(ShopingListView.this, "Successfully added data to database!!", Toast.LENGTH_LONG).show();
+                                Log.d(ON_COMPLETE, "Added data to database");
+                                editText_current_user.setText("Added Data To DB");
 
-                }
-                /*
-                else{
-                    Toast.makeText(ShopingListView.this, "Failed to added data!!", Toast.LENGTH_LONG).show();
-                }
-                */
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(EXCEPTION,"Failed to add the data: " + e.getMessage());
-            }
-        });
+                                editText_Barcode.setText("");
+                                editText_Product.setText("");
+                                editText_Company.setText("");
+                                editText_ProductAmount.setText("");
+                                editText_Storage.setText("");
+                                editText_Barcode.requestFocus();
+
+                            }
+                    /*
+                    else{
+                        Toast.makeText(ShopingListView.this, "Failed to added data!!", Toast.LENGTH_LONG).show();
+                    }
+                    */
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e(EXCEPTION, "Failed to add the data: " + e.getMessage());
+                        }
+                    });
+        }else{
+            Toast.makeText(Main_t_manualy_add_products_to_db.this, "BareCode, Product, Amount and Storage are empty!!", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -326,7 +342,7 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
                 insertDataToDatabaseToFreezer();
                 break;
             case R.id.check_CurrentUserBtn:
-                //getCurrentUser();
+                getCurrentUser();
                 //getDocumentOne_test();
                 //getDocumentTwo_test();
                 break;
