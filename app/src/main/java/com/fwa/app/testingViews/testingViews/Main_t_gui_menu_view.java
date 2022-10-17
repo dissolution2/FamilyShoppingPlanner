@@ -12,10 +12,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fwa.app.familyshoppingplanner.MainActivity;
-import com.fwa.app.familyshoppingplanner.main_add_product_shopping_list_with_barcode_reader_db;
-import com.fwa.app.familyshoppingplanner.Main_t_manualy_add_products_to_db;
+import com.fwa.app.product.manualy.add.main_add_product_shopping_list_with_barcode_reader_db;
+import com.fwa.app.product.manualy.add.Main_t_manualy_add_products_to_db;
 import com.fwa.app.familyshoppingplanner.R;
 import com.fwa.app.familyshoppingplanner.ToolbarCaptureActivity;
+import com.fwa.app.testingViews.testingViews.Employee.EmployeeMainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -146,7 +147,8 @@ public class Main_t_gui_menu_view extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.list_view_test:
                 //startActivity(new Intent(this, list_view_test.class));
-                Toast.makeText(Main_t_gui_menu_view.this, "Not active for testing!!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, EmployeeMainActivity.class));
+                //Toast.makeText(Main_t_gui_menu_view.this, "Not active for testing!!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.signOut:
 

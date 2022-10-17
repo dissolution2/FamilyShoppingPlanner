@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.fwa.app.adapters.UserListAdapter;
+import com.fwa.app.classes.User;
 import com.fwa.app.testingViews.testingViews.Main_t_recycleview_two_test;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,14 +23,20 @@ import java.util.ArrayList;
 
 public class UserList extends AppCompatActivity {
 
+    private final String LIST_DEBUG = "Debugging!!";
+
+    SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ArrayList<User> list;
+
+    boolean isLoading = false;
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
 
     //DatabaseReference databaseReference;
 
     //DatabaseReference ref;
-    MyAdapter adapter;
+    UserListAdapter adapter;
     private FirebaseAuth mAuth;
 
     @Override
@@ -41,6 +51,7 @@ public class UserList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
+        swipeRefreshLayout = findViewById(R.id.swip);
         recyclerView = findViewById(R.id.recycleview);
 
         //ref = database.getReference("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("UserGroup");
@@ -64,9 +75,33 @@ public class UserList extends AppCompatActivity {
 
         list = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyAdapter(this,list);
+        adapter = new UserListAdapter(this,list);
         recyclerView.setAdapter(adapter);
 
+
+        /** testing Start */
+        loadData();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
+                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                 int totalItem = linearLayoutManager.getItemCount();
+                 int lastVisible = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                 if(totalItem< lastVisible+3)
+                 {
+                     if(!isLoading)
+                     {
+                         isLoading=true;
+                         loadData();
+                     }
+                 }
+             }
+         });
+                /** testing End */
+
+
+/* testing new this works but not on realtime change by a other user
         //database.getReference().child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("UsersGroup").addListenerForSingleValueEvent(new ValueEventListener() {
         database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("UsersGroup").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -76,53 +111,48 @@ public class UserList extends AppCompatActivity {
                         User user = dataSnapshot.getValue(User.class);
                         list.add(user);
                     }
+
                     adapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-  /*
+ */
+    }
 
-        //databaseReference.addValueEventListener(new ValueEventListener() {
-        database.getReference().addValueEventListener(new ValueEventListener() {
+    private void loadData()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+
+        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("UsersGroup").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 if(snapshot.exists()){
-
-                    //Toast.makeText(UserList.this,"? " + snapshot.getValue().toString(), Toast.LENGTH_LONG).show();
-                    Log.d("SNAPSHOT","getV UserG? " + snapshot.child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("UsersGroup").getValue().toString() );
-                    Log.d("SNAPSHOT","getV? " + snapshot.getValue().toString() );
-                    Log.d("SNAPSHOT","class snap? " + snapshot.getValue(UserTwo.class) );
-
-
-
-                    //for (DataSnapshot dataSnapshot : snapshot.child("kTDClQTUjRcjWZgxIkg7MtgJytA2").child("Family").child("UsersGroup").getChildren() ) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren() ) {
-                        UserTwo userTwo = dataSnapshot.getValue(UserTwo.class);
-                        list.add(userTwo);
 
-                        Log.d("SNAPSHOT","Class? " + userTwo.getName() + " " + userTwo.getEmail() + " " + userTwo.getAge() );
-                        //Toast.makeText(UserList.this,"Name: " + userTwo.getName(), Toast.LENGTH_LONG).show();
-
-
+                        Log.d(LIST_DEBUG, " :" + dataSnapshot.getValue().toString() );
+                        //Toast.makeText(MainViewGuiShopping.this, "Read Data: " + child.getValue(Product.class).getBarcode() , Toast.LENGTH_LONG).show();
+                        User user = dataSnapshot.getValue(User.class);
+                        list.add(user);
                     }
+
+                    //adapter.setItems(list);
                     adapter.notifyDataSetChanged();
-                }else{
-                    Toast.makeText(UserList.this,"SnapShot Don't Exists", Toast.LENGTH_LONG).show();
+                    isLoading = false;
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
-*/
     }
 }

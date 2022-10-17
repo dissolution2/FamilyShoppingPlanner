@@ -1,8 +1,7 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,19 +9,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fwa.app.classes.User;
+import com.fwa.app.familyshoppingplanner.R;
+
 import java.util.ArrayList;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyViewHolder> {
 
 
     Context context;
     ArrayList<User> list;
 
-    public MyAdapter(Context context, ArrayList<User> list) {
+    public UserListAdapter(Context context, ArrayList<User> list) {
         this.context = context;
         this.list = list;
     }
+
+    //public void setItems(ArrayList<User> userList){ this.list = userList; }
 
     @NonNull
     @Override

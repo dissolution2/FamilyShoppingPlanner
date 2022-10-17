@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fwa.app.familyshoppingplanner.R;
-import com.fwa.app.familyshoppingplanner.User;
+import com.fwa.app.classes.User;
 import com.fwa.app.familyshoppingplanner.UserList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,6 +59,7 @@ public class Main_t_recycleview_two_test extends AppCompatActivity {
                 InsertData();
             }
         });
+
 
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override

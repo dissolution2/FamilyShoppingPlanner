@@ -15,6 +15,12 @@
         android:theme="@style/Theme.Familyshoppingplanner"
         tools:targetApi="31">
         <activity
+            android:name="com.fwa.app.testingViews.testingViews.Employee.EmployeeMainActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.fwa.app.testingViews.testingViews.Employee.RVActivity"
+            android:exported="false" />
+        <activity
             android:name="com.fwa.app.testingViews.testingViews.list_view_test"
             android:exported="false" />
         <activity
@@ -36,10 +42,11 @@
             android:name="com.fwa.app.testingViews.testingViews.Main_t_gui_menu_view"
             android:exported="false" />
         <activity
-            android:name=".main_add_product_shopping_list_with_barcode_reader_db"
+            android:name="com.fwa.app.product.manualy.add.main_add_product_shopping_list_with_barcode_reader_db"
+            android:hardwareAccelerated="true"
             android:exported="false" />
         <activity
-            android:name=".Main_t_manualy_add_products_to_db"
+            android:name="com.fwa.app.product.manualy.add.Main_t_manualy_add_products_to_db"
             android:exported="false" />
         <activity
             android:name=".RegisterUser"
@@ -49,7 +56,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

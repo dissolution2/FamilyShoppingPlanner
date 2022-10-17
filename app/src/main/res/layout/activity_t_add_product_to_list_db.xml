@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".Main_t_manualy_add_products_to_db">
+    tools:context="com.fwa.app.product.manualy.add.Main_t_manualy_add_products_to_db">
 
     <EditText
         android:id="@+id/editTextBarcode"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextProductAmount"
         android:ems="10"
-        android:hint="Storage"
+        android:hint="Storage c=cold d=dry f=freezer"
         android:inputType="text"
         android:textSize="24sp"
         android:layout_centerHorizontal="true"
@@ -72,7 +72,7 @@
         android:gravity="center_horizontal" />
 
     <Button
-        android:id="@+id/add_data_FrezBtn"
+        android:id="@+id/add_dataBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextStorage"
@@ -81,39 +81,26 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="#0ED6B9"
         android:gravity="center_horizontal"
-        android:text="Add to Freezer"
+        android:text="ADD DATA"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/add_dataBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_data_FrezBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#0ED6B9"
-        android:gravity="center_horizontal"
-        android:text="Add toRefrigerator"
-        android:textColor="#FDFDFD"
-        android:textSize="21sp"
-        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editTextCurrent_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/add_dataBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="12dp"
         android:ems="10"
+        android:gravity="center_horizontal"
         android:hint="UserId || Test result"
         android:inputType="text"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal" />
+        android:textSize="15sp"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/check_CurrentUserBtn"

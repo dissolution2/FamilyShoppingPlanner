@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.fwa.app.testingViews.testingViews.list_view_test">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swip"
+        >
     <!--ListView for displaying
         our list of courses-->
     <ListView
         android:id="@+id/idLVCourses"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

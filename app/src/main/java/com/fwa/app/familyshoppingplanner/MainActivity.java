@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                    try {
 
                        task.getResult(com.google.android.gms.common.api.ApiException.class); // .getResult(ApiException.class);
-                       Toast.makeText(getApplicationContext(), "Token: " + task.getResult().getIdToken(), Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(getApplicationContext(), "Token: " + task.getResult().getIdToken(), Toast.LENGTH_SHORT).show();
                        firebaseAuthWithGoogle(task.getResult().getIdToken());
 
 
@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (task.isSuccessful()) {
                             /** For Debug */
                             /** Sign in success, update UI with the signed-in user's information */
-                            Log.d("TAG", "signInWithCredential:success");
-                            Toast.makeText(getApplicationContext(), "signInWithCredential:success", Toast.LENGTH_SHORT).show();
+                            //Log.d("TAG", "signInWithCredential:success");
+                            //Toast.makeText(getApplicationContext(), "signInWithCredential:success", Toast.LENGTH_SHORT).show();
 
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
@@ -181,8 +181,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // If sign in fails, display a message to the user.
 
                             //ToDo: Message Bar bottom of app to user!!!
-                            Log.d("TAG", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "signInWithCredential:failure", Toast.LENGTH_SHORT).show();
+                            //Log.d("TAG", "signInWithCredential:failure", task.getException());
+                            //Toast.makeText(getApplicationContext(), "signInWithCredential:failure", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateUI(FirebaseUser currentUser) {
         navigateToSecondActivity();
-        Toast.makeText(getApplicationContext(), "updateUI", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "updateUI", Toast.LENGTH_SHORT).show();
     }
 
     void navigateToSecondActivity(){

@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.product.manualy.add;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fwa.app.classes.Product;
+import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.familyshoppingplanner.ToolbarCaptureActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +32,7 @@ import java.util.List;
 public class main_add_product_shopping_list_with_barcode_reader_db extends AppCompatActivity implements View.OnClickListener{
 
     private Button scanBarcodeBtn;
-    private EditText editText_BarCode, editText_ProductName;
+    private EditText editText_BarCode, editText_ProductName, editText_AddToList;
     private boolean queryUserIsProductKnownReturnValue = false;
     String productCodeis ="";
 
@@ -49,9 +52,12 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
 
         editText_BarCode = (EditText) findViewById(R.id.editTextBarCode);
         editText_ProductName = (EditText) findViewById(R.id.editTextProductName);
+        editText_AddToList = (EditText) findViewById(R.id.editTextAddToList);
 
         scanBarcodeBtn = (Button) findViewById(R.id.scanCodeBtn);
         scanBarcodeBtn.setOnClickListener(this);
+
+
 
         //readData(list -> Log.d("TAG", ": " + ((Product)list.get(0)).getProductName() ));
 
@@ -87,7 +93,8 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                     //Toast.makeText(Main_t_User_Main_View.this, "Scanned is: " + result.getContents(), Toast.LENGTH_LONG).show();
 
                     /** Callback On query as Asynchronous Firebase API */
-                    readData(new FirebaseCallback() {
+                    /** Checking Refrigerator */
+                    readDataRefrigerator(new FirebaseCallback() {
                         @Override
                         public void onCallback(List<Product> list) {
 
@@ -101,10 +108,53 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                         ((Product) list.get(0)).getName(),
                                         ((Product) list.get(0)).getCompany(),
                                         ((Product) list.get(0)).getAmount(),
-                                        ((Product) list.get(0)).getStorage() );
+                                        ((Product) list.get(0)).getStorage(), editText_AddToList.getText().toString().toUpperCase().trim() );
                             }else{
-                                editText_BarCode.setText( result.getContents() );
-                                editText_ProductName.setText( "Not in database!!" );
+                                /** Checking Freezer */
+                                readDataFreezer(new FirebaseCallback() {
+                                    @Override
+                                    public void onCallback(List<Product> list) {
+
+                                        if (!list.isEmpty()) {
+
+                                            editText_BarCode.setText(((Product) list.get(0)).getBarcode());
+                                            editText_ProductName.setText(((Product) list.get(0)).getStorage());
+
+                                            writeData_to_shoppingList_from_barcode(
+                                                    ((Product) list.get(0)).getBarcode(),
+                                                    ((Product) list.get(0)).getName(),
+                                                    ((Product) list.get(0)).getCompany(),
+                                                    ((Product) list.get(0)).getAmount(),
+                                                    ((Product) list.get(0)).getStorage(), editText_AddToList.getText().toString().toUpperCase().trim() );
+                                        } else {
+                                            /** Checking DryStorage */
+                                            readDataDryStorage(new FirebaseCallback() {
+                                                @Override
+                                                public void onCallback(List<Product> list) {
+
+                                                    if(!list.isEmpty()) {
+
+                                                        editText_BarCode.setText(((Product) list.get(0)).getBarcode());
+                                                        editText_ProductName.setText(((Product) list.get(0)).getStorage());
+
+                                                        writeData_to_shoppingList_from_barcode(
+                                                                ((Product) list.get(0)).getBarcode(),
+                                                                ((Product) list.get(0)).getName(),
+                                                                ((Product) list.get(0)).getCompany(),
+                                                                ((Product) list.get(0)).getAmount(),
+                                                                ((Product) list.get(0)).getStorage(), editText_AddToList.getText().toString().toUpperCase().trim() );
+                                                    }else{
+                                                        //ToDo: Add search's on main db !!
+                                                        /** Product is not in any of our Storage place, need to check Main product database */
+                                                        editText_BarCode.setText( result.getContents() );
+                                                        editText_ProductName.setText( "Not in database!!" );
+                                                    }
+                                                }
+                                            }, result.getContents() );
+                                        }
+                                    }
+                                }, result.getContents());
+
                             }
                         }
                     }, result.getContents() );
@@ -113,57 +163,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
 
 
 
-    public void queryUserIsProductKnown(String barcode ){
 
-        DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("Family").
-                child("List").
-                child("Refrigerator");
-
-        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
-                if (dataSnapshot.isSuccessful()) {
-                    List product_List = new ArrayList();
-                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
-
-                        if(child.getValue(Product.class).getBarcode().equals(barcode)) { //"7310130417832")){
-
-                            product_List.add(new Product(
-                                    child.getValue(Product.class).getBarcode(),
-                                    child.getValue(Product.class).getName(),
-                                    child.getValue(Product.class).getCompany(),
-                                    child.getValue(Product.class).getAmount(),
-                                    child.getValue(Product.class).getStorage()
-                                    ) );
-
-
-                            Log.d("dataSnapshot", "BarCode is good: ");
-                            //editText_BarCode.setText(child.getValue(Product.class).getProductName());
-
-
-                            //editText_ProductName.setText(((Product)product_List.get(0)).getBarcode());
-                            break;
-                        }else{
-                            Log.d("dataSnapshot", "BarCode is bad!!");
-                        }
-
-
-                    }
-
-                }
-
-
-            }
-        });
-        //editText_ProductName.setText( product_List.size() );
-        //if(product_List.size() != 0){
-            //editText_BarCode.setText( ((Product)product_List.get(0)).getBarcode() ) ;
-        //}
-
-
-       // return queryUserIsProductKnownReturnValue;
-    }
 
     /** Asynchronous firebase callback to get data outside of the scope */
     private interface FirebaseCallback {
@@ -230,7 +230,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
 
 //ToDo: Working here Last!!
     /** Test on a Asynchronous firebase callback to get data outside of the scope */
-    private void readData(FirebaseCallback firebaseCallback, String code){
+    private void readDataRefrigerator(FirebaseCallback firebaseCallback, String code){
 
         /** Variable : use the Product class to compare data on a larger query etc */
         List product_List = new ArrayList();
@@ -240,10 +240,11 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
 
 
         /**
-         * 1. Get the Product definition on Storage Cold, Freezer, Dry. to switch the list
+         * 1. Get the Product definition on Storage = Refrigerator, Freezer, DryStorage. to switch the list
          *
          *
          *  */
+
         /** Need to be able to switch the list  */
         DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
@@ -281,15 +282,100 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
         });
     }
 
+    private void readDataFreezer(FirebaseCallback firebaseCallback, String code){
 
-    private void writeData_to_shoppingList_from_barcode(String code, String name, String company, int amount, String storage){
+        /** Variable : use the Product class to compare data on a larger query etc */
+        List product_List = new ArrayList();
+
+        DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("Family").
+                child("List").
+                child("Freezer"); //.child("N");
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                if (dataSnapshot.isSuccessful()) {
+
+
+                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
+
+                        if(child.getValue(Product.class).getBarcode().equals(code)) { //"7310130417832")){
+
+                            product_List.add(new Product(
+                                    child.getValue(Product.class).getBarcode(),
+                                    child.getValue(Product.class).getName(),
+                                    child.getValue(Product.class).getCompany(),
+                                    child.getValue(Product.class).getAmount(),
+                                    child.getValue(Product.class).getStorage()
+                            ) );
+
+                            Log.d("dataSnapshot", "BarCode is in db");
+                            break;
+                        }else{
+                            Log.d("dataSnapshot", "BarCode is not in db");
+                        }
+                    }
+                    /** set Firebase Callback value */
+                    firebaseCallback.onCallback(product_List);
+                }
+            }
+        });
+    }
+
+    private void readDataDryStorage(FirebaseCallback firebaseCallback, String code){
+
+        /** Variable : use the Product class to compare data on a larger query etc */
+        List product_List = new ArrayList();
+
+        DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("Family").
+                child("List").
+                child("DryStorage"); //.child("N");
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                if (dataSnapshot.isSuccessful()) {
+
+
+                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
+
+                        if(child.getValue(Product.class).getBarcode().equals(code)) { //"7310130417832")){
+
+                            product_List.add(new Product(
+                                    child.getValue(Product.class).getBarcode(),
+                                    child.getValue(Product.class).getName(),
+                                    child.getValue(Product.class).getCompany(),
+                                    child.getValue(Product.class).getAmount(),
+                                    child.getValue(Product.class).getStorage()
+                            ) );
+
+                            Log.d("dataSnapshot", "BarCode is in db");
+                            break;
+                        }else{
+                            Log.d("dataSnapshot", "BarCode is not in db");
+                        }
+                    }
+                    /** set Firebase Callback value */
+                    firebaseCallback.onCallback(product_List);
+                }
+            }
+        });
+    }
+
+
+    /** Here user must be on: user interface - chose witch list he/she will use to store the product */
+    /** if all ready in shopping list add amount not the hold product */
+    private void writeData_to_shoppingList_from_barcode(String code, String name, String company, int amount, String storage, String shoppingList ){
         /** List to use if User can't make a own list or just the 3 default lists: Freezer, Refrigerator, DryStorage **/
 
         String id = database.getReference().push().getKey();
 
         Product product = new Product(code, name, company, amount, storage);
 
-        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("ShoppingList").child("N").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+        /** N = Norway, Here we must add more list's as a variable  */
+        database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("ShoppingList").child(shoppingList).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {

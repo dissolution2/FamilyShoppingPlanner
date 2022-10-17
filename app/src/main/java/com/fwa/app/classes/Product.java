@@ -1,4 +1,4 @@
-package com.fwa.app.familyshoppingplanner;
+package com.fwa.app.classes;
 
 public class Product {
 

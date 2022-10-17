@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fwa.app.familyshoppingplanner.Product;
+import com.fwa.app.classes.Product;
 import com.fwa.app.familyshoppingplanner.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
