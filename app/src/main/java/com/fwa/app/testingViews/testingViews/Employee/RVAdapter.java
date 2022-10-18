@@ -32,7 +32,7 @@ public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.product_item_fragment_card_layout,parent,false);
         return new EmployeeVH(view);
     }
     @Override

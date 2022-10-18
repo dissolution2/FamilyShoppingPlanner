@@ -3,4 +3,9 @@
     <string name="geting_db_view_from_user">Geting DB View From user</string>
     <string name="data_base_view">Data Base View</string>
     <string name="get_data">Get Data</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_List_Refrigerator_Button">Cold -4</string>
+    <string name="fragment_List_Freezer_Button">Freezer -18</string>
+    <string name="fragment_List_Dry_Storage_Button">Dry Storage</string>
 </resources>

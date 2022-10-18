@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Familyshoppingplanner"
         tools:targetApi="31">
         <activity
+            android:name="com.fwa.app.testingViews.testingViews.fragment.FragmentMainClass"
+            android:exported="false" />
+        <activity
             android:name="com.fwa.app.testingViews.testingViews.Employee.EmployeeMainActivity"
             android:exported="false" />
         <activity

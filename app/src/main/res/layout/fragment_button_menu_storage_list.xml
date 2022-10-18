@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fwa.app.testingViews.testingViews.fragment.storage.button_menu_fragment_storage_list">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnShoppingOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cold -4"
+            android:textColor="#FAF7F7" />
+
+        <Button
+            android:id="@+id/btnShoppingTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="cold -18"
+            android:textColor="#F8F4F4" />
+
+        <Button
+            android:id="@+id/btnShoppingThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dry Storage"
+            android:textColor="#F4F1F1" />
+    </LinearLayout>
+</LinearLayout>

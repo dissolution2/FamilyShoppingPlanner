@@ -17,6 +17,7 @@ import com.fwa.app.product.manualy.add.Main_t_manualy_add_products_to_db;
 import com.fwa.app.familyshoppingplanner.R;
 import com.fwa.app.familyshoppingplanner.ToolbarCaptureActivity;
 import com.fwa.app.testingViews.testingViews.Employee.EmployeeMainActivity;
+import com.fwa.app.testingViews.testingViews.fragment.FragmentMainClass;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -135,10 +136,12 @@ public class Main_t_gui_menu_view extends AppCompatActivity implements View.OnCl
                 startActivity(new Intent(this, Main_t_simple_getdatafromdb.class));
                 break;
             case R.id.recycleView:
-                startActivity(new Intent(this, Main_t_recycleview_two_test.class));
+                //startActivity(new Intent(this, Main_t_recycleview_two_test.class));
+                Toast.makeText(Main_t_gui_menu_view.this, "Deactivated, Not active for testing!!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.guiListViewBtn:
-                startActivity(new Intent(this, Main_t_recycleview_one_test.class));
+                //startActivity(new Intent(this, Main_t_recycleview_one_test.class));
+                startActivity(new Intent(this, FragmentMainClass.class));
                 break;
 
             case R.id.bareCodeReader:

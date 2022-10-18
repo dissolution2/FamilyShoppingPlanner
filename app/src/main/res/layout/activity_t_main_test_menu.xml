@@ -85,7 +85,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#0ED6B9"
-        android:text="Recycle View Test"
+        android:text="Main App Testing"
         android:textColor="#FDFDFD"
         android:textSize="21sp"
         android:textStyle="bold"
