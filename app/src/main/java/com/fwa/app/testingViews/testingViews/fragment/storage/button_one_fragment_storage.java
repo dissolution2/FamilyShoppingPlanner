@@ -1,22 +1,42 @@
 package com.fwa.app.testingViews.testingViews.fragment.storage;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
+import com.fwa.app.classes.Option;
 import com.fwa.app.classes.Product;
+import com.fwa.app.classes.ProductVH;
+import com.fwa.app.classes.ProductViewHolderHelperClass;
+import com.fwa.app.database.FirebaseRWQ;
 import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.product.manualy.add.main_add_product_shopping_list_with_barcode_reader_db;
+import com.fwa.app.testingViews.testingViews.Employee.DAOEmployee;
+import com.fwa.app.testingViews.testingViews.Employee.Employee;
+import com.fwa.app.testingViews.testingViews.Employee.EmployeeMainActivity;
+import com.fwa.app.testingViews.testingViews.Employee.EmployeeVH;
+import com.fwa.app.testingViews.testingViews.Employee.RVActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,18 +44,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link button_one_fragment_storage#newInstance} factory method to
  * create an instance of this fragment.
  */
+/** PLU PRINT ON HOW I DID THIS */
 public class button_one_fragment_storage extends Fragment {
     private ProgressBar progressBar;
     private View list_view;
     private RecyclerView recyclerView_list;
 
+    FirebaseRecyclerAdapter firebaseRecyclerAdapter;
+
+    private FirebaseRWQ firebaseRWQ = new FirebaseRWQ();
+    private String user_shopping_list_in_use ="";
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");;
     private DatabaseReference ref;
+    private FirebaseAuth mAuth;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,8 +114,15 @@ public class button_one_fragment_storage extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_button_one_call, container, false);
 
-        list_view = inflater.inflate(R.layout.fragment_button_one_call, container, false);
-        progressBar = (ProgressBar) list_view.findViewById(R.id.progressBar2);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        list_view = inflater.inflate(R.layout.fragment_button_one_storage, container, false);
+        //progressBar = (ProgressBar) list_view.findViewById(R.id.progressBar2);
+
+
+
+
         recyclerView_list = (RecyclerView) list_view.findViewById(R.id.recycle_list_one);
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -94,13 +132,123 @@ public class button_one_fragment_storage extends Fragment {
                 child("List").
                 child("Refrigerator");
 
+        // this works with delete on option
+        FirebaseRecyclerOptions<Product> options =
+                new FirebaseRecyclerOptions.Builder<Product>()
+                        .setQuery(ref, new SnapshotParser<Product>() {
+                            @NonNull
+                            @Override
+                            public Product parseSnapshot(@NonNull DataSnapshot snapshot) {
+                                Product emp = snapshot.getValue(Product.class);
+                                emp.setKey(snapshot.getKey());
+                                return emp;
+                            }
+                        }).build();
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter(options) {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_fragment_card_layout,parent,false);
+                return new ProductVH(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
+                //TextView txt_name,txt_amount,txt_storage,txt_company,txt_position,txt_option;
+                ProductVH vh = (ProductVH) holder;
+                Product emp = (Product) model;
+
+                vh.txt_name.setText(emp.getName().toUpperCase());
+                vh.txt_company.setText(emp.getCompany().toUpperCase());
+                //int temp = emp.getAmount();
+                //String tmpStr10 = String.valueOf(temp);
+                vh.txt_amount.setText(String.valueOf(emp.getAmount()));
+
+
+                //vh.txt_amount.setText(emp.getAmount());
+                switch (emp.getStorage()){
+                    case "c":
+                        vh.txt_storage.setText("STORAGE COLD +4");
+                        break;
+                    case "f":
+                        vh.txt_storage.setText("STORAGE FREEZER -18");
+                        break;
+                    case "d":
+                        vh.txt_storage.setText("STORAGE DRY");
+                        break;
+                }
+                //vh.txt_storage.setText(emp.getStorage());
+                //vh.txt_position.setText(emp.getPosition());
+                vh.txt_option.setOnClickListener(v->
+                {
+                    PopupMenu popupMenu =new PopupMenu( getContext(),vh.txt_option);
+                    popupMenu.inflate(R.menu.option_menu);
+                    popupMenu.setOnMenuItemClickListener(item->
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.menu_edit:
+                                //Intent intent=new Intent(getContext(), EmployeeMainActivity.class);
+                                //intent.putExtra("EDIT",emp);
+                                //startActivity(intent);
+                                break;
+                            case R.id.menu_remove:
+
+                                DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("Family").
+                                        child("List").
+                                        child("Refrigerator").child(emp.getKey()); //.child("N");
+
+                                ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                                        if (dataSnapshot.isSuccessful()) {
+                                            //ref.getRef().removeValue();
+                                        }
+                                    }
+                                });
+
+                                //DAOEmployee dao=new DAOEmployee();
+                                //dao.remove(emp.getKey()).addOnSuccessListener(suc->
+                                //{
+                                    Toast.makeText(getContext(), "toDo: move Record shoppinglist", Toast.LENGTH_SHORT).show();
+                                    //notifyItemRemoved(position);
+                                    //list.remove(emp);
+                                //}).addOnFailureListener(er->
+                                //{
+                                //    Toast.makeText(getContext(), ""+er.getMessage(), Toast.LENGTH_SHORT).show();
+                                //});
+
+                                break;
+                        }
+                        return false;
+                    });
+                    popupMenu.show();
+                });
+
+
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+            }
+
+        };
+        recyclerView_list.setAdapter(firebaseRecyclerAdapter);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView_list);
         return list_view;
     }
+
+
 
     @Override
     public void onStart() {
         super.onStart();
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        firebaseRecyclerAdapter.startListening(); // this belong to // out in onCreateView
+
+/*
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Product>()
                 .setQuery(ref,Product.class)
                 .build();
@@ -129,6 +277,11 @@ public class button_one_fragment_storage extends Fragment {
 
                     }
                 });
+
+                //ProductViewHolderHelperClass holderHelperClass = (ProductViewHolderHelperClass) holder;
+                Product product = (Product)model;
+                //product.getKey()
+
             }
 
             @NonNull
@@ -141,15 +294,16 @@ public class button_one_fragment_storage extends Fragment {
             }
         };
         progressBar.setVisibility(View.GONE);
+
+        //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView_list);
         recyclerView_list.setAdapter(adapter);
         adapter.startListening();
+*/
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder{
 
         TextView product_name, product_amount;
-
-
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -157,4 +311,156 @@ public class button_one_fragment_storage extends Fragment {
             //product_amount = itemView.findViewById(R.id.txt_position);
         }
     }
+
+
+
+
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            //Toast.makeText(getActivity(), "direction : " +direction, Toast.LENGTH_LONG).show();
+
+            if(direction == 8){
+                Toast.makeText(getActivity(), "Added to Shopping List" , Toast.LENGTH_LONG).show();
+            }
+            if(direction == 4){
+                Toast.makeText(getActivity(), "Deleted Item from Cold +4", Toast.LENGTH_LONG).show();
+            }
+
+            List product_List = new ArrayList();
+
+            /** getKey() from firebaseRecyclerAdapter position of object */
+            DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("Family").
+                    child("List").
+                    child("Refrigerator").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+            if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
+                ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                        if (dataSnapshot.isSuccessful()) {
+                            //ToDo: Refactoring needed!!
+
+                            if(direction == 8) {
+
+                                /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
+                                for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
+                                    product_List.add(new Product(
+                                            child.getValue(Product.class).getBarcode(),
+                                            child.getValue(Product.class).getName(),
+                                            child.getValue(Product.class).getCompany(),
+                                            child.getValue(Product.class).getAmount(),
+                                            child.getValue(Product.class).getStorage()
+                                    ));
+                                    break;
+                                }
+                                String id = database.getReference().push().getKey();
+                                Product product = new Product(((Product) product_List.get(0)).getBarcode(),
+                                        ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
+                                        ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
+
+/** Query list in use !! first !! */
+/** N = Norway, Here we must add more list's as a variable  */
+
+
+
+
+                                DatabaseReference ref_shopping_list_in_use = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("Family").
+                                        child("List").child("Option");
+                                ref_shopping_list_in_use.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                                                if (dataSnapshot.isSuccessful()) {
+
+                                                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
+                                                        //String barcode = child.getValue().toString();
+                                                        user_shopping_list_in_use = child.getValue().toString();
+                                                        Toast.makeText(getActivity(), "DB get List " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+/** needed to have user shopping list, not sure if the dataSnapshot was finished  so added isCompleted be for we added to the user shopping list*/
+                                                if (dataSnapshot.isComplete()) {
+                                                    database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
+                                                            .child("ShoppingList").child(user_shopping_list_in_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        Toast.makeText(getActivity(), "Product moved to shopping list: " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                                                    Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                                Log.e("EXCEPTION", "Failed to get shopping list: " + e.getMessage());
+                                            }
+                                        });
+
+
+
+
+
+                                //if(!user_shopping_list_in_use.equals("MAIN") || !user_shopping_list_in_use.equals("WEEKEND") || !user_shopping_list_in_use.equals("DIV")   ){
+                                //    user_shopping_list_in_use = "MAIN";
+                                //    Toast.makeText(getActivity(), "LIST IS BAD!! SETT TO MAIN", Toast.LENGTH_LONG).show();
+                                //}
+                                //String id = database.getReference().push().getKey();
+                                /*
+
+
+                                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
+                                        .child("ShoppingList").child("MAIN").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getActivity(), "Product moved to shopping list: "+ user_shopping_list_in_use, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                                Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
+                                            }
+                                        });
+
+                                 */
+                                refquery.getRef().removeValue();
+                            }
+                            if(direction == 4){
+                                refquery.getRef().removeValue();
+                            }
+                        }
+                    }
+                });
+            }else{
+                //Toast.makeText( getActivity(), "Swipe empty call", Toast.LENGTH_LONG).show();
+            }
+
+
+
+            recyclerView_list.getAdapter().notifyDataSetChanged();
+
+        }
+    };
+
 }

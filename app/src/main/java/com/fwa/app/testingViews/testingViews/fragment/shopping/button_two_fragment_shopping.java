@@ -1,4 +1,4 @@
-package com.fwa.app.testingViews.testingViews.fragment.storage;
+package com.fwa.app.testingViews.testingViews.fragment.shopping;
 
 import android.os.Bundle;
 
@@ -20,7 +20,6 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.fwa.app.classes.Product;
 import com.fwa.app.classes.ProductVH;
-import com.fwa.app.database.FirebaseRWQ;
 import com.fwa.app.familyshoppingplanner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,22 +34,18 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link button_two_fragment_storage#newInstance} factory method to
+ * Use the {@link button_two_fragment_shopping#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class button_two_fragment_storage extends Fragment {
+public class button_two_fragment_shopping extends Fragment {
 
     private View list_view;
     private RecyclerView recyclerView_list;
 
-    FirebaseRecyclerAdapter firebaseRecyclerAdapter;
-
-    private FirebaseRWQ firebaseRWQ = new FirebaseRWQ();
-    private String user_shopping_list_in_use ="";
-
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");;
     private DatabaseReference ref;
     private FirebaseAuth mAuth;
+    FirebaseRecyclerAdapter firebaseRecyclerAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,7 +56,7 @@ public class button_two_fragment_storage extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public button_two_fragment_storage() {
+    public button_two_fragment_shopping() {
         // Required empty public constructor
     }
 
@@ -71,11 +66,11 @@ public class button_two_fragment_storage extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment buttonTwoFragmentCall.
+     * @return A new instance of fragment button_two_fragment_shopping.
      */
     // TODO: Rename and change types and number of parameters
-    public static button_two_fragment_storage newInstance(String param1, String param2) {
-        button_two_fragment_storage fragment = new button_two_fragment_storage();
+    public static button_two_fragment_shopping newInstance(String param1, String param2) {
+        button_two_fragment_shopping fragment = new button_two_fragment_shopping();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -95,20 +90,17 @@ public class button_two_fragment_storage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         mAuth = FirebaseAuth.getInstance();
         // Inflate the layout for this fragment
-        list_view = inflater.inflate(R.layout.fragment_button_two_storage, container, false);
+        list_view = inflater.inflate(R.layout.fragment_button_two_shopping, container, false);
 
-
-        recyclerView_list = (RecyclerView) list_view.findViewById(R.id.recycle_list_two);
+        recyclerView_list = (RecyclerView) list_view.findViewById(R.id.recycle_two_shopping);
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
         ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
-                child("Freezer");
+                child("ShoppingList").child("WEEKEND");
 
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
@@ -131,30 +123,10 @@ public class button_two_fragment_storage extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
-                //TextView txt_name,txt_amount,txt_storage,txt_company,txt_position,txt_option;
                 ProductVH vh = (ProductVH) holder;
                 Product emp = (Product) model;
 
-                vh.txt_name.setText(emp.getName().toUpperCase());
-                vh.txt_company.setText(emp.getCompany().toUpperCase());
-                //int temp = emp.getAmount();
-                //String tmpStr10 = String.valueOf(temp);
-                vh.txt_amount.setText(String.valueOf(emp.getAmount()));
-
-
-                //vh.txt_amount.setText(emp.getAmount());
-                switch (emp.getStorage()){
-                    case "c":
-                        vh.txt_storage.setText("STORAGE COLD +4");
-                        break;
-                    case "f":
-                        vh.txt_storage.setText("STORAGE FREEZER -18");
-                        break;
-                    case "d":
-                        vh.txt_storage.setText("STORAGE DRY");
-                        break;
-                }
-                //vh.txt_storage.setText(emp.getStorage());
+                vh.txt_name.setText(emp.getName());
                 //vh.txt_position.setText(emp.getPosition());
                 vh.txt_option.setOnClickListener(v->
                 {
@@ -174,13 +146,13 @@ public class button_two_fragment_storage extends Fragment {
                                 DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .child("Family").
                                         child("List").
-                                        child("Freezer").child(emp.getKey()); //.child("N");
+                                        child("ShoppingList").child("WEEKEND").child(emp.getKey());
 
                                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
                                         if (dataSnapshot.isSuccessful()) {
-                                            //ref.getRef().removeValue();
+                                            // ref.getRef().removeValue();
                                         }
                                     }
                                 });
@@ -188,7 +160,8 @@ public class button_two_fragment_storage extends Fragment {
                                 //DAOEmployee dao=new DAOEmployee();
                                 //dao.remove(emp.getKey()).addOnSuccessListener(suc->
                                 //{
-                                Toast.makeText(getContext(), "toDo: move Record shoppinglist", Toast.LENGTH_SHORT).show();
+                                //+ emp.getKey()
+                                Toast.makeText(getContext(), "toDo: Myst add record to storage!!: " , Toast.LENGTH_SHORT).show();
                                 //notifyItemRemoved(position);
                                 //list.remove(emp);
                                 //}).addOnFailureListener(er->
@@ -220,10 +193,10 @@ public class button_two_fragment_storage extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //progressBar.setVisibility(View.VISIBLE);
         firebaseRecyclerAdapter.startListening(); // this belong to // out in onCreateView
     }
 
+    //ToDo: change ongoing!!
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -232,22 +205,19 @@ public class button_two_fragment_storage extends Fragment {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            //Toast.makeText(getActivity(), "direction : " +direction, Toast.LENGTH_LONG).show();
-
             if(direction == 8){
-                Toast.makeText(getActivity(), "Added to Shopping List" , Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Added to Storage List" , Toast.LENGTH_LONG).show();
             }
             if(direction == 4){
-                Toast.makeText(getActivity(), "Deleted Item from Cold +4", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Deleted Item from Shopping List", Toast.LENGTH_LONG).show();
             }
 
             List product_List = new ArrayList();
 
-            /** getKey() from firebaseRecyclerAdapter position of object */
             DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("Family").
                     child("List").
-                    child("Freezer").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+                    child("ShoppingList").child("WEEKEND").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
             if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -273,44 +243,13 @@ public class button_two_fragment_storage extends Fragment {
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
                                         ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
 
-/** Query list in use !! first !! */
-/** N = Norway, Here we must add more list's as a variable  */
-
-
-
-
-                                DatabaseReference ref_shopping_list_in_use = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .child("Family").
-                                        child("List").child("Option");
-                                ref_shopping_list_in_use.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
-                                                if (dataSnapshot.isSuccessful()) {
-
-                                                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
-                                                        //String barcode = child.getValue().toString();
-                                                        user_shopping_list_in_use = child.getValue().toString();
-                                                        //Toast.makeText(getActivity(), "DB get List " + barcode, Toast.LENGTH_LONG).show();
-                                                    }
-                                                }
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                                                Log.e("EXCEPTION", "Failed to get shopping list: " + e.getMessage());
-                                            }
-                                        });
-                                if(user_shopping_list_in_use.isEmpty()){
-                                    user_shopping_list_in_use = "MAIN";
-                                }
+                                /** N = Norway, Here we must add more list's as a variable  */
                                 database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                        .child("ShoppingList").child(user_shopping_list_in_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        .child("Freezer").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    //Toast.makeText(getActivity(), "Product moved to shopping list", Toast.LENGTH_LONG).show();
+                                                    //Toast.makeText(getActivity(), "Product moved to cold -4 list", Toast.LENGTH_LONG).show();
                                                 }
                                             }
                                         })

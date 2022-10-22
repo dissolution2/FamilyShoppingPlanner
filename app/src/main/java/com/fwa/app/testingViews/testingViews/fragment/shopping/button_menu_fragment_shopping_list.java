@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fwa.app.familyshoppingplanner.R;
-import com.fwa.app.testingViews.testingViews.fragment.storage.button_one_fragment_storage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +66,8 @@ public class button_menu_fragment_shopping_list extends Fragment {
         View view = inflater.inflate(R.layout.fragment_button_menu_shopping_list, container, false);
 
         Button btnOne = (Button) view.findViewById(R.id.btnShoppingOne);
+        Button btnTwo = (Button) view.findViewById(R.id.btnShoppingTwo);
+        Button btnThree = (Button) view.findViewById(R.id.btnShoppingThree);
 
         FragmentManager fragmentManager = getParentFragmentManager();
         //FragmentManager fragmentManager = getFragmentManager();
@@ -75,7 +76,29 @@ public class button_menu_fragment_shopping_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, button_one_fragment_shopping.class, null ).
+                        .replace(R.id.fragmentContainerViewList, button_one_fragment_shopping.class, null , "shopping_list_one").
+                        setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+            }
+        });
+
+        btnTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerViewList, button_two_fragment_shopping.class, null , "shopping_list_two").
+                        setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+            }
+        });
+
+        btnThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerViewList, button_three_fragment_shopping.class, null , "shopping_list_three").
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();

@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:dividerPadding="15dp"
+    android:orientation="vertical"
+    tools:context="com.fwa.app.testingViews.testingViews.fragment.swipe_info_fragment_main">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="com.fwa.app.testingViews.testingViews.fragment.swipe_info_fragment_main">
+
+        <TextView
+            android:id="@+id/TextView_Arrow_Left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:text="&lt;&lt;--  DELETE"/>
+
+        <TextView
+            android:id="@+id/txt_view_swipe_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="SHOPPING MAIN"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerPadding="5dp"/>
+
+</LinearLayout>

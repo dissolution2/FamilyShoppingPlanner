@@ -4,27 +4,38 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
 import com.fwa.app.classes.Product;
+import com.fwa.app.classes.ProductVH;
 import com.fwa.app.familyshoppingplanner.R;
 //import com.fwa.app.testingViews.testingViews.fragment.storage.button_one_fragment_storage;
 import com.fwa.app.product.manualy.add.main_add_product_shopping_list_with_barcode_reader_db;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +49,8 @@ public class button_one_fragment_shopping extends Fragment {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");;
     private DatabaseReference ref;
+    private FirebaseAuth mAuth;
+    FirebaseRecyclerAdapter firebaseRecyclerAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,6 +97,7 @@ public class button_one_fragment_shopping extends Fragment {
                              Bundle savedInstanceState) {
         //Toast.makeText( getActivity(), "On create fragment shopping list", Toast.LENGTH_LONG).show();
         // Inflate the layout for this fragment
+        mAuth = FirebaseAuth.getInstance();
         list_view = inflater.inflate(R.layout.fragment_button_one_shopping, container, false);
 
         recyclerView_list = (RecyclerView) list_view.findViewById(R.id.recycle_one_shopping);
@@ -92,68 +106,184 @@ public class button_one_fragment_shopping extends Fragment {
         ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
-                child("ShoppingList").child("ANNETTE");
+                child("ShoppingList").child("MAIN");
+
+        FirebaseRecyclerOptions<Product> options =
+                new FirebaseRecyclerOptions.Builder<Product>()
+                        .setQuery(ref, new SnapshotParser<Product>() {
+                            @NonNull
+                            @Override
+                            public Product parseSnapshot(@NonNull DataSnapshot snapshot) {
+                                Product emp = snapshot.getValue(Product.class);
+                                emp.setKey(snapshot.getKey());
+                                return emp;
+                            }
+                        }).build();
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter(options) {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_fragment_card_layout,parent,false);
+                return new ProductVH(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
+                ProductVH vh = (ProductVH) holder;
+                Product emp = (Product) model;
+
+                vh.txt_name.setText(emp.getName());
+                //vh.txt_position.setText(emp.getPosition());
+                vh.txt_option.setOnClickListener(v->
+                {
+                    PopupMenu popupMenu =new PopupMenu( getContext(),vh.txt_option);
+                    popupMenu.inflate(R.menu.option_menu);
+                    popupMenu.setOnMenuItemClickListener(item->
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.menu_edit:
+                                //Intent intent=new Intent(getContext(), EmployeeMainActivity.class);
+                                //intent.putExtra("EDIT",emp);
+                                //startActivity(intent);
+                                break;
+                            case R.id.menu_remove:
+
+                                DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("Family").
+                                        child("List").
+                                        child("ShoppingList").child("MAIN").child(emp.getKey());
+
+                                ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                                        if (dataSnapshot.isSuccessful()) {
+                                           // ref.getRef().removeValue();
+                                        }
+                                    }
+                                });
+
+                                //DAOEmployee dao=new DAOEmployee();
+                                //dao.remove(emp.getKey()).addOnSuccessListener(suc->
+                                //{
+                                //+ emp.getKey()
+                                Toast.makeText(getContext(), "toDo: Myst add record to storage!!: " , Toast.LENGTH_SHORT).show();
+                                //notifyItemRemoved(position);
+                                //list.remove(emp);
+                                //}).addOnFailureListener(er->
+                                //{
+                                //    Toast.makeText(getContext(), ""+er.getMessage(), Toast.LENGTH_SHORT).show();
+                                //});
+
+                                break;
+                        }
+                        return false;
+                    });
+                    popupMenu.show();
+                });
+
+
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+            }
+
+        };
+        recyclerView_list.setAdapter(firebaseRecyclerAdapter);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView_list);
 
         return list_view;
     }
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Product>()
-                .setQuery(ref,Product.class)
-                .build();
+        firebaseRecyclerAdapter.startListening(); // this belong to // out in onCreateView
+    }
 
-        FirebaseRecyclerAdapter<Product, ProductViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Product, ProductViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Product model) {
+    //ToDo: change ongoing!!
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
 
-                final String productIds = getRef(position).getKey();
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            if(direction == 8){
+                Toast.makeText(getActivity(), "Added to Storage List" , Toast.LENGTH_LONG).show();
+            }
+            if(direction == 4){
+                Toast.makeText(getActivity(), "Deleted Item from Shopping List", Toast.LENGTH_LONG).show();
+            }
 
-                ref.child(productIds).addListenerForSingleValueEvent(new ValueEventListener() {
+            List product_List = new ArrayList();
+
+            DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("Family").
+                    child("List").
+                    child("ShoppingList").child("MAIN").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+            if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
+                ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            //Toast.makeText( getActivity(), "Successfully Query", Toast.LENGTH_LONG).show();
-                            String product_name = snapshot.getValue(Product.class).getName();
-                            //int product_amount = snapshot.getValue(Product.class).getAmount();
+                    public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                        if (dataSnapshot.isSuccessful()) {
+                            //ToDo: Refactoring needed!!
 
-                            holder.product_name.setText(product_name);
-                            //holder.product_amount.setText(product_amount);
+                            if(direction == 8) {
+
+                                /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
+                                for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
+                                    product_List.add(new Product(
+                                            child.getValue(Product.class).getBarcode(),
+                                            child.getValue(Product.class).getName(),
+                                            child.getValue(Product.class).getCompany(),
+                                            child.getValue(Product.class).getAmount(),
+                                            child.getValue(Product.class).getStorage()
+                                    ));
+                                    break;
+                                }
+                                String id = database.getReference().push().getKey();
+                                Product product = new Product(((Product) product_List.get(0)).getBarcode(),
+                                        ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
+                                        ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
+
+                                /** N = Norway, Here we must add more list's as a variable  */
+                                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
+                                        .child("Refrigerator").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    //Toast.makeText(getActivity(), "Product moved to cold -4 list", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                                Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
+                                            }
+                                        });
+                                refquery.getRef().removeValue();
+                            }
+                            if(direction == 4){
+                                refquery.getRef().removeValue();
+                            }
                         }
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
                 });
+            }else{
+                //Toast.makeText( getActivity(), "Swipe empty call", Toast.LENGTH_LONG).show();
             }
 
-            @NonNull
-            @Override
-            public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_fragment_card_layout, parent,false);
-                ProductViewHolder productViewHolder = new ProductViewHolder(view);
-                return productViewHolder;
-
-            }
-        };
-
-        recyclerView_list.setAdapter(adapter);
-        adapter.startListening();
-    }
-
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
-
-        TextView product_name, product_amount;
 
 
-        public ProductViewHolder(@NonNull View itemView) {
-            super(itemView);
+            recyclerView_list.getAdapter().notifyDataSetChanged();
 
-            product_name = itemView.findViewById(R.id.txt_name);
-            //product_amount = itemView.findViewById(R.id.txt_position);
         }
-    }
+    };
+
+
 }

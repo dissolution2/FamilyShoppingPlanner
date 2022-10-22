@@ -1,4 +1,4 @@
-package com.fwa.app.testingViews.testingViews.fragment.storage;
+package com.fwa.app.testingViews.testingViews.fragment;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.fwa.app.familyshoppingplanner.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link button_three_fragment_storage#newInstance} factory method to
+ * Use the {@link button_menu_fragment_add_new_product#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class button_three_fragment_storage extends Fragment {
+public class button_menu_fragment_add_new_product extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class button_three_fragment_storage extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public button_three_fragment_storage() {
+    public button_menu_fragment_add_new_product() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class button_three_fragment_storage extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment buttonThreeFragmentCall.
+     * @return A new instance of fragment button_menu_fragment_add_new_product.
      */
     // TODO: Rename and change types and number of parameters
-    public static button_three_fragment_storage newInstance(String param1, String param2) {
-        button_three_fragment_storage fragment = new button_three_fragment_storage();
+    public static button_menu_fragment_add_new_product newInstance(String param1, String param2) {
+        button_menu_fragment_add_new_product fragment = new button_menu_fragment_add_new_product();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class button_three_fragment_storage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_button_three_storage, container, false);
+        return inflater.inflate(R.layout.fragment_button_menu_add_new_product, container, false);
     }
 }

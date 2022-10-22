@@ -160,7 +160,7 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
     // test 01 - general test - How to !!!  - Successful got doc exist -
     private void getDocumentOne_test(){
 
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("database").document("1234567");
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("main_product_db").document("z5Blg8RNWFUd3X1dKv6q");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -193,22 +193,24 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
     // Firebase Cloud
     private void getDocumentTwo_test() {
 
-        firebase_FireStore_Product_DB.collection("database") //path)
+        firebase_FireStore_Product_DB.collection("main_product_db") //path)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task_one) {
                         if (task_one.isSuccessful()) {
-                            //Toast.makeText(Main_t_manualy_add_products_to_db.this, "Successful to get data!! query one", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Main_t_manualy_add_products_to_db.this, "Successful main_product_db", Toast.LENGTH_LONG).show();
 
                             /** First query Successful get now user_db */
-                            firebase_FireStore_User_add_to_DB.collection("user_add_to_db").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            firebase_FireStore_User_add_to_DB.collection("user_add_to_main_db").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task_two) {
                                     if (task_two.isSuccessful()) {
                                         /** test if result from task_one and task_two Products match up with bareCode !!*/
 
-                                        //query_FireCloud_Main_DB_and_User_DB_Check(task_one, task_two);
+                                        Toast.makeText(Main_t_manualy_add_products_to_db.this, "Successful user_add_to_db", Toast.LENGTH_LONG).show();
+
+                                        query_FireCloud_Main_DB_and_User_DB_Check(task_one, task_two);
 
                                     } else {
                                         Log.w("TAG", "Error getting documents.", task_two.getException());
@@ -225,7 +227,30 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
 
     }
 
+    private void getDocumentOne_test_string_search(){
 
+        firebase_FireStore_Product_DB.collection("main_product_db") //path)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task_one) {
+                        if (task_one.isSuccessful()) {
+                            //Toast.makeText(Main_t_manualy_add_products_to_db.this, "Successful main_product_db", Toast.LENGTH_LONG).show();
+
+                            Log.d("TAG DB", "searching for Milk");
+                            for (QueryDocumentSnapshot document_one : task_one.getResult()) {
+
+                                if(document_one.get("name").toString().contains("M") ){ // .equals("Melk")
+                                    Log.d("TAG DB", document_one.getId() + " => " + document_one.getData());
+                                }
+                            }
+                        } else {
+                            Log.w("TAG", "Error getting documents.", task_one.getException());
+                            //Toast.makeText(Main_t_manualy_add_products_to_db.this, "test_two Error to get data!!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
 
 
     public void query_FireCloud_Main_DB_and_User_DB_Check(Task<QuerySnapshot> task_one, Task<QuerySnapshot> task_two){
@@ -238,6 +263,7 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
 
 
                 if(document_one.getId().equals(document_two.getId()) ){
+                    Log.d("TAG", "Check on to Doc are ==");
                     Log.d("TAG", "Doc 123.. are == to: " + document_one.getId() + " => " + document_one.getData());
                     Log.d("TAG", "Doc 123.. are == to: " + document_two.getId() + " => " + document_two.getData());
 
@@ -246,6 +272,14 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
                     // sett the data to a HashMap<> if we want the data !!!
                     //editTextAddProductName.setText(document_one.getData().getClass().getName());
                     //productAmount.setText("");
+                }else{
+                    Log.d("TAG", "Check on to Doc are !=" + document_one.get("barecode"));
+                }
+
+                if(document_one.get("barecode").equals(document_two.get("barecode")) ){
+                    Log.d("TAG", "Check on to Doc are ==");
+                    Log.d("TAG", "Doc 123.. are == to: " + document_one.getId() + " => " + document_one.getData());
+                    Log.d("TAG", "Doc 123.. are == to: " + document_two.getId() + " => " + document_two.getData());
                 }
 
             }
@@ -263,8 +297,10 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
                 break;
             case R.id.check_CurrentUserBtn:
                 getCurrentUser();
-                //getDocumentOne_test();
-                //getDocumentTwo_test();
+                /** Cound FireStore query test main_product_db & user_add_to_main_db && == Check !! ok. */
+                //getDocumentOne_test(); // ok
+                //getDocumentTwo_test(); // ok
+                getDocumentOne_test_string_search();
                 break;
         }
     }

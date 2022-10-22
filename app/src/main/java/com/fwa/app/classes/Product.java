@@ -1,9 +1,13 @@
 package com.fwa.app.classes;
 
+import com.google.firebase.database.Exclude;
+
 public class Product {
 
-    public String name, barcode, company, storage;//, productAmount;
-    public int amount;
+    @Exclude
+    private String key;
+    private String name, barcode, company, storage;//, productAmount;
+    private int amount;
 
 
     public Product(){}
@@ -22,5 +26,13 @@ public class Product {
     public String getName(){ return this.name; }
     public int getAmount(){ return this.amount; }
     public String getStorage(){ return this.storage; }
+    public String getKey()
+    {
+        return key;
+    }
+    public void setKey(String key)
+    {
+        this.key = key;
+    }
 
 }

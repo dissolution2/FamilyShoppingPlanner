@@ -20,6 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Main Shopping"
+                android:layout_margin="2dp"
                 android:textColor="#FAF7F7" />
 
             <Button
@@ -28,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Weekend"
+                android:layout_margin="2dp"
                 android:textColor="#F8F4F4" />
 
             <Button
@@ -36,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Div "
+                android:layout_margin="2dp"
                 android:textColor="#F4F1F1" />
         </LinearLayout>
     </LinearLayout>

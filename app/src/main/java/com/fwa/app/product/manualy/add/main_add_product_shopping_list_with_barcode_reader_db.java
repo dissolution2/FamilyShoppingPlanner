@@ -1,6 +1,7 @@
 package com.fwa.app.product.manualy.add;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -71,6 +74,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
          //readData(list -> Log.d("TAG", ": " + ((Product)list.get(0)).getProductName() )); simpler formatted as output string.
         */
     }
+//ToDo: Read up on it use it with out lib barcode Reader ActivityResultLauncher
 
     /** User input by barcode : Where is the user !! Check so we can reuse this!!
      * 1. Scan Barcode: add product to shopping list

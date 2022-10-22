@@ -2,13 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shopping_cart"
-    tools:context="com.fwa.app.testingViews.testingViews.fragment.shopping.button_one_fragment_shopping">
+    android:background="@drawable/detective_1424831_640"
+    tools:context="com.fwa.app.testingViews.testingViews.fragment.search_query_fragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/my_search_string"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +18,7 @@
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_one_shopping"
+            android:id="@+id/search_list_recycle"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

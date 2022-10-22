@@ -47,11 +47,11 @@
                 android:textColor="#FAF6F6" />
 
             <ImageButton
-                android:id="@+id/imageBtnAddProducts"
+                android:id="@+id/imageButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_input_add" />
+                app:srcCompat="@android:drawable/ic_menu_add" />
 
             <ImageButton
                 android:id="@+id/imageBtnOption"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_menu_preferences" />
+                app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
         </LinearLayout>
 
     </LinearLayout>
@@ -67,15 +67,56 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewButton_menu"
-            android:name="com.fwa.app.testingViews.testingViews.fragment.button_menu_fragment_option_product"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/text_main_info_one"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_button_menu_option" />
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="Cold -4" />
 
+        <TextView
+            android:id="@+id/text_main_info_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="Main Shopping List" />
+
+        <TextView
+            android:id="@+id/text_main_info_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="Main Shopping List" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerPadding="4dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAddProductBareCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="add with barcode"
+            android:textColor="#F3EDED" />
+
+        <SearchView
+            android:id="@+id/search_product"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:queryHint="Add products" >
+
+        </SearchView>
     </LinearLayout>
 
     <LinearLayout
@@ -94,14 +135,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:dividerPadding="4dp"
+        android:orientation="horizontal">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewInfo_main_view"
-            android:name="com.fwa.app.testingViews.testingViews.fragment.swipe_info_fragment_main"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txt_viw_swipe_left"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_swipe_info_main" />
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="&lt;&lt;--  DELETE" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="SHOPPING MAIN  --&gt;&gt;" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -116,6 +168,24 @@
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_button_one_storage" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            android:clickable="true"
+            android:contentDescription="Menu"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:srcCompat="@android:drawable/ic_input_add" />
+    </LinearLayout>
+
 
 
 </LinearLayout>

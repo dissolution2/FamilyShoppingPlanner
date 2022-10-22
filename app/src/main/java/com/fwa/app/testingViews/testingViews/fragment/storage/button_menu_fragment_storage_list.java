@@ -75,13 +75,11 @@ public class button_menu_fragment_storage_list extends Fragment {
         FragmentManager fragmentManager = getParentFragmentManager();
         //FragmentManager fragmentManager = getFragmentManager();
 
-
-
         btnOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, button_one_fragment_storage.class, null ).
+                        .replace(R.id.fragmentContainerViewList, button_one_fragment_storage.class, null,"storage_one" ).
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
@@ -92,7 +90,7 @@ public class button_menu_fragment_storage_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, button_two_fragment_storage.class, null ).
+                        .replace(R.id.fragmentContainerViewList, button_two_fragment_storage.class, null,"storage_two" ).
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
@@ -103,7 +101,7 @@ public class button_menu_fragment_storage_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView, button_three_fragment_storage.class, null ).
+                        .replace(R.id.fragmentContainerViewList, button_three_fragment_storage.class, null,"storage_three" ).
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
