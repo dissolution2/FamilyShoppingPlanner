@@ -229,14 +229,17 @@ public class button_two_fragment_shopping extends Fragment {
 
                                 /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
                                 for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
-                                    product_List.add(new Product(
-                                            child.getValue(Product.class).getBarcode(),
-                                            child.getValue(Product.class).getName(),
-                                            child.getValue(Product.class).getCompany(),
-                                            child.getValue(Product.class).getAmount(),
-                                            child.getValue(Product.class).getStorage()
-                                    ));
-                                    break;
+
+                                    if(child.getKey().equals(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey())) {
+                                        product_List.add(new Product(
+                                                child.getValue(Product.class).getBarcode(),
+                                                child.getValue(Product.class).getName(),
+                                                child.getValue(Product.class).getCompany(),
+                                                child.getValue(Product.class).getAmount(),
+                                                child.getValue(Product.class).getStorage()
+                                        ));
+                                        break;
+                                    }
                                 }
                                 String id = database.getReference().push().getKey();
                                 Product product = new Product(((Product) product_List.get(0)).getBarcode(),
@@ -260,6 +263,7 @@ public class button_two_fragment_shopping extends Fragment {
                                                 Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
                                             }
                                         });
+
                                 refquery.getRef().removeValue();
                             }
                             if(direction == 4){
