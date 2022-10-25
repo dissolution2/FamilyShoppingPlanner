@@ -4,31 +4,44 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.fwa.app.adapters.ExampleAdapter;
+import com.fwa.app.classes.ExampleItem;
 import com.fwa.app.classes.Product;
 import com.fwa.app.classes.ProductVH;
 import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.testingViews.testingViews.Employee.Employee;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +55,23 @@ public class search_query_fragment extends Fragment {
 
     private View list_view;
     private RecyclerView recyclerView_list;
+    ArrayList<Product> list = new ArrayList<>();
 
     FirebaseRecyclerAdapter firebaseRecyclerAdapter;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");;
     private DatabaseReference ref;
     private FirebaseAuth mAuth;
+
+    private ArrayList<Product> query_product_list = new ArrayList<>();
+
+    String search_string_data = "";
+    int counter=0;
+
+
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,6 +119,9 @@ public class search_query_fragment extends Fragment {
         // Inflate the layout for this fragment
         list_view = inflater.inflate(R.layout.fragment_search_query_fragment, container, false);
 
+        setHasOptionsMenu(true);
+
+
         mAuth = FirebaseAuth.getInstance();
 
         //progressBar = (ProgressBar) list_view.findViewById(R.id.progressBar2);
@@ -102,11 +129,12 @@ public class search_query_fragment extends Fragment {
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
 
         /** Get search value from main fragment to do the actual searching here */
-        getParentFragmentManager().setFragmentResultListener("data_sendt", this, new FragmentResultListener() {
+        getParentFragmentManager().setFragmentResultListener("data_send", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                String data = result.getString("search_value");
-                Toast.makeText(getActivity(), "Search txt is: " + data.toString() , Toast.LENGTH_LONG).show();
+                //String data = result.getString("search_value");
+                search_string_data = result.getString("search_value");
+                Toast.makeText(getActivity(), "Search txt is: " + search_string_data , Toast.LENGTH_LONG).show();
             }
         });
         /** Get search value from main fragment to do the actual searching here */
@@ -120,22 +148,35 @@ public class search_query_fragment extends Fragment {
          *
          **/
 
+
+        // Query first to check how many records, then use that to check every records with in the recycle option if records = count, and no result send empty
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator");
+        //CollectionReference collectionReference = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator");
+        Query query = ordersRef.child("name").equalTo("sjokolade"); //.orderByChild("name").startAt("melk").endAt("melk"+"\ufaff");//.orderByChild("name").equalTo("melk","name");//.endAt("sjokolade"+"\ufaff"); //.equals(""); // .orderByChild("uid").equalTo(uid);//.endAt("Melk","name");
+        //.orderByChild("Username"). But i want the Mike's datas, so i add .equalTo("Mike")
+        //Query query = ordersRef
+/*
         ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
-                child("Refrigerator");
-
+                child("Refrigerator").orderByChild("name").startAt("melk").endAt("melk"+"\ufaff"); //.endAt("melk","name");
+*/
         // this works with delete on option
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
-                        .setQuery(ref, new SnapshotParser<Product>() {
+                        .setQuery(query, new SnapshotParser<Product>() { // ref or query, ... etc
                             @NonNull
                             @Override
                             public Product parseSnapshot(@NonNull DataSnapshot snapshot) {
+
+                                Log.d("TAG Query","snapshot: " + snapshot.getChildrenCount());
+
                                 Product emp = snapshot.getValue(Product.class);
                                 emp.setKey(snapshot.getKey());
                                 return emp;
-                            }
+                                }
                         }).build();
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter(options) {
             @NonNull
@@ -145,10 +186,15 @@ public class search_query_fragment extends Fragment {
                 return new ProductVH(view);
             }
 
+
+
             @Override
-            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
+            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model ) {
                 ProductVH vh = (ProductVH) holder;
                 Product emp = (Product) model;
+
+
+
 
                 vh.txt_name.setText(emp.getName());
                 //vh.txt_position.setText(emp.getPosition());
@@ -166,12 +212,10 @@ public class search_query_fragment extends Fragment {
                                 //startActivity(intent);
                                 break;
                             case R.id.menu_remove:
-
                                 DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .child("Family").
                                         child("List").
                                         child("Refrigerator").child(emp.getKey()); //.child("N");
-
                                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
@@ -180,26 +224,13 @@ public class search_query_fragment extends Fragment {
                                         }
                                     }
                                 });
-
-                                //DAOEmployee dao=new DAOEmployee();
-                                //dao.remove(emp.getKey()).addOnSuccessListener(suc->
-                                //{
                                 Toast.makeText(getContext(), "toDo: move Record shoppinglist", Toast.LENGTH_SHORT).show();
-                                //notifyItemRemoved(position);
-                                //list.remove(emp);
-                                //}).addOnFailureListener(er->
-                                //{
-                                //    Toast.makeText(getContext(), ""+er.getMessage(), Toast.LENGTH_SHORT).show();
-                                //});
-
                                 break;
                         }
                         return false;
                     });
                     popupMenu.show();
                 });
-
-
             }
 
             @Override
@@ -219,6 +250,120 @@ public class search_query_fragment extends Fragment {
             firebaseRecyclerAdapter.startListening();
         }
 
+        @Override
+        public void onStop()
+        {
+            super.onStop();
+            firebaseRecyclerAdapter.stopListening();
+        }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+        final MenuItem search = menu.findItem(R.id.search_list_recycle);
+        final SearchView searchView = (SearchView) search.getActionView();
+
+        searchView.setQueryHint("Search Freezer");
+        if(searchView != null){
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    fbsearch(s);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
+    }
+
+
+
+
+
+
+
+
+    private void fbsearch (String searchText) {
+        /*
+        String pquery = searchText.toLowerCase();
+        Query sQuery = mDatabase.orderByChild("pname").equalTo(pquery);
+        FirebaseRecyclerOptions<Product> options = new FirebaseRecyclerOptions.Builder<Product>()
+                .setQuery(sQuery, Product.class).build();
+
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter(options) {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_fragment_card_layout, parent, false);
+                return new ProductVH(view);
+            }
+
+
+            @Override
+            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
+                ProductVH vh = (ProductVH) holder;
+                Product emp = (Product) model;
+            }
+        };
+
+         */
+    }
+
+
+ /*
+
+
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Product, ProjViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull ProjViewHolder holder, int position, @NonNull project model) {
+                pbar.setVisibility(View.GONE);
+                String proj_key = getRef(position).getKey();
+                holder.prname.setText(model.getPname());
+                holder.prlocation.setText(model.getPlocation());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent detactivity = new Intent(HomeActivity.this, InfoActivity.class);
+                        detactivity.putExtra("ProjID", proj_key);
+                        startActivity(detactivity);
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public ProjViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.proj_row, parent, false);
+                ProjViewHolder vh = new ProjViewHolder(view);
+                return vh;
+            }
+        };
+
+        PList.setAdapter(FBRA);
+        FBRA.startListening();
+    }
+
+    public class ProjViewHolder extends RecyclerView.ViewHolder {
+        TextView prname, prlocation, prservice, prvalue, practual;
+        public ProjViewHolder(@NonNull View itemView) {
+            super(itemView);
+            prname = itemView.findViewById(R.id.FPName);
+            prlocation = itemView.findViewById(R.id.FPLocation);
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FBRA.stopListening();
+    }
+    }
+*/
+
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -235,7 +380,6 @@ public class search_query_fragment extends Fragment {
                 if(direction == 4){
                     Toast.makeText(getActivity(), "Deleted Item from Cold -4", Toast.LENGTH_LONG).show();
                 }
-
 
                 List product_List = new ArrayList();
 
@@ -254,14 +398,20 @@ public class search_query_fragment extends Fragment {
 
                                     /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
                                     for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
-                                        product_List.add(new Product(
-                                                child.getValue(Product.class).getBarcode(),
-                                                child.getValue(Product.class).getName(),
-                                                child.getValue(Product.class).getCompany(),
-                                                child.getValue(Product.class).getAmount(),
-                                                child.getValue(Product.class).getStorage()
-                                        ));
-                                        break;
+
+
+
+                                        //if(child.getValue().toString().toLowerCase().contains( firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().get().getResult().getValue().toString() )) {
+
+                                            product_List.add(new Product(
+                                                    child.getValue(Product.class).getBarcode(),
+                                                    child.getValue(Product.class).getName(),
+                                                    child.getValue(Product.class).getCompany(),
+                                                    child.getValue(Product.class).getAmount(),
+                                                    child.getValue(Product.class).getStorage()
+                                            ));
+                                            break;
+                                        //}
                                     }
                                     String id = database.getReference().push().getKey();
                                     Product product = new Product(((Product) product_List.get(0)).getBarcode(),
@@ -291,20 +441,30 @@ public class search_query_fragment extends Fragment {
                                 }
                                 if(direction == 4){
                                     //refquery.getRef().removeValue();
-                                    recyclerView_list.removeViewAt(viewHolder.getBindingAdapterPosition());
-                                    recyclerView_list.getAdapter().notifyDataSetChanged();
+                                    //recyclerView_list.removeViewAt(viewHolder.getBindingAdapterPosition());
+                                    //recyclerView_list.getAdapter().notifyItemRemoved(viewHolder.getBindingAdapterPosition());
+                                    //recyclerView_list.getAdapter().notifyDataSetChanged();
 
+                                    Log.d("TAG Test","firebase test: " + firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
+                                    recyclerView_list.removeViewAt(0);//firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
+
+                                    firebaseRecyclerAdapter.getSnapshots().remove(0);
+                                    recyclerView_list.getAdapter().notifyDataSetChanged();
                                 }
                             }
                         }
                     });
+
+                    //Log.d("TAG Test","firebase test: " + firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
+                    //recyclerView_list.removeViewAt(0);//firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
+                    //recyclerView_list.getAdapter().notifyDataSetChanged();
                 }else{
                     //Toast.makeText( getActivity(), "Swipe empty call", Toast.LENGTH_LONG).show();
                 }
 
-
-                recyclerView_list.removeViewAt(viewHolder.getBindingAdapterPosition());
-                recyclerView_list.getAdapter().notifyDataSetChanged();
+                //product_List.remove(product_List.get(viewHolder.getBindingAdapterPosition()));
+                //recyclerView_list.removeViewAt( viewHolder.getBindingAdapterPosition());
+                //recyclerView_list.getAdapter().notifyDataSetChanged();
 
             }
         };

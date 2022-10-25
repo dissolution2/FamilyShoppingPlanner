@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -240,6 +241,9 @@ public class button_one_fragment_shopping extends Fragment {
 
                                 /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
                                 for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
+                                    Log.d("TAG Key Shop", "child key: "  + child.getKey() );
+                                    Log.d("TAG Key Shop", "firebase: "  + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+
 
                                     if(child.getKey().equals(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey())) {
 
@@ -250,21 +254,43 @@ public class button_one_fragment_shopping extends Fragment {
                                                 child.getValue(Product.class).getAmount(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
+                                        Log.d("TAG Key Shop", "key we tak out: "  + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+                                        Log.d("TAG Key Shop", "firebase with recycler List post: "  + firebaseRecyclerAdapter.getRef(recyclerView_list.getChildLayoutPosition(viewHolder.itemView)));
+
+                                        Log.d("TAG ViewHolder Pos Shop","int " + recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+
                                         break;
                                     }
                                 }
+
+
                                 String id = database.getReference().push().getKey();
                                 Product product = new Product(((Product) product_List.get(0)).getBarcode(),
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
                                         ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
 
-                                /** N = Norway, Here we must add more list's as a variable  */
+
+                                String storage_container_to_use = "";
+                                switch ( ((Product) product_List.get(0)).getStorage().toString() ){
+                                    case "c":
+                                        storage_container_to_use = "Refrigerator";
+                                        break;
+                                    case "f":
+                                        storage_container_to_use = "Freezer";
+                                        break;
+                                    case "d":
+                                        storage_container_to_use = "DryStorage";
+                                        break;
+                                }
+                                /** save product to storage list = there storage criteria  */
                                 database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                        .child("Refrigerator").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        .child(storage_container_to_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     //Toast.makeText(getActivity(), "Product moved to cold -4 list", Toast.LENGTH_LONG).show();
+
                                                 }
                                             }
                                         })
@@ -281,10 +307,6 @@ public class button_one_fragment_shopping extends Fragment {
                                 refquery.getRef().removeValue();
                             }
                         }
-                        /** added product list clear oll so here */
-                        if(dataSnapshot.isComplete()){
-                            //product_List.clear();
-                        }
                     }
                 });
             }else{
@@ -293,7 +315,7 @@ public class button_one_fragment_shopping extends Fragment {
 
 
 
-            recyclerView_list.getAdapter().notifyDataSetChanged();
+            //recyclerView_list.getAdapter().notifyDataSetChanged();
 
         }
     };

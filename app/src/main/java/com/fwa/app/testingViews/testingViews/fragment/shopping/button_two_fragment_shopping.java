@@ -238,6 +238,7 @@ public class button_two_fragment_shopping extends Fragment {
                                                 child.getValue(Product.class).getAmount(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
+                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
                                         break;
                                     }
                                 }
@@ -246,9 +247,21 @@ public class button_two_fragment_shopping extends Fragment {
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
                                         ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
 
-                                /** N = Norway, Here we must add more list's as a variable  */
+                                String storage_container_to_use = "";
+                                switch ( ((Product) product_List.get(0)).getStorage().toString() ){
+                                    case "c":
+                                        storage_container_to_use = "Refrigerator";
+                                        break;
+                                    case "f":
+                                        storage_container_to_use = "Freezer";
+                                        break;
+                                    case "d":
+                                        storage_container_to_use = "DryStorage";
+                                        break;
+                                }
+                                /** save product to storage list = there storage criteria  */
                                 database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                        .child("Freezer").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        .child(storage_container_to_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
@@ -278,7 +291,7 @@ public class button_two_fragment_shopping extends Fragment {
 
 
 
-            recyclerView_list.getAdapter().notifyDataSetChanged();
+            //recyclerView_list.getAdapter().notifyDataSetChanged();
 
         }
     };

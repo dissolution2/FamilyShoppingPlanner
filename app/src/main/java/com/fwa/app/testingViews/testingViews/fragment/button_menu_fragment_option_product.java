@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.fwa.app.classes.Product;
@@ -93,6 +94,37 @@ public class button_menu_fragment_option_product extends Fragment {
         // Inflate the layout for this fragment
         list_view = inflater.inflate(R.layout.fragment_button_menu_option, container, false);
 
+        /** SearchView take the query send it to search_query_fragment
+         *  When search key is used, call parentFragmentManager to use fragmentContainerViewList to do the search in that fragment
+         *  search_query_fragment.java / fragment_search_query_fragment.xml
+         * **/
+        SearchView option_menu_search_listed_products = list_view.findViewById(R.id.option_menu_search_listed_products);
+
+        //getParentFragmentManager().beginTransaction().add(R.id.fragmentContainerViewList, new search_query_fragment()).commit();
+
+        option_menu_search_listed_products.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                Bundle result = new Bundle();
+                result.putString("search_value", option_menu_search_listed_products.getQuery().toString());
+                getParentFragmentManager().setFragmentResult("data_send",result);
+
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerViewList, search_query_fragment.class,null, "search_list_recycle")
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                return false;
+            }
+        });
 
         //ToDo:: this is not working big bug - if one press main option button to get the menu of option and then first option_change_user_list goes into a loop write -very bad!!
         //ToDo: Query set user db default shoppingList in use here Set Option with inn UsersGroup - userId - Option for that user !!

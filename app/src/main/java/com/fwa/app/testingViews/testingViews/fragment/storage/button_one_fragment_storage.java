@@ -385,17 +385,18 @@ public class button_one_fragment_storage extends Fragment {
                     public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
                         if (dataSnapshot.isSuccessful()) {
                             //ToDo: Refactoring needed!!
-                            Log.e("query begin", "getting object key to move");
+                            //Log.e("query begin", "getting object key to move");
                             if(direction == 8) {
+
+
 
                                 /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
                                 for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
+                                    Log.d("TAG Key Stor", "child key: "  + child.getKey() );
+                                    Log.d("TAG Key Stor", "firebase: "  + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
 
-                                    //Log.d("Keys", "keys: " + child.getKey());
-// the change is if test on keyPos = keyProd == be for we sett the object product removal
+
                                     if(child.getKey().equals(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey())){
-                                        //Log.d("Compare key", "Key's are fireKey: " + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey() +
-                                        //        " Object Key: " + child.getKey() );
 
                                         product_List.add(new Product(
                                                 child.getValue(Product.class).getBarcode(),
@@ -404,151 +405,67 @@ public class button_one_fragment_storage extends Fragment {
                                                 child.getValue(Product.class).getAmount(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
+                                    Log.d("TAG Key Stor", "key we tak out: "  + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+                                    Log.d("TAG Key Stor", "firebase with recycler List post: "  + firebaseRecyclerAdapter.getRef(recyclerView_list.getChildLayoutPosition(viewHolder.itemView)));
+
+
+                                        Log.d("TAG ViewHolder Pos Stor","int " + recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+
                                         break;
-                                    }
+                                   }
 
                                     //Log.d("data.getRef key", "Key is: " + database.getReference().getKey() );
-
-                                    //Log.d("DataSnap ref_key","Barcode : " + child.getValue(Product.class).getBarcode() +
-                                    //        "\n Name: " + child.getValue(Product.class).getName() +
-                                    //        "\n Company: " + child.getValue(Product.class).getCompany() +
-                                    //        "\n Amount: " + child.getValue(Product.class).getAmount() +
-                                    //        "\n Storage: " + child.getValue(Product.class).getStorage() +
-                                    //
-                                    //        "\n fireBase key: " + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey()
-                                    //);
-
 /*
-                                    product_List.add(new Product(
-                                            child.getValue(Product.class).getBarcode(),
-                                            child.getValue(Product.class).getName(),
-                                            child.getValue(Product.class).getCompany(),
-                                            child.getValue(Product.class).getAmount(),
-                                            child.getValue(Product.class).getStorage()
-                                    ));
+                                    Log.d("DataSnap ref_key","Barcode : " + child.getValue(Product.class).getBarcode() +
+                                            "\n Name: " + child.getValue(Product.class).getName() +
+                                            "\n Company: " + child.getValue(Product.class).getCompany() +
+                                            "\n Amount: " + child.getValue(Product.class).getAmount() +
+                                            "\n Storage: " + child.getValue(Product.class).getStorage() +
 
- */
-                                    //break;
+                                            "\n fireBase key: " + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey()
+                                    );
+*/
+
                                 }
+
                                 String id = database.getReference().push().getKey(); // makes a new key on the move
                                 //String id = firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey();
                                 Product product = new Product(((Product) product_List.get(0)).getBarcode(),
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
                                         ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
 
-/** Query list in use !! first !! */
-/** N = Norway, Here we must add more list's as a variable  */
-/*** query on shopping list in use - where to move product to { from cold +4 } */
-/*
-                                DatabaseReference ref_shopping_list_in_use = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .child("Family").
-                                        child("List").child("Option");
-                                ref_shopping_list_in_use.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
-                                                if (dataSnapshot.isSuccessful()) {
-
-                                                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
-                                                        user_shopping_list_in_use = child.getValue().toString();
-                                                        //Toast.makeText(getActivity(), "DB get List " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
-                                                    }
-                                                }
-
- */
-/** needed to have user shopping list, not sure if the dataSnapshot was finished  so added isCompleted be for we added to the user shopping list*/
-/** might have created a bug of duplicated product, but it tok 4 tries !!
- * to product in cold +4 - moved one to weekend, after moving it back and forth
- * it duplicated the product that was left in the storage of cold +4, reverting back to see !! */
-                                                //if (dataSnapshot.isComplete()) {
-                                //product.setKey(id);
-                                //Log.d("Product","Barcode : " + product.getBarcode() +
-                                //        "\n Name: " + product.getName() +
-                                //        "\n Company: " + product.getCompany() +
-                                //        "\n Amount: " + product.getAmount() +
-                                //        "\n Storage: " + product.getStorage() +
-//
-//                                       "\n product key: " + product.getKey()
-//                                );
 
                                 database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                                            .child("ShoppingList").child(user_shopping_list_in_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    if (task.isSuccessful()) {
-                                                                        Log.e("query begin", "Product moved/saved to shopping list");
-                                                                        Toast.makeText(getActivity(), "Product moved/saved to shopping list: " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
-                                                                    }
-                                                                    if(task.isComplete()) {
-                                                                        Log.e("query end", "Product moved/saved to shopping list");
-                                                                    }
-
-                                                                }
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                                                                    Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
-                                                                }
-                                                            });
-
-                                                 //   }
-                                                //if(dataSnapshot.isComplete()){
-                                                //    Log.e("query end", "Product moved to shopping list");
-                                                //}
- /*
+                                    .child("ShoppingList").child(user_shopping_list_in_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.e("query begin", "Product moved/saved to shopping list");
+                                                Toast.makeText(getActivity(), "Product moved/saved to shopping list: " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
+                                            }
+                                            if(task.isComplete()) {
+                                                Log.e("query end", "Product moved/saved to shopping list");
                                             }
 
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                                                Log.e("EXCEPTION", "Failed to get shopping list: " + e.getMessage());
-                                            }
-                                        });
-*/
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                            Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
+                                        }
+                                    });
 
-
-
-
-                                //if(!user_shopping_list_in_use.equals("MAIN") || !user_shopping_list_in_use.equals("WEEKEND") || !user_shopping_list_in_use.equals("DIV")   ){
-                                //    user_shopping_list_in_use = "MAIN";
-                                //    Toast.makeText(getActivity(), "LIST IS BAD!! SETT TO MAIN", Toast.LENGTH_LONG).show();
-                                //}
-
-
-
-/** Write the product to shopping list /- be for the duplicated product */
-/*
-                                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                        .child("ShoppingList").child("MAIN").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(getActivity(), "Product moved to shopping list: "+ user_shopping_list_in_use, Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                                                Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
-                                            }
-                                        });
-*/
-
+                                /** removers query key and data from the realtime db **/
                                 refquery.getRef().removeValue();
+
                             }
                             if(direction == 4){
+                                /** removers query key and data from the realtime db **/
                                 refquery.getRef().removeValue();
                             }
-                        }
-                        /** added to se if the product still get duplicated when moving ??*/
-                        if(dataSnapshot.isComplete()){
-                            //product_List.clear();
-                            Log.e("query end", "getting object key to move: product_list.clear");
                         }
                     }
                 });
@@ -558,7 +475,7 @@ public class button_one_fragment_storage extends Fragment {
 
 
 
-            recyclerView_list.getAdapter().notifyDataSetChanged();
+            //recyclerView_list.getAdapter().notifyDataSetChanged();
 
         }
     };

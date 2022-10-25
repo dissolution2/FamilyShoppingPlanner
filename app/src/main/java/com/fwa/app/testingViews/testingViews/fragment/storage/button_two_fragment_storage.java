@@ -300,6 +300,7 @@ public class button_two_fragment_storage extends Fragment {
                                                 child.getValue(Product.class).getAmount(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
+                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
                                         break;
                                     }
                                 }
@@ -341,7 +342,7 @@ public class button_two_fragment_storage extends Fragment {
 
 
 
-            recyclerView_list.getAdapter().notifyDataSetChanged();
+            //recyclerView_list.getAdapter().notifyDataSetChanged();
 
         }
     };

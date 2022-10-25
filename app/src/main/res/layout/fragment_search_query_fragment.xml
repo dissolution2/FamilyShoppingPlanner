@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/detective_1424831_640"
+    android:background="@drawable/back_ground_search_detective"
     tools:context="com.fwa.app.testingViews.testingViews.fragment.search_query_fragment">
 
     <!-- TODO: Update blank fragment layout -->
