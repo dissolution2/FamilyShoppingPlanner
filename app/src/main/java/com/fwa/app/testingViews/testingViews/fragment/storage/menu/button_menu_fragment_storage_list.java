@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.testingViews.testingViews.fragment.button_menu_fragment_option_product;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,22 +79,41 @@ public class button_menu_fragment_storage_list extends Fragment {
         btnOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /**   call on replace the fragments on there container's and we send string "storage to use on" to Search product_option_menu with **/
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerViewList, button_one_fragment_storage.newInstance("",""),null)
+                        .replace(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null) //add(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null)
+                        .commit();
+
+
+                /*
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainerViewList, button_one_fragment_storage.class, null,"storage_one" ).
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
+
+                 */
             }
         });
 
         btnTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                /**   call on replace the fragments on there container's and we send string "storage to use on" to Search product_option_menu with **/
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerViewList, button_two_fragment_storage.newInstance("",""),null)
+                        .replace(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Freezer",""),null) //add(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null)
+                        .commit();
+                /*
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainerViewList, button_two_fragment_storage.class, null,"storage_two" ).
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
+
+                 */
             }
         });
 
