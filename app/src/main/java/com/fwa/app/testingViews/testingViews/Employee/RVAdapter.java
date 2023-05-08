@@ -56,7 +56,7 @@ public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             {
                 switch (item.getItemId())
                 {
-                    case R.id.menu_edit:
+                    case R.id.add_fav:
                         Intent intent=new Intent(context,EmployeeMainActivity.class);
                         intent.putExtra("EDIT",emp);
                         context.startActivity(intent);

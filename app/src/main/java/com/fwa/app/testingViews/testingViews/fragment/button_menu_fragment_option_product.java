@@ -2,9 +2,8 @@ package com.fwa.app.testingViews.testingViews.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,25 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import com.fwa.app.classes.Product;
 import com.fwa.app.database.FirebaseRWQ;
 import com.fwa.app.familyshoppingplanner.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.fwa.app.testingViews.testingViews.fragment.setup.fragmentMainSettUp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import com.fwa.app.classes.Option;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,10 +33,17 @@ import java.util.Map;
  */
 public class button_menu_fragment_option_product extends Fragment {
 
+        // mainActivity ???
+
+
+    SearchView option_menu_search_listed_products;
+    ImageButton option_menu_call_option_family_menu;
+
+
     private View list_view;
     private String data_sent_shopping_list_is="";
     private String data_back_to_view ="";
-    private int clickOptionPressed = 0;
+    private int clickOptionPressed = 0; /** loops default shopping List 1-2-3 **/
     private FirebaseRWQ firebaseRWQ = new FirebaseRWQ();
 
     public FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -56,6 +56,7 @@ public class button_menu_fragment_option_product extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static String storage_we_are_viewing ="";
 
     public button_menu_fragment_option_product() {
         // Required empty public constructor
@@ -76,6 +77,7 @@ public class button_menu_fragment_option_product extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+        storage_we_are_viewing = param1;
         return fragment;
     }
 
@@ -94,29 +96,51 @@ public class button_menu_fragment_option_product extends Fragment {
         // Inflate the layout for this fragment
         list_view = inflater.inflate(R.layout.fragment_button_menu_option, container, false);
 
+        FragmentManager fragmentManager = getParentFragmentManager();
+
+
+
+
+
+
+
         /** SearchView take the query send it to search_query_fragment
          *  When search key is used, call parentFragmentManager to use fragmentContainerViewList to do the search in that fragment
          *  search_query_fragment.java / fragment_search_query_fragment.xml
          * **/
-        SearchView option_menu_search_listed_products = list_view.findViewById(R.id.option_menu_search_listed_products);
 
-        //getParentFragmentManager().beginTransaction().add(R.id.fragmentContainerViewList, new search_query_fragment()).commit();
 
+
+
+        option_menu_search_listed_products = list_view.findViewById(R.id.option_menu_search_listed_products);
         option_menu_search_listed_products.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(String search_string) {
 
-                Bundle result = new Bundle();
-                result.putString("search_value", option_menu_search_listed_products.getQuery().toString());
-                getParentFragmentManager().setFragmentResult("data_send",result);
+                //Bundle result = new Bundle();
+                //result.putString("search_value", option_menu_search_listed_products.getQuery().toString());
+                //getParentFragmentManager().setFragmentResult("data_send",result);
 
+
+                /** First call on this container is product_option_menu so the storage list to search from might be empty */
+                if(storage_we_are_viewing == "" || storage_we_are_viewing.isEmpty() ){
+                    storage_we_are_viewing = "Refrigerator";
+                }
+                /** Call on search_query_fragment and send to string vars 1 the search string 2 the storage we are on to search **/
+                fragmentManager.beginTransaction()
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, search_query_fragment.newInstance(search_string.trim().toLowerCase(),storage_we_are_viewing),null)
+                        .commit();
+
+/*
+// Old way i called the search product view fragment
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainerViewList, search_query_fragment.class,null, "search_list_recycle")
                         .setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
 
-                return true;
+ */
+            return true;
             }
 
             @Override
@@ -125,6 +149,29 @@ public class button_menu_fragment_option_product extends Fragment {
                 return false;
             }
         });
+
+
+        option_menu_call_option_family_menu = list_view.findViewById(R.id.imageBtnOptionTwo);
+        option_menu_call_option_family_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /** Call on search_query_fragment and send to string vars 1 the search string 2 the storage we are on to search **/
+                fragmentManager.beginTransaction()
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, fragmentMainSettUp.newInstance("",""),null)
+                        .commit();
+
+
+            }
+        });
+
+
+
+
+
+
+
+
 
         //ToDo:: this is not working big bug - if one press main option button to get the menu of option and then first option_change_user_list goes into a loop write -very bad!!
         //ToDo: Query set user db default shoppingList in use here Set Option with inn UsersGroup - userId - Option for that user !!

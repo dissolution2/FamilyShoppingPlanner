@@ -24,7 +24,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:padding="5dp"
-            android:src="@drawable/googleg_standard_color_18" />
+            android:src="@drawable/tine_h_melk_7038010000065" />
 
         <LinearLayout
             android:layout_width="match_parent"

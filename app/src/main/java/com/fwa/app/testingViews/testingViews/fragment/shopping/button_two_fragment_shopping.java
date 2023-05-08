@@ -126,7 +126,33 @@ public class button_two_fragment_shopping extends Fragment {
                 ProductVH vh = (ProductVH) holder;
                 Product emp = (Product) model;
 
-                vh.txt_name.setText(emp.getName());
+                vh.txt_name.setText(emp.getName().toUpperCase());
+                vh.txt_company.setText(emp.getCompany().toUpperCase());
+                //vh.txt_position.setText(emp.getPosition());
+                vh.txt_amount.setText(String.valueOf(emp.getAmount()));
+
+                // default will be the last entry !!!
+                // getting the last storage key eks c d = we get d;
+                // getting the last storage key eks d c = we get c;
+                String storage ="";
+                if(!emp.getStorage().isEmpty()){
+
+                    for(int i =0; i < emp.getStorage().size(); i++){
+                        storage = emp.getStorage().get(i).toLowerCase();
+                    }
+                }
+
+                switch (storage){
+                    case "c":
+                        vh.txt_storage.setText("STORAGE COLD +4");
+                        break;
+                    case "f":
+                        vh.txt_storage.setText("STORAGE FREEZER -18");
+                        break;
+                    case "d":
+                        vh.txt_storage.setText("STORAGE DRY");
+                        break;
+                }
                 //vh.txt_position.setText(emp.getPosition());
                 vh.txt_option.setOnClickListener(v->
                 {
@@ -136,10 +162,8 @@ public class button_two_fragment_shopping extends Fragment {
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.menu_edit:
-                                //Intent intent=new Intent(getContext(), EmployeeMainActivity.class);
-                                //intent.putExtra("EDIT",emp);
-                                //startActivity(intent);
+                            case R.id.add_fav:
+
                                 break;
                             case R.id.menu_remove:
 
@@ -217,7 +241,7 @@ public class button_two_fragment_shopping extends Fragment {
             DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("Family").
                     child("List").
-                    child("ShoppingList").child("WEEKEND").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+                    child("ShoppingList").child("Weekend").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
             if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -236,19 +260,34 @@ public class button_two_fragment_shopping extends Fragment {
                                                 child.getValue(Product.class).getName(),
                                                 child.getValue(Product.class).getCompany(),
                                                 child.getValue(Product.class).getAmount(),
+                                                child.getValue(Product.class).getQuantity(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
-                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        //old
+                                        //recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        recyclerView_list.getLayoutManager().removeViewAt(viewHolder.itemView.getId());
                                         break;
                                     }
                                 }
                                 String id = database.getReference().push().getKey();
                                 Product product = new Product(((Product) product_List.get(0)).getBarcode(),
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
-                                        ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
+                                        ((Product) product_List.get(0)).getAmount(),((Product) product_List.get(0)).getQuantity(), ((Product) product_List.get(0)).getStorage());
+
+                                // default will be the last entry !!!
+                                // getting the last storage key eks c d = we get d;
+                                // getting the last storage key eks d c = we get c;
+                                String storage ="";
+                                if(!product.getStorage().isEmpty()){
+
+                                    for(int i =0; i < product.getStorage().size(); i++){
+                                        storage = product.getStorage().get(i).toLowerCase();
+                                    }
+                                }
+
 
                                 String storage_container_to_use = "";
-                                switch ( ((Product) product_List.get(0)).getStorage().toString() ){
+                                switch ( storage ){//((Product) product_List.get(0)).getStorage().toString() ){
                                     case "c":
                                         storage_container_to_use = "Refrigerator";
                                         break;

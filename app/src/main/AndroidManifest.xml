@@ -15,6 +15,18 @@
         android:theme="@style/Theme.Familyshoppingplanner"
         tools:targetApi="31">
         <activity
+            android:name="com.fwa.app.testingViews.testingViews.fragment.test.main_app_pre_check_user_test"
+            android:exported="false" />
+        <activity
+            android:name="com.fwa.app.testingViews.testingViews.fragment.test.FirstTimeRunAddToFamily_test"
+            android:exported="false" />
+        <activity
+            android:name="com.fwa.app.testingViews.testingViews.fragment.test.FirstTimeRun_test"
+            android:exported="false" />
+        <activity
+            android:name="com.fwa.app.menu.testing.MainMenuStarter"
+            android:exported="false" />
+        <activity
             android:name="com.fwa.app.testingViews.testingViews.fragment.FragmentMainClass"
             android:exported="false" />
         <activity

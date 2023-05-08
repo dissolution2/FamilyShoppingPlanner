@@ -1,13 +1,117 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fwa.app.testingViews.testingViews.fragment.fragment_add_product_manually_admin">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:layout_margin="5dp"
+    tools:context="com.fwa.app.testingViews.testingViews.fragment.fragment_add_product_manually_admin"
+    >
+    <EditText
+        android:id="@+id/editTextBarcode"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ProductBarcode"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/editTextProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextBarcode"
+        android:ems="10"
+        android:hint="Product"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextCompany"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextProduct"
+        android:ems="10"
+        android:hint="Company"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextProductAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextCompany"
+        android:ems="10"
+        android:hint="L - Mg - Kg Size "
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextProductQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextProductAmount"
+        android:ems="10"
+        android:hint="Quantity"
+        android:inputType="number"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
+
+    <EditText
+        android:id="@+id/editTextStorage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextProductQuantity"
+        android:ems="10"
+        android:hint="Storage c=cold d=dry f=freezer"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/add_dataBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextStorage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#0ED6B9"
+        android:gravity="center_horizontal"
+        android:text="ADD DATA"
+        android:textColor="#FDFDFD"
+        android:textSize="21sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/add_data_collectionBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_dataBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#0ED6B9"
+        android:gravity="center_horizontal"
+        android:text="ADD Collection DB"
+        android:textColor="#FDFDFD"
+        android:textSize="21sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

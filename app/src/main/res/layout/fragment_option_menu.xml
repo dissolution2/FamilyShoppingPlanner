@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    tools:context="com.fwa.app.testingViews.testingViews.fragment.FragmentOptionMenu">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/family_id_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:height="10dp"
+        android:gravity="center_horizontal"
+        android:hint="OPTION MENU"
+        android:inputType="textPersonName"
+        android:textSize="15sp"
+         />
+
+    <Button
+        android:id="@+id/start_the_family_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:height="100dp"
+        android:text="Start a Family Plan"
+        android:textColor="#FFFDFD"
+        android:layout_below="@+id/family_id_txt"
+         />
+
+
+
+
+
+    <Button
+        android:id="@+id/add_to_family_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#0ED6B9"
+        android:text="Search for a family"
+        android:height="100dp"
+        android:textColor="#FFFDFD"
+        android:layout_below="@+id/start_the_family_btn" />
+
+    <Button
+        android:id="@+id/test_the_family_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Test Application"
+        android:height="100dp"
+        android:textColor="#FFFDFD"
+        android:layout_below="@+id/add_to_family_btn" />
+
+
+    <TextView
+        android:id="@+id/family_members_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="\nFamilyPlanner VS 0.1 Build \n contact: gameframework@gmail.com"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/test_the_family_btn" />
+</RelativeLayout>

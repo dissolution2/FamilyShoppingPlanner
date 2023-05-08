@@ -8,4 +8,6 @@
     <string name="fragment_List_Refrigerator_Button">Cold -4</string>
     <string name="fragment_List_Freezer_Button">Freezer -18</string>
     <string name="fragment_List_Dry_Storage_Button">Dry Storage</string>
+    <string name="uid_user"></string>
+
 </resources>

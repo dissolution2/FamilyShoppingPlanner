@@ -1,0 +1,163 @@
+// works on delete a key  ///////
+                DatabaseReference refnew = FirebaseDatabase.getInstance().getReference();
+                Query applesQuery = refnew.child("Family").child("Members").orderByChild("email").equalTo("larsen.robin75@gmail.com");
+
+                applesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                            appleSnapshot.getRef().removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("TAG", "onCancelled", databaseError.toException());
+                    }
+                });
+////  Update a value on database   /////
+
+// works on update !!!
+                // update Family - Members - (larsen... true)
+
+                DatabaseReference ref = database.getReference("Family").child("Members");
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            Log.d("TAG UPDATE","FOUND DATA: " + dataSnapshot.getChildrenCount());
+                            Log.d("TAG UPDATE","FOUND Key's: " + dataSnapshot.getRef().getKey() ); // getResult().getKey());
+
+                            // working here this work to a degree!!!!
+
+
+                            for (DataSnapshot child : dataSnapshot.getChildren() ) {
+                                Log.d("TAG UPDATE", "Key: " + child.getKey() + " Value: " + child.getValue());
+
+                                //Log.d("TAG","key is: " + task.getResult().getKey() );
+                                update_list.add(new FamilyMember(
+                                        child.getValue(FamilyMember.class).getEmail(),
+                                        child.getValue(FamilyMember.class).getUid(),
+                                        child.getValue(FamilyMember.class).getDelete()
+                                ));
+
+                                if(((FamilyMember) update_list.get(0)).getEmail().equals(((FamilyMember) member_found.get(0)).getEmail() ) ) {
+
+                                    Log.d("TAG UPDATE","if is equal");
+                                    Log.d("TAG UPDATE", "Key: " + child.getKey() + " Value: " + child.getValue());
+
+                                    FamilyMember update = new FamilyMember(((FamilyMember)update_list.get(0)).getEmail(),
+                                            ((FamilyMember)update_list.get(0)).getUid(), "true"); /** updated false to true -test- OK */
+
+                                    /** Must have the key **/
+                                    ref.getRef().child(child.getKey()).setValue(update); // worked sett to "" and no complain about searching new email's try to delete aging
+                                    break;
+
+                                }else{
+                                    update_list.clear();
+                                }
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("ERORR","data error " + databaseError.toString());
+                    }
+                });
+////// onComplete ////////
+
+UserData userData = new UserData(mAuth.getCurrentUser().getEmail(),mAuth.getCurrentUser().getUid(),
+                        "false","member","Main",mAuth.getCurrentUser().getUid(),((FamilyMember) member_found.get(0)).getUid(),"","");
+
+                database.getReference("Users").child(mAuth.getCurrentUser().getUid())
+                        .child("FamilyUid").setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG QUERY", "Exceptiong Middle task " + e);
+                            }
+                        });
+////// working use query's orderByKey NOT BY CHILD BREAKS ON .INDEX ////////
+// On user gets first the uid group
+        Query user = database.getReference("Users").child(mAuth.getCurrentUser().getUid())
+                .child("FamilyUid").orderByKey().equalTo("role");//.child("role"); // null // .child("hashFamily") // ok
+
+        user.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().exists()){
+                    Log.d("TAG QUERY","We got info");
+
+                    Log.d("TAG Q", "result: " + task.getResult().getChildrenCount());
+                    for(DataSnapshot child : task.getResult().getChildren()){
+                        Log.d("RES","Key: " + child.getKey() + " Value: " + child.getValue());
+
+
+                        if(child.getValue().equals("member")){
+                            // send data to next fragment - > member user
+                            Log.d("TAG Member","we got a member");
+                            break;
+                        }
+                        if(child.getValue().equals("owner")){
+                            // send data to next fragment - > owner user
+                            Log.d("TAG Owner","we got a Owner");
+                            break;
+                        }
+
+
+
+                    }
+
+                    /** key = role, if value = member, search string is on hashFamily value  **/
+                    /** key = role, if value = owner, search string is on uid value  **/
+
+                    /** key = Not found = No owner or No member . direct to sett up screen  **/
+
+
+                    // Directly to main app screen //
+                    //startActivity(new Intent(main_app_pre_check_user.this, FragmentMainClass.class));
+                }else {
+                    Log.d("TAG Q","No result!!");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG QUERY","Failed " + e);
+            }
+        });
+
+
+
+/*   /// this is a search to use later on.
+        Query groups = database.getReference("Groups").child("oGm09XrH8tekko4bB0No7Qyp2oM2")
+                .child("Data").child("List");
+
+        groups.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().exists()){
+                    Log.d("TAG QUERY","We got info");
+
+                    Log.d("TAG Q", "result: " + task.getResult().getChildrenCount());
+                    for(DataSnapshot child : task.getResult().getChildren()){
+                        Log.d("RES","Key: " + child.getKey() + " Value: " + child.getValue());
+
+                    }
+                    // Directly to main app screen //
+                    //startActivity(new Intent(main_app_pre_check_user.this, FragmentMainClass.class));
+                }else {
+                    Log.d("TAG Q","No result!!");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("TAG QUERY","Failed " + e);
+            }
+        });
+*/
+

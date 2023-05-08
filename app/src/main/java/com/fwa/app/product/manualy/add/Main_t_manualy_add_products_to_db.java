@@ -3,6 +3,7 @@ package com.fwa.app.product.manualy.add;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fwa.app.classes.Product;
+import com.fwa.app.database.FirebaseRWQ;
 import com.fwa.app.familyshoppingplanner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class Main_t_manualy_add_products_to_db extends AppCompatActivity implements View.OnClickListener{
 
+    /*** Contains error's not refactored correct we wont use this anymore can delete **/
+
     private static final String ON_COMPLETE = "Successfully: ";
     private static final String EXCEPTION = "Exception: ";
     private static final String TEST = "TEST STRING: ";
@@ -36,19 +40,21 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
     private Button addDataButton, getCurrentUserButton;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");
-
+    private String family_uid="";
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebase_FireStore_Product_DB = FirebaseFirestore.getInstance();
     private FirebaseFirestore firebase_FireStore_User_add_to_DB = FirebaseFirestore.getInstance();
     //private DocumentReference docRef;
 
     private Product from_DB, from_User;
+    FirebaseRWQ firebaseRWQ = new FirebaseRWQ();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_t_add_product_to_list_db);
-
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        family_uid = pref.getString("key_name", "No data!!");
         mAuth = FirebaseAuth.getInstance();
         editText_Barcode = (EditText) findViewById(R.id.editTextBarcode );
         editText_Product = (EditText) findViewById(R.id.editTextProduct);
@@ -80,10 +86,10 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
     private void insertDataToList(){
         String list ="";
         String barcode = editText_Barcode.getText().toString().trim();
-        String name = editText_Product.getText().toString().trim();
-        String company = editText_Company.getText().toString().trim();
+        String name = editText_Product.getText().toString().toLowerCase().trim();
+        String company = editText_Company.getText().toString().toLowerCase().trim();
         String amount = editText_ProductAmount.getText().toString().trim();
-        String storage =  editText_Storage.getText().toString().trim();
+        String storage =  editText_Storage.getText().toString().toLowerCase().trim();
 
         String id = database.getReference().push().getKey();
 
@@ -95,7 +101,7 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
         catch (NumberFormatException e) {
             amountX = 0;
         }
-        Product product = new Product(barcode, name, company, amountX, storage);
+        //Product product = new Product(barcode, name, company, amountX, storage);
         if(!editText_Barcode.getText().toString().trim().isEmpty() &&
                 !editText_Product.getText().toString().trim().isEmpty() &&
                 !editText_ProductAmount.getText().toString().trim().isEmpty() &&
@@ -121,8 +127,12 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
                         Toast.makeText(Main_t_manualy_add_products_to_db.this, "Storage d: " + editText_Storage.getText().toString().toLowerCase().trim(), Toast.LENGTH_LONG).show();
                         break;
                 }
-                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child(list)
-                        .child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                // old
+                //database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child(list)
+                //        .child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                database.getReference("Groups").child(family_uid)//mAuth.getCurrentUser().getUid())
+                        .child("Data").child("List").child(list)
+                        .child(id).setValue("product").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
@@ -155,6 +165,64 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
             Toast.makeText(Main_t_manualy_add_products_to_db.this, "BareCode, Product, Amount and Storage are empty!!", Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+    // test 01 - general test - How to set a product !!!  -
+    private void setDocumentOne_test(){
+
+        String list ="";
+        String barcode = editText_Barcode.getText().toString().trim();
+        String name = editText_Product.getText().toString().toLowerCase().trim();
+        String company = editText_Company.getText().toString().toLowerCase().trim();
+        String amount = editText_ProductAmount.getText().toString().trim();
+        String storage =  editText_Storage.getText().toString().toLowerCase().trim();
+
+        String id = database.getReference().push().getKey();
+
+        // this is only because i got Long from the snapshot ??!!! might take it bak to String!!!!
+        int amountX;
+        try {
+            amountX = Integer.parseInt(amount);
+        }
+        catch (NumberFormatException e) {
+            amountX = 0;
+        }
+
+
+
+        if(!editText_Barcode.getText().toString().trim().isEmpty() &&
+                !editText_Product.getText().toString().trim().isEmpty() &&
+                !editText_ProductAmount.getText().toString().trim().isEmpty() &&
+                !editText_Storage.getText().toString().trim().isEmpty()) {
+
+//            Product product = new Product(barcode, name, company, amountX, storage);
+
+            DocumentReference docRef = FirebaseFirestore.getInstance().collection("main_product_db").document(editText_Barcode.getText().toString().trim());
+            docRef.set("product").addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+
+
+    }
+
 
 
     // test 01 - general test - How to !!!  - Successful got doc exist -
@@ -301,6 +369,8 @@ public class Main_t_manualy_add_products_to_db extends AppCompatActivity impleme
                 //getDocumentOne_test(); // ok
                 //getDocumentTwo_test(); // ok
                 getDocumentOne_test_string_search();
+
+                //firebaseRWQ.add_user_to_family_account();
                 break;
         }
     }

@@ -1,47 +1,41 @@
 package com.fwa.app.testingViews.testingViews.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
-import android.widget.SearchView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.fwa.app.adapters.ExampleAdapter;
-import com.fwa.app.classes.ExampleItem;
+import com.fwa.app.classes.ItemViewModel;
 import com.fwa.app.classes.Product;
 import com.fwa.app.classes.ProductVH;
 import com.fwa.app.familyshoppingplanner.R;
-import com.fwa.app.testingViews.testingViews.Employee.Employee;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +47,11 @@ import java.util.List;
  */
 public class search_query_fragment extends Fragment {
 
+   private String getText_to_search="";
+
     private View list_view;
+
+    private View list_view_data_search;
     private RecyclerView recyclerView_list;
     ArrayList<Product> list = new ArrayList<>();
 
@@ -67,8 +65,8 @@ public class search_query_fragment extends Fragment {
 
     String search_string_data = "";
     int counter=0;
-
-
+    private String user_shopping_list_in_use ="";
+    private String family_uid ="";
 
 
 
@@ -81,6 +79,8 @@ public class search_query_fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static String static_search_string="";
+    private static String static_storage_container="";
 
     public search_query_fragment() {
         // Required empty public constructor
@@ -101,7 +101,15 @@ public class search_query_fragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+        static_search_string = param1;
+        static_storage_container = param2;
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
@@ -111,17 +119,31 @@ public class search_query_fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+/*
+        getParentFragmentManager().setFragmentResultListener("data_send", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                //String data = result.getString("search_value");
+
+
+                search_string_data = result.getString("search_value");
+                Log.d("TAG Search","Search text is: " + search_string_data);
+                //Toast.makeText(getActivity(), "Search txt is: " + search_string_data , Toast.LENGTH_LONG).show();
+
+
+
+            }
+        });
+*/
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         list_view = inflater.inflate(R.layout.fragment_search_query_fragment, container, false);
-
-        setHasOptionsMenu(true);
-
-
         mAuth = FirebaseAuth.getInstance();
 
         //progressBar = (ProgressBar) list_view.findViewById(R.id.progressBar2);
@@ -129,44 +151,46 @@ public class search_query_fragment extends Fragment {
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
 
         /** Get search value from main fragment to do the actual searching here */
+
+
+/*
+        this.getActivity().getSupportFragmentManager().setFragmentResultListener("data_send", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+        //        fbsearch(result.getString("search_value"));
+            }
+        });
+
+ */
+      /*
         getParentFragmentManager().setFragmentResultListener("data_send", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 //String data = result.getString("search_value");
-                search_string_data = result.getString("search_value");
-                Toast.makeText(getActivity(), "Search txt is: " + search_string_data , Toast.LENGTH_LONG).show();
+                fbsearch(result.getString("search_value"));
+          //      Toast.makeText(getActivity(), "Search txt is: " + search_string_data , Toast.LENGTH_LONG).show();
             }
         });
-        /** Get search value from main fragment to do the actual searching here */
-
-
-        /** under is just a test remove every thing
-         *
-         *  1, implement the search in our own db list , and sett default where we want the search item to go to when we swipe""
-         * 2. if not found on our own db list. Search the main DB.
-         * 3 if not we must make a new intent to make the user add the product him/her self !!??
-         *
-         **/
-
-
-        // Query first to check how many records, then use that to check every records with in the recycle option if records = count, and no result send empty
-
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator");
-        //CollectionReference collectionReference = FirebaseDatabase.getInstance().getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("List").child("Refrigerator");
-        Query query = ordersRef.child("name").equalTo("sjokolade"); //.orderByChild("name").startAt("melk").endAt("melk"+"\ufaff");//.orderByChild("name").equalTo("melk","name");//.endAt("sjokolade"+"\ufaff"); //.equals(""); // .orderByChild("uid").equalTo(uid);//.endAt("Melk","name");
-        //.orderByChild("Username"). But i want the Mike's datas, so i add .equalTo("Mike")
-        //Query query = ordersRef
-/*
-        ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("Family").
-                child("List").
-                child("Refrigerator").orderByChild("name").startAt("melk").endAt("melk"+"\ufaff"); //.endAt("melk","name");
 */
-        // this works with delete on option
+
+
+
+        SharedPreferences pref = this.getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        //SharedPreferences.Editor editor = pref.edit();
+
+        //Log.d("TAG","test : " +pref.getString("key_name", "No data!!")) ; // getting String
+        family_uid = pref.getString("key_name", "No data!!");
+
+
+
+
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("Groups").child(family_uid).child("Data").child("List").child(static_storage_container);
+        Query sQuery = ordersRef.orderByChild("name").startAt(static_search_string).endAt(static_search_string + "\uf8ff");
+
+
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
-                        .setQuery(query, new SnapshotParser<Product>() { // ref or query, ... etc
+                        .setQuery(sQuery, new SnapshotParser<Product>() { // ref or sQuery, ... etc
                             @NonNull
                             @Override
                             public Product parseSnapshot(@NonNull DataSnapshot snapshot) {
@@ -176,7 +200,7 @@ public class search_query_fragment extends Fragment {
                                 Product emp = snapshot.getValue(Product.class);
                                 emp.setKey(snapshot.getKey());
                                 return emp;
-                                }
+                            }
                         }).build();
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter(options) {
             @NonNull
@@ -190,14 +214,13 @@ public class search_query_fragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model ) {
+
                 ProductVH vh = (ProductVH) holder;
                 Product emp = (Product) model;
-
-
-
-
                 vh.txt_name.setText(emp.getName());
+
                 //vh.txt_position.setText(emp.getPosition());
+
                 vh.txt_option.setOnClickListener(v->
                 {
                     PopupMenu popupMenu =new PopupMenu( getContext(),vh.txt_option);
@@ -206,7 +229,7 @@ public class search_query_fragment extends Fragment {
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.menu_edit:
+                            case R.id.add_fav:
                                 //Intent intent=new Intent(getContext(), EmployeeMainActivity.class);
                                 //intent.putExtra("EDIT",emp);
                                 //startActivity(intent);
@@ -239,14 +262,15 @@ public class search_query_fragment extends Fragment {
             }
 
         };
+
+
         recyclerView_list.setAdapter(firebaseRecyclerAdapter);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView_list);
+        //new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView_list);
         return  list_view;
     }
         @Override
         public void onStart() {
             super.onStart();
-            //progressBar.setVisibility(View.VISIBLE);
             firebaseRecyclerAdapter.startListening();
         }
 
@@ -257,215 +281,125 @@ public class search_query_fragment extends Fragment {
             firebaseRecyclerAdapter.stopListening();
         }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main, menu);
-        final MenuItem search = menu.findItem(R.id.search_list_recycle);
-        final SearchView searchView = (SearchView) search.getActionView();
-
-        searchView.setQueryHint("Search Freezer");
-        if(searchView != null){
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    fbsearch(s);
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-        }
-    }
-
-
-
-
-
-
-
-
-    private void fbsearch (String searchText) {
-        /*
-        String pquery = searchText.toLowerCase();
-        Query sQuery = mDatabase.orderByChild("pname").equalTo(pquery);
-        FirebaseRecyclerOptions<Product> options = new FirebaseRecyclerOptions.Builder<Product>()
-                .setQuery(sQuery, Product.class).build();
-
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter(options) {
-            @NonNull
+        //ToDo: Swipe left or right
+    /*
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_fragment_card_layout, parent, false);
-                return new ProductVH(view);
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
             }
 
-
             @Override
-            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
-                ProductVH vh = (ProductVH) holder;
-                Product emp = (Product) model;
-            }
-        };
-
-         */
-    }
-
-
- /*
-
-
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Product, ProjViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull ProjViewHolder holder, int position, @NonNull project model) {
-                pbar.setVisibility(View.GONE);
-                String proj_key = getRef(position).getKey();
-                holder.prname.setText(model.getPname());
-                holder.prlocation.setText(model.getPlocation());
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent detactivity = new Intent(HomeActivity.this, InfoActivity.class);
-                        detactivity.putExtra("ProjID", proj_key);
-                        startActivity(detactivity);
-                    }
-                });
-            }
-
-            @NonNull
-            @Override
-            public ProjViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.proj_row, parent, false);
-                ProjViewHolder vh = new ProjViewHolder(view);
-                return vh;
-            }
-        };
-
-        PList.setAdapter(FBRA);
-        FBRA.startListening();
-    }
-
-    public class ProjViewHolder extends RecyclerView.ViewHolder {
-        TextView prname, prlocation, prservice, prvalue, practual;
-        public ProjViewHolder(@NonNull View itemView) {
-            super(itemView);
-            prname = itemView.findViewById(R.id.FPName);
-            prlocation = itemView.findViewById(R.id.FPLocation);
-        }
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FBRA.stopListening();
-    }
-    }
-*/
-
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 //Toast.makeText(getActivity(), "direction : " +direction, Toast.LENGTH_LONG).show();
 
                 if(direction == 8){
                     Toast.makeText(getActivity(), "Added to Shopping List" , Toast.LENGTH_LONG).show();
                 }
                 if(direction == 4){
-                    Toast.makeText(getActivity(), "Deleted Item from Cold -4", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Deleted Item from Cold +4", Toast.LENGTH_LONG).show();
                 }
 
-                List product_List = new ArrayList();
-
-                DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                DatabaseReference ref_shopping_list_in_use = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child("Family").
-                        child("List").
-                        child("Refrigerator").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
-                if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
-                    ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
-                            if (dataSnapshot.isSuccessful()) {
-                                //ToDo: Refactoring needed!!
+                        child("List").child("Option");
+                ref_shopping_list_in_use.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                                if (dataSnapshot.isSuccessful()) {
 
-                                if(direction == 8) {
-
-                                    /** Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!*/
-                                    for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
-
-
-
-                                        //if(child.getValue().toString().toLowerCase().contains( firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().get().getResult().getValue().toString() )) {
-
-                                            product_List.add(new Product(
-                                                    child.getValue(Product.class).getBarcode(),
-                                                    child.getValue(Product.class).getName(),
-                                                    child.getValue(Product.class).getCompany(),
-                                                    child.getValue(Product.class).getAmount(),
-                                                    child.getValue(Product.class).getStorage()
-                                            ));
-                                            break;
-                                        //}
+                                    for (DataSnapshot child : dataSnapshot.getResult().getChildren() ) {
+                                        user_shopping_list_in_use = child.getValue().toString();
+                                        //Toast.makeText(getActivity(), "DB get List " + barcode, Toast.LENGTH_LONG).show();
                                     }
-                                    String id = database.getReference().push().getKey();
-                                    Product product = new Product(((Product) product_List.get(0)).getBarcode(),
-                                            ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
-                                            ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
-
-                                    /** N = Norway, Here we must add more list's as a variable  */
-                                    database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                            .child("ShoppingList").child("ANNETTE").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        //Toast.makeText(getActivity(), "Product moved to shopping list", Toast.LENGTH_LONG).show();
-                                                    }
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
-                                                    Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
-                                                }
-                                            });
-                                    //refquery.getRef().removeValue();
-                                    recyclerView_list.removeViewAt(viewHolder.getBindingAdapterPosition());
-                                    recyclerView_list.getAdapter().notifyDataSetChanged();
                                 }
-                                if(direction == 4){
-                                    //refquery.getRef().removeValue();
-                                    //recyclerView_list.removeViewAt(viewHolder.getBindingAdapterPosition());
-                                    //recyclerView_list.getAdapter().notifyItemRemoved(viewHolder.getBindingAdapterPosition());
-                                    //recyclerView_list.getAdapter().notifyDataSetChanged();
+                                //ToDo: need more testing as we hava a bug - a object product get duplicated an the original deleted !! over written
+                                if(dataSnapshot.isComplete()){
 
-                                    Log.d("TAG Test","firebase test: " + firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
-                                    recyclerView_list.removeViewAt(0);//firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
-
-                                    firebaseRecyclerAdapter.getSnapshots().remove(0);
-                                    recyclerView_list.getAdapter().notifyDataSetChanged();
                                 }
                             }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                Log.e("EXCEPTION", "Failed to get shopping list: " + e.getMessage());
+                            }
+                        });
+                List product_List = new ArrayList();
+
+                // getKey() from firebaseRecyclerAdapter position of object //
+            DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("Family").
+                    child("List").
+                    child("Freezer").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+            if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
+                ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
+                        if (dataSnapshot.isSuccessful()) {
+                            //ToDo: Refactoring needed!!
+
+                            if(direction == 8) {
+
+                                // Move Product to Shopping list - get first the product snapshot into a product class refactoring later !!//
+                                for (DataSnapshot child : dataSnapshot.getResult().getChildren()) {
+
+                                    if(child.getKey().equals(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey())) {
+
+                                        product_List.add(new Product(
+                                                child.getValue(Product.class).getBarcode(),
+                                                child.getValue(Product.class).getName(),
+                                                child.getValue(Product.class).getCompany(),
+                                                child.getValue(Product.class).getAmount(),
+                                                child.getValue(Product.class).getStorage()
+                                        ));
+                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        break;
+                                    }
+                                }
+                                String id = database.getReference().push().getKey();
+                                Product product = new Product(((Product) product_List.get(0)).getBarcode(),
+                                        ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
+                                        ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
+
+                                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
+                                        .child("ShoppingList").child(user_shopping_list_in_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getActivity(), "Product moved to shopping list: " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                //Toast.makeText(ShopingListView.this, "Failed to added data!! " +e.getMessage(), Toast.LENGTH_LONG).show();
+                                                Log.e("EXCEPTION", "Failed to add the data: " + e.getMessage());
+                                            }
+                                        });
+
+
+                                refquery.getRef().removeValue();
+                            }
+                            if(direction == 4){
+                                refquery.getRef().removeValue();
+                            }
                         }
-                    });
 
-                    //Log.d("TAG Test","firebase test: " + firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
-                    //recyclerView_list.removeViewAt(0);//firebaseRecyclerAdapter.getSnapshots().getSnapshot(0));
-                    //recyclerView_list.getAdapter().notifyDataSetChanged();
-                }else{
-                    //Toast.makeText( getActivity(), "Swipe empty call", Toast.LENGTH_LONG).show();
-                }
-
-                //product_List.remove(product_List.get(viewHolder.getBindingAdapterPosition()));
-                //recyclerView_list.removeViewAt( viewHolder.getBindingAdapterPosition());
-                //recyclerView_list.getAdapter().notifyDataSetChanged();
-
+                    }
+                });
+            }else{
+                //Toast.makeText( getActivity(), "Swipe empty call", Toast.LENGTH_LONG).show();
             }
-        };
-    }
+
+
+
+            //recyclerView_list.getAdapter().notifyDataSetChanged();
+
+        }
+    };
+*/
+
+}

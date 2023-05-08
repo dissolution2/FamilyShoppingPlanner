@@ -1,0 +1,41 @@
+FirebaseFirestore db = FirebaseFirestore.getInstance();
+Query firstQuery = db.collection("users").whereLessThan("uid", uid);
+Query secondQuery = db.collection("users").whereGreaterThan("uid", uid);
+
+
+firstQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        List<UserModel> list = new ArrayList<>();
+        if (task.isSuccessful()) {
+            for (DocumentSnapshot document : task.getResult()) {
+                UserModel userModel = document.toObject(UserModel.class);
+                list.add(userModel);
+            }
+
+            secondQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            UserModel userModel = document.toObject(UserModel.class);
+                            list.add(userModel);
+                        }
+
+                        //Use the list of users
+                    }
+                }
+            });
+        }
+    }
+});
+
+Task firstTask = firstQuery.get();
+Task secondTask = secondQuery.get();
+
+Task combinedTask = Tasks.whenAllSuccess(firstTask, secondTask).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
+        @Override
+        public void onSuccess(List<Object> list) {
+            //This is the list that I wanted
+        }
+});

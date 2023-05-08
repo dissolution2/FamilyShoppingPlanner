@@ -1,4 +1,4 @@
-package com.fwa.app.testingViews.testingViews.fragment.shopping;
+package com.fwa.app.testingViews.testingViews.fragment.shopping.menu;
 
 import android.os.Bundle;
 
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.testingViews.testingViews.fragment.shopping.button_one_fragment_shopping;
+import com.fwa.app.testingViews.testingViews.fragment.shopping.button_three_fragment_shopping;
+import com.fwa.app.testingViews.testingViews.fragment.shopping.button_two_fragment_shopping;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,7 +79,7 @@ public class button_menu_fragment_shopping_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewList, button_one_fragment_shopping.class, null , "shopping_list_one").
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, button_one_fragment_shopping.class, null , "shopping_list_one").
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
@@ -87,7 +90,7 @@ public class button_menu_fragment_shopping_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewList, button_two_fragment_shopping.class, null , "shopping_list_two").
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, button_two_fragment_shopping.class, null , "shopping_list_two").
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
@@ -98,7 +101,7 @@ public class button_menu_fragment_shopping_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewList, button_three_fragment_shopping.class, null , "shopping_list_three").
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, button_three_fragment_shopping.class, null , "shopping_list_three").
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();

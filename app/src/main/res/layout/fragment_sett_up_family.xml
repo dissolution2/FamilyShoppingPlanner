@@ -1,13 +1,265 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
     tools:context="com.fwa.app.testingViews.testingViews.fragment.setup.fragment_sett_up_family">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/family_id_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:hint="Family Group Id"
+            android:inputType="textPersonName"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/start_the_family_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Start a Family Plan"
+            android:contentDescription="Button Start Family"
+            android:textColor="#FFFDFD" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_txt_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="family member @Email"
+                android:textSize="20dp"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageAddFamilyBtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Add Family member 1"
+                android:src="@android:drawable/ic_input_add"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageRemoveFamilyBtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Remove Family member 1"
+                android:src="@android:drawable/ic_delete"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_txt_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="family member @Email"
+                android:textSize="20dp"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageAddFamilyBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Add Family member 2"
+                android:src="@android:drawable/ic_input_add"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageRemoveFamilyBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Remove Family Member 2"
+                android:src="@android:drawable/ic_delete"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_txt_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="family member @Email"
+                android:textSize="20dp"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageAddFamilyBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Add Family member 3"
+                android:src="@android:drawable/ic_input_add"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageRemoveFamilyBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Remove Family member 3"
+                android:src="@android:drawable/ic_delete"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_txt_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="family member @Email"
+                android:textSize="20dp"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageAddFamilyBtn4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Add Family member 4"
+                android:src="@android:drawable/ic_input_add"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageRemoveFamilyBtn4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Remove Family member 4"
+                android:src="@android:drawable/ic_delete"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_txt_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="family member @Email"
+                android:textSize="20dp"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageAddFamilyBtn5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Add Family member 5"
+                android:src="@android:drawable/ic_input_add"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageRemoveFamilyBtn5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Remove Family member 5"
+                android:src="@android:drawable/ic_delete"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/email_txt_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="family member @Email"
+                android:textSize="20dp"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageAddFamilyBtn6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Add Family member 6"
+                android:src="@android:drawable/ic_input_add"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/imageRemoveFamilyBtn6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Remove Family member 6"
+                android:src="@android:drawable/ic_delete"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="6 MEMBERS MAX" />
+
+
+</LinearLayout>

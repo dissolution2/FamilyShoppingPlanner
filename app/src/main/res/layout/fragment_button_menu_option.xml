@@ -45,8 +45,8 @@
 
         <ImageButton
             android:id="@+id/imageBtnOptionOne"
-            android:layout_width="161dp"
-            android:layout_height="59dp"
+            android:layout_width="135dp"
+            android:layout_height="48dp"
             android:layout_margin="2dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
@@ -60,16 +60,7 @@
             android:layout_margin="2dp"
             android:layout_weight="1"
             android:contentDescription="Enter How Much Cookies You Want"
-            android:src="@android:drawable/ic_input_add" />
-
-        <ImageButton
-            android:id="@+id/imageBtnOptionThree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_weight="1"
-            android:contentDescription="Enter How Much Cookies You Want"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_menu_preferences" />
 
         <SearchView
             android:id="@+id/option_menu_search_listed_products"

@@ -77,7 +77,7 @@ public class RVActivity extends AppCompatActivity
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.menu_edit:
+                            case R.id.add_fav:
                                 Intent intent=new Intent(RVActivity.this,EmployeeMainActivity.class);
                                 intent.putExtra("EDIT",emp);
                                 startActivity(intent);

@@ -13,15 +13,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/fui_ic_anonymous_white_24dp"
-            tools:srcCompat="@tools:sample/avatars"
-            android:contentDescription="TODO" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -70,7 +61,7 @@
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewButton_menu"
+            android:id="@+id/Fragment_ContainerView_Main_Button_Menu"
             android:name="com.fwa.app.testingViews.testingViews.fragment.button_menu_fragment_option_product"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,8 +75,8 @@
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewList_menu"
-            android:name="com.fwa.app.testingViews.testingViews.fragment.storage.button_menu_fragment_storage_list"
+            android:id="@+id/Fragment_ContainerView_Call_Storage_Shopping_Recycle_Lists_menu"
+            android:name="com.fwa.app.testingViews.testingViews.fragment.storage.menu.button_menu_fragment_storage_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_button_menu_storage_list" />
@@ -97,7 +88,7 @@
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewInfo_main_view"
+            android:id="@+id/Fragment_ContainerView_Info_Main_View"
             android:name="com.fwa.app.testingViews.testingViews.fragment.swipe_info_fragment_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,11 +101,11 @@
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewList"
-            android:name="com.fwa.app.testingViews.testingViews.fragment.storage.button_one_fragment_storage"
+            android:id="@+id/Fragment_Container_Recycle_View_Main"
+            android:name="com.fwa.app.testingViews.testingViews.fragment.setup.fragment_blank_check_user"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_button_one_storage" />
+            tools:layout="@layout/fragment_blank_check_user" />
     </LinearLayout>
 
 

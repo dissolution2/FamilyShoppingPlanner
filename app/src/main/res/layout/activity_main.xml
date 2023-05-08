@@ -14,7 +14,7 @@
         android:fontFamily="sans-serif-black"
         android:text="FamilyPlanner"
         android:textAlignment="center"
-        android:textSize="60sp"
+        android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="128dp"
         android:layout_marginBottom="24dp"
-        android:text="Your awesome app"
+        android:text="Shopping"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="italic"
@@ -143,12 +143,14 @@
             android:src="@drawable/google" />
 
         <ImageView
+            android:id="@+id/facebook_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
             android:src="@drawable/fb" />
 
         <ImageView
+            android:id="@+id/twitter_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
@@ -159,8 +161,8 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_centerInParent="true"
         android:progressBackgroundTint="@color/purple_700"
         android:progressBackgroundTintMode="screen"

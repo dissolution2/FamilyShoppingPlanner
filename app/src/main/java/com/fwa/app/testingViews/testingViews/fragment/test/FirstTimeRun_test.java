@@ -1,4 +1,4 @@
-package com.fwa.app.testingViews.testingViews.fragment;
+package com.fwa.app.testingViews.testingViews.fragment.test;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,18 +20,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
-public class FragmentFirstTimeRun  extends AppCompatActivity {
+public class FirstTimeRun_test extends AppCompatActivity {
     private Button start_family_btn, search_family_members_btn,add_user_btn, search_family;
     private TextView family_id_group, family_members_txt;
     private EditText family_email;
@@ -166,7 +159,7 @@ public class FragmentFirstTimeRun  extends AppCompatActivity {
 
 /** Groups -DB **/
                 database.getReference("Groups").child(mAuth.getCurrentUser().getUid())
-                        .child("Allowed_1").setValue(family_email.getText().toString().trim().toLowerCase()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .child("Allowed").setValue(family_email.getText().toString().trim().toLowerCase()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
@@ -199,7 +192,8 @@ public class FragmentFirstTimeRun  extends AppCompatActivity {
                         });
 /** Users -DB **/
                 UserData userData = new UserData(mAuth.getCurrentUser().getEmail(),mAuth.getCurrentUser().getUid(),
-                        "false","owner","Main","",null, database.getReference().push().getKey(),family_email.getText().toString().trim().toLowerCase());
+                        "false","owner","Main","",null,
+                        database.getReference().push().getKey(),family_email.getText().toString().trim().toLowerCase());
 
                 // sett: UserUid ? mAuth.getCurrentUser().getUid()
                 // sett: FamilyUid ? mAuth.getCurrentUser().getUid()

@@ -50,16 +50,7 @@
             android:layout_margin="2dp"
             android:layout_weight="1"
             android:contentDescription="Enter How Much Cookies You Want"
-            android:src="@android:drawable/ic_input_add" />
-
-        <ImageButton
-            android:id="@+id/imageBtnOptionTwo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_weight="1"
-            android:contentDescription="Enter How Much Cookies You Want"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_menu_add" />
 
         <ImageButton
             android:id="@+id/imageBtnOptionThree"

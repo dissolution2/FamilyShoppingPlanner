@@ -35,7 +35,7 @@ public class Main_t_recycleview_one_test extends AppCompatActivity implements Vi
 
     String barcode ="";
     String product= "";
-    int amount = 0;
+    String amount = "";
 
     public ArrayList<Product> product_List = new ArrayList<Product>();
 
@@ -112,7 +112,7 @@ public class Main_t_recycleview_one_test extends AppCompatActivity implements Vi
 
                         String barcode = child.getValue(Product.class).getBarcode();
                         String product = child.getValue(Product.class).getName();
-                        int amount = child.getValue(Product.class).getAmount();
+                        String amount = child.getValue(Product.class).getAmount();
 
                         //product_List.add(new Product(barcode,product,amount));
 

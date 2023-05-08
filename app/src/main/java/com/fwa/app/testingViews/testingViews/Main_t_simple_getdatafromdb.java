@@ -74,14 +74,15 @@ public class Main_t_simple_getdatafromdb extends AppCompatActivity implements Vi
                         String barcode = child.getValue(Product.class).getBarcode();
                         String name = child.getValue(Product.class).getName();
                         String company = child.getValue(Product.class).getCompany();
-                        int amount = child.getValue(Product.class).getAmount();
-                        String storage = child.getValue(Product.class).getStorage();
+                        String amount = child.getValue(Product.class).getAmount();
+                        int quantity = child.getValue(Product.class).getQuantity();
+                        List<String> storage = child.getValue(Product.class).getStorage();
 
                         // ToDo: add this!!!
                         String productCompany = "";
                         String productStorage = "";
 
-                        product_List.add(new Product(barcode,name,company,amount, storage));
+                        product_List.add(new Product(barcode,name,company,amount, quantity, storage));
                     }
                     // test for fun!!
                     editTextgetDBData.setText( "BareCode: " + ((Product)product_List.get(0)).getBarcode() +

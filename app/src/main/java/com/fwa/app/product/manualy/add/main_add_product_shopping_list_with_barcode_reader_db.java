@@ -105,14 +105,15 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                             if(!list.isEmpty()) {
 
                                 editText_BarCode.setText(((Product) list.get(0)).getBarcode());
-                                editText_ProductName.setText(((Product) list.get(0)).getStorage());
+                                editText_ProductName.setText( (((Product) list.get(0)).getStorage()).toString() );
 
                                 writeData_to_shoppingList_from_barcode(
                                         ((Product) list.get(0)).getBarcode(),
                                         ((Product) list.get(0)).getName(),
                                         ((Product) list.get(0)).getCompany(),
                                         ((Product) list.get(0)).getAmount(),
-                                        ((Product) list.get(0)).getStorage(), editText_AddToList.getText().toString().toUpperCase().trim() );
+                                        ((Product) list.get(0)).getQuantity(),
+                                        (((Product) list.get(0)).getStorage()).toString(), editText_AddToList.getText().toString().toUpperCase().trim() );
                             }else{
                                 /** Checking Freezer */
                                 readDataFreezer(new FirebaseCallback() {
@@ -122,14 +123,15 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                         if (!list.isEmpty()) {
 
                                             editText_BarCode.setText(((Product) list.get(0)).getBarcode());
-                                            editText_ProductName.setText(((Product) list.get(0)).getStorage());
+                                            editText_ProductName.setText((((Product) list.get(0)).getStorage()).toString());
 
                                             writeData_to_shoppingList_from_barcode(
                                                     ((Product) list.get(0)).getBarcode(),
                                                     ((Product) list.get(0)).getName(),
                                                     ((Product) list.get(0)).getCompany(),
                                                     ((Product) list.get(0)).getAmount(),
-                                                    ((Product) list.get(0)).getStorage(), editText_AddToList.getText().toString().toUpperCase().trim() );
+                                                    ((Product) list.get(0)).getQuantity(),
+                                                    (((Product) list.get(0)).getStorage()).toString(), editText_AddToList.getText().toString().toUpperCase().trim() );
                                         } else {
                                             /** Checking DryStorage */
                                             readDataDryStorage(new FirebaseCallback() {
@@ -139,14 +141,15 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                                     if(!list.isEmpty()) {
 
                                                         editText_BarCode.setText(((Product) list.get(0)).getBarcode());
-                                                        editText_ProductName.setText(((Product) list.get(0)).getStorage());
+                                                        editText_ProductName.setText((((Product) list.get(0)).getStorage()).toString());
 
                                                         writeData_to_shoppingList_from_barcode(
                                                                 ((Product) list.get(0)).getBarcode(),
                                                                 ((Product) list.get(0)).getName(),
                                                                 ((Product) list.get(0)).getCompany(),
                                                                 ((Product) list.get(0)).getAmount(),
-                                                                ((Product) list.get(0)).getStorage(), editText_AddToList.getText().toString().toUpperCase().trim() );
+                                                                ((Product) list.get(0)).getQuantity(),
+                                                                (((Product) list.get(0)).getStorage()).toString(), editText_AddToList.getText().toString().toUpperCase().trim() );
                                                     }else{
                                                         //ToDo: Add search's on main db !!
                                                         /** Product is not in any of our Storage place, need to check Main product database */
@@ -213,6 +216,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                     child.getValue(Product.class).getName(),
                                     child.getValue(Product.class).getCompany(),
                                     child.getValue(Product.class).getAmount(),
+                                    child.getValue(Product.class).getQuantity(),
                                     child.getValue(Product.class).getStorage()
                             ) );
 
@@ -270,6 +274,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                     child.getValue(Product.class).getName(),
                                     child.getValue(Product.class).getCompany(),
                                     child.getValue(Product.class).getAmount(),
+                                    child.getValue(Product.class).getQuantity(),
                                     child.getValue(Product.class).getStorage()
                             ) );
 
@@ -311,6 +316,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                     child.getValue(Product.class).getName(),
                                     child.getValue(Product.class).getCompany(),
                                     child.getValue(Product.class).getAmount(),
+                                    child.getValue(Product.class).getQuantity(),
                                     child.getValue(Product.class).getStorage()
                             ) );
 
@@ -352,6 +358,7 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
                                     child.getValue(Product.class).getName(),
                                     child.getValue(Product.class).getCompany(),
                                     child.getValue(Product.class).getAmount(),
+                                    child.getValue(Product.class).getQuantity(),
                                     child.getValue(Product.class).getStorage()
                             ) );
 
@@ -371,12 +378,17 @@ public class main_add_product_shopping_list_with_barcode_reader_db extends AppCo
 
     /** Here user must be on: user interface - chose witch list he/she will use to store the product */
     /** if all ready in shopping list add amount not the hold product */
-    private void writeData_to_shoppingList_from_barcode(String code, String name, String company, int amount, String storage, String shoppingList ){
+    private void writeData_to_shoppingList_from_barcode(String code, String name, String company, String amount, int quantity, String storage, String shoppingList ){
         /** List to use if User can't make a own list or just the 3 default lists: Freezer, Refrigerator, DryStorage **/
 
         String id = database.getReference().push().getKey();
 
-        Product product = new Product(code, name, company, amount, storage);
+        List<String> storage_list = new ArrayList<>();
+        String string_array[] = storage.split(" ");
+        for(int i=0; i< string_array.length;i++){
+            storage_list.add( string_array[i] );
+        }
+        Product product = new Product(code, name.toLowerCase(), company.toLowerCase(), amount, quantity, storage_list);
 
         /** N = Norway, Here we must add more list's as a variable  */
         database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List").child("ShoppingList").child(shoppingList).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {

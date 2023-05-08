@@ -125,8 +125,8 @@
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewList_menu"
-            android:name="com.fwa.app.testingViews.testingViews.fragment.storage.button_menu_fragment_storage_list"
+            android:id="@+id/Fragment_ContainerView_Call_Storage_Shopping_Recycle_Lists_menu"
+            android:name="com.fwa.app.testingViews.testingViews.fragment.storage.menu.button_menu_fragment_storage_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_button_menu_storage_list" />
@@ -162,7 +162,7 @@
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerViewList"
+            android:id="@+id/Fragment_Container_Recycle_View_Main"
             android:name="com.fwa.app.testingViews.testingViews.fragment.storage.button_one_fragment_storage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,0 +1,58 @@
+{
+  "rules": {
+    "Groups" : {
+      "$group": {
+        // If this group doesn't exist, allow the read.
+        // If the group does exist, only the owner & it's members
+        // can read this group's entire data tree.
+        ".read": "(data.child('Allowed').val() == auth.token.email) || (data.child('Owner').val() == auth.uid)",
+
+        "Owner": {
+          // Only the current owner can write data to this key if it exists.
+          // If the owner is not yet set, they can only claim it for themselves.
+          ".write": "auth != null && (data.val() === auth.uid || (!data.exists() && newData.val() === auth.uid))",
+
+          // Force this value to be a string
+          //".validate": "newData.isString()"
+        },
+
+        "Allowed": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed').val() == auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))",
+
+
+            "$member": {
+            // Allows the user to remove themselves from the group
+            ".write": "auth != null && auth.uid === $member && !newData.exists()",
+
+            // Force this value to be a boolean
+            //".validate": "newData.isBoolean()"
+          }
+        },
+
+        "Data": {
+          // The owner and members can edit anything under "Data"
+          // Currently this includes deleting everything under it!
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          // TODO: tighten structure of "Data" like above
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed').val() == auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        }
+      }
+    },
+   "Family":{
+     ".indexOn": ["email"],
+       ".read": "auth != null",
+      ".write": "auth != null",
+    },
+    "Users":{
+      ".indexOn": ["Email"],
+				"$uid":{
+          ".read": "auth != null && $uid == auth.uid",
+          ".write": "auth != null && $uid == auth.uid"
+      }
+    }
+  }
+}

@@ -3,12 +3,15 @@ package com.fwa.app.testingViews.testingViews.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.testingViews.testingViews.fragment.setup.fragment_sett_up_family;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +28,9 @@ public class button_menu_fragment_add_new_product extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View list_view;
+
+    private ImageButton temp_manual_add_product_btn;
 
     public button_menu_fragment_add_new_product() {
         // Required empty public constructor
@@ -61,6 +67,32 @@ public class button_menu_fragment_add_new_product extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_button_menu_add_new_product, container, false);
+        list_view = inflater.inflate(R.layout.fragment_button_menu_add_new_product, container, false);
+        FragmentManager fragmentManager = getParentFragmentManager();
+
+        temp_manual_add_product_btn = list_view.findViewById(R.id.imageBtnOptionOne);
+        temp_manual_add_product_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // open inn main view app
+                fragmentManager.beginTransaction()
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, fragment_add_product_manually_admin.class,null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+
+
+            }
+        });
+
+
+
+
+
+
+
+
+        return list_view;
     }
 }

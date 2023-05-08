@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fwa.app.testingViews.testingViews.fragment.test.FirstTimeRun_test"
+    android:layout_margin="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/family_id_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"
+        android:hint="Family Group Id"
+        android:inputType="textPersonName"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        />
+
+    <Button
+        android:id="@+id/start_the_family_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start a Family Plan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="#FFFDFD"
+        android:layout_below="@+id/family_id_txt"
+        />
+
+
+
+    <EditText
+        android:id="@+id/email_txt_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="family member @Email"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:layout_below="@+id/start_the_family_btn"/>
+
+
+    <Button
+        android:id="@+id/add_to_family_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Family Up to 6 Members"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#0ED6B9"
+        android:layout_below="@+id/email_txt_1" />
+    <Button
+        android:id="@+id/search_the_family_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search family"
+        android:layout_marginTop="20dp"
+        android:textColor="#FFFDFD"
+        android:layout_below="@+id/add_to_family_btn"/>
+
+
+    <TextView
+        android:id="@+id/family_members_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Family Member's || Info"
+        android:textSize="20dp"
+        android:layout_below="@+id/search_the_family_btn"/>
+</RelativeLayout>

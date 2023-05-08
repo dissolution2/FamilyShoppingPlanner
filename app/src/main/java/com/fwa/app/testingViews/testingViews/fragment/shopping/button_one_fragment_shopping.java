@@ -1,5 +1,6 @@
 package com.fwa.app.testingViews.testingViews.fragment.shopping;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public class button_one_fragment_shopping extends Fragment {
 
     private View list_view;
     private RecyclerView recyclerView_list;
-
+    private String family_uid="";
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://authapp-e8559-default-rtdb.europe-west1.firebasedatabase.app/");;
     private DatabaseReference ref;
     private FirebaseAuth mAuth;
@@ -100,14 +101,27 @@ public class button_one_fragment_shopping extends Fragment {
         // Inflate the layout for this fragment
         mAuth = FirebaseAuth.getInstance();
         list_view = inflater.inflate(R.layout.fragment_button_one_shopping, container, false);
+        SharedPreferences pref = this.getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        //SharedPreferences.Editor editor = pref.edit();
 
+        //Log.d("TAG","test : " +pref.getString("key_name", "No data!!")) ; // getting String
+        family_uid = pref.getString("key_name", "No data!!");
+        Log.d("TAG ShoppingList","check family_uid: " + family_uid);
         recyclerView_list = (RecyclerView) list_view.findViewById(R.id.recycle_one_shopping);
         recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        // old
+/*
+       ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
                 child("ShoppingList").child("MAIN");
+*/
+        ref = database.getReference("Groups")
+                .child(family_uid)
+                .child("Data").
+                child("List").
+                child("ShoppingList").child("Main");
 
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
@@ -133,8 +147,75 @@ public class button_one_fragment_shopping extends Fragment {
                 ProductVH vh = (ProductVH) holder;
                 Product emp = (Product) model;
 
-                vh.txt_name.setText(emp.getName());
+                vh.txt_name.setText(emp.getName().toUpperCase());
+                vh.txt_company.setText(emp.getCompany().toUpperCase());
                 //vh.txt_position.setText(emp.getPosition());
+                vh.txt_amount.setText(String.valueOf(emp.getAmount()));
+
+                // default will be the last entry !!!
+                // getting the last storage key eks c d = we get d;
+                // getting the last storage key eks d c = we get c;
+                String storage ="";
+                String storage_made_string ="";
+                String storage_one ="";
+                String storage_two ="";
+                if(!emp.getStorage().isEmpty()){
+
+                    switch (emp.getStorage().size()){
+                        case 1: // == 1;
+                            storage_one = emp.getStorage().get(0).toLowerCase();
+
+                            switch (storage_one){
+                                case "c":
+                                    //vh.txt_storage.setText("STORAGE COLD +4");
+                                    storage_made_string = "STORAGE COLD +4";
+                                    break;
+                                case "f":
+                                    //vh.txt_storage.setText("STORAGE FREEZER -18");
+                                    storage_made_string = "STORAGE FREEZER -18";
+                                    break;
+                                case "d":
+                                    //vh.txt_storage.setText("STORAGE DRY");
+                                    storage_made_string = "STORAGE DRY";
+                                    break;
+                            }
+                            break;
+                        case 2: // = 2;
+                            storage_one = emp.getStorage().get(0).toLowerCase();
+                            storage_two = emp.getStorage().get(1).toLowerCase();
+                            switch (storage_one){
+                                case "c":
+                                    storage_made_string = "Cold +4";
+                                    break;
+                                case "f":
+                                    storage_made_string = "FREEZER -18";
+                                    break;
+                                case "d":
+                                    storage_made_string = "DRY";
+                                    break;
+                            }
+                            switch (storage_two){
+                                case "c":
+                                    storage_made_string = storage_made_string + " | " + "Cold +4";
+                                    //vh.txt_storage.setText(storage_made_string);
+                                    break;
+                                case "f":
+                                    storage_made_string = storage_made_string + " | " + "FREEZER -18";
+                                    //vh.txt_storage.setText(storage_made_string);
+                                    break;
+                                case "d":
+                                    storage_made_string = storage_made_string + " | " + "DRY";
+                                    //vh.txt_storage.setText(storage_made_string);
+                                    break;
+                            }
+                            break;
+                    }
+                    Log.d("STORAGE","to string: " + emp.getStorage());
+                    Log.d("STORAGE","Made String is : " + storage_made_string);
+                    vh.txt_storage.setText(storage_made_string);
+
+                }
+                //ToDo: change to a imageButton and se if we can get diff image's star empty / full if a user have it as a fav.
                 vh.txt_option.setOnClickListener(v->
                 {
                     PopupMenu popupMenu =new PopupMenu( getContext(),vh.txt_option);
@@ -143,23 +224,26 @@ public class button_one_fragment_shopping extends Fragment {
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.menu_edit:
-                                //Intent intent=new Intent(getContext(), EmployeeMainActivity.class);
-                                //intent.putExtra("EDIT",emp);
-                                //startActivity(intent);
+                            case R.id.add_fav:
+
+
+
                                 break;
                             case R.id.menu_remove:
 
-                                DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .child("Family").
+                                DatabaseReference ref = database.getReference("Groups")
+                                        .child(family_uid)
+                                        .child("Data").
                                         child("List").
-                                        child("ShoppingList").child("MAIN").child(emp.getKey());
+                                        child("ShoppingList").child("Main").child(emp.getKey());
 
                                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
                                         if (dataSnapshot.isSuccessful()) {
                                            // ref.getRef().removeValue();
+                                        }else{
+                                            Log.d("TAG menu_remove","not IsSuccessful!!");
                                         }
                                     }
                                 });
@@ -223,13 +307,14 @@ public class button_one_fragment_shopping extends Fragment {
             List product_List = new ArrayList();
 
 
-            //JOBBER HERE!!
+
             /** HERE WE NEED TO CHECK THE PRODUCT STORAGE - IF DRY - COLD +4 OR COLD -18 **/
 
-            DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Family").
+            DatabaseReference refquery = database.getReference("Groups")
+                    .child(family_uid)
+                    .child("Data").
                     child("List").
-                    child("ShoppingList").child("MAIN").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
+                    child("ShoppingList").child("Main").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
             if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -252,13 +337,16 @@ public class button_one_fragment_shopping extends Fragment {
                                                 child.getValue(Product.class).getName(),
                                                 child.getValue(Product.class).getCompany(),
                                                 child.getValue(Product.class).getAmount(),
+                                                child.getValue(Product.class).getQuantity(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
                                         Log.d("TAG Key Shop", "key we tak out: "  + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
                                         Log.d("TAG Key Shop", "firebase with recycler List post: "  + firebaseRecyclerAdapter.getRef(recyclerView_list.getChildLayoutPosition(viewHolder.itemView)));
 
                                         Log.d("TAG ViewHolder Pos Shop","int " + recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
-                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        //old
+                                        //recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        recyclerView_list.getLayoutManager().removeViewAt(viewHolder.itemView.getId());
 
                                         break;
                                     }
@@ -268,29 +356,78 @@ public class button_one_fragment_shopping extends Fragment {
                                 String id = database.getReference().push().getKey();
                                 Product product = new Product(((Product) product_List.get(0)).getBarcode(),
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
-                                        ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
+                                        ((Product) product_List.get(0)).getAmount(),((Product) product_List.get(0)).getQuantity(), ((Product) product_List.get(0)).getStorage());
 
-
+                                // default will be the last entry !!!
+                                // getting the last storage key eks c d = we get d;
+                                // getting the last storage key eks d c = we get c;
+                                String storage ="";
                                 String storage_container_to_use = "";
-                                switch ( ((Product) product_List.get(0)).getStorage().toString() ){
-                                    case "c":
-                                        storage_container_to_use = "Refrigerator";
-                                        break;
-                                    case "f":
-                                        storage_container_to_use = "Freezer";
-                                        break;
-                                    case "d":
-                                        storage_container_to_use = "DryStorage";
-                                        break;
+                                String storage_made_string ="";
+                                String storage_one ="";
+                                String storage_two ="";
+                                if(!((Product) product_List.get(0)).getStorage().isEmpty()){
+
+                                    if(((Product) product_List.get(0)).getStorage().size() > 0) {
+                                        switch (((Product) product_List.get(0)).getStorage().size()) {
+                                            case 1: // == 1;
+                                                storage_one = ((Product) product_List.get(0)).getStorage().get(0).toLowerCase();
+
+                                                switch (storage_one) {
+                                                    case "c":
+                                                        storage_made_string = "Refrigerator";
+                                                        break;
+                                                    case "f":
+                                                        storage_made_string = "Freezer";
+                                                        break;
+                                                    case "d":
+                                                        storage_made_string = "Dry";
+                                                        break;
+                                                }
+                                                break;
+                                            case 2: // = 2;
+                                                storage_one = ((Product) product_List.get(0)).getStorage().get(0).toLowerCase();
+                                                storage_two = ((Product) product_List.get(0)).getStorage().get(1).toLowerCase();
+                                                switch (storage_one) {
+                                                    case "c":
+                                                        storage_made_string = "Refrigerator";
+                                                        break;
+                                                    case "f":
+                                                        storage_made_string = "Freezer";
+                                                        break;
+                                                    case "d":
+                                                        storage_made_string = "Dry";
+                                                        break;
+                                                }
+                                                //ToDo: Need to get default storage value
+                                                switch (storage_two) {
+                                                    case "c":
+                                                        storage_made_string = "Refrigerator";
+                                                        break;
+                                                    case "f":
+                                                        storage_made_string = "Freezer";
+                                                        break;
+                                                    case "d":
+                                                        storage_made_string = "Dry";
+                                                        break;
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    //Log.d("STORAGE","to string: " + emp.getStorage());
+                                    Log.d("STORAGE","Made String is : " + storage_made_string);
                                 }
+                                //ToDo: storage_container_to_use
                                 /** save product to storage list = there storage criteria  */
-                                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                        .child(storage_container_to_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                database.getReference("Groups").child(family_uid).child("Data").child("List")
+                                        .child(storage_made_string).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    //Toast.makeText(getActivity(), "Product moved to cold -4 list", Toast.LENGTH_LONG).show();
+                                                    Log.e("TAG isSuccessful", "isSuccessful" );
 
+                                                }else{
+                                                    Log.e("TAG Fail", "Failed to get data" );
                                                 }
                                             }
                                         })

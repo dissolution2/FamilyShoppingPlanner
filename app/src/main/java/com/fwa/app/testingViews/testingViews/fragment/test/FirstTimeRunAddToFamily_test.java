@@ -1,4 +1,4 @@
-package com.fwa.app.testingViews.testingViews.fragment;
+package com.fwa.app.testingViews.testingViews.fragment.test;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fwa.app.classes.FamilyMember;
-import com.fwa.app.classes.Product;
 import com.fwa.app.classes.UserData;
 import com.fwa.app.database.FirebaseRWQ;
 import com.fwa.app.familyshoppingplanner.R;
@@ -27,11 +26,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class FragmentFirstTimeRunAddToFamily extends AppCompatActivity {
+public class FirstTimeRunAddToFamily_test extends AppCompatActivity {
 
     private Button add_btn, search_btn;
     private TextView family_id, family_email, family_info_txt;
@@ -126,7 +123,7 @@ public class FragmentFirstTimeRunAddToFamily extends AppCompatActivity {
 
 
 /** Set Users **/
-                        UserData userData = new UserData(mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getUid(),
+                        UserData userData = new UserData(mAuth.getCurrentUser().getEmail(), mAuth.getCurrentUser().getUid(), //((FamilyMember) member_found.get(0)).getUid(), //
                                 "false", "member", "Main", mAuth.getCurrentUser().getUid(), ((FamilyMember) member_found.get(0)).getUid(), "", "");
 
                         database.getReference("Users").child(mAuth.getCurrentUser().getUid())

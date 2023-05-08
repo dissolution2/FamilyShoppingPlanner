@@ -1,13 +1,15 @@
 package com.fwa.app.testingViews.testingViews.fragment.storage;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,34 +17,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.fwa.app.classes.Option;
 import com.fwa.app.classes.Product;
 import com.fwa.app.classes.ProductVH;
-import com.fwa.app.classes.ProductViewHolderHelperClass;
 import com.fwa.app.database.FirebaseRWQ;
 import com.fwa.app.familyshoppingplanner.R;
-import com.fwa.app.product.manualy.add.main_add_product_shopping_list_with_barcode_reader_db;
-import com.fwa.app.testingViews.testingViews.Employee.DAOEmployee;
-import com.fwa.app.testingViews.testingViews.Employee.Employee;
-import com.fwa.app.testingViews.testingViews.Employee.EmployeeMainActivity;
-import com.fwa.app.testingViews.testingViews.Employee.EmployeeVH;
-import com.fwa.app.testingViews.testingViews.Employee.RVActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +47,9 @@ public class button_one_fragment_storage extends Fragment {
     private ProgressBar progressBar;
     private View list_view;
     private RecyclerView recyclerView_list;
+
+    private String family_uid ="";
+
 
     FirebaseRecyclerAdapter firebaseRecyclerAdapter;
 
@@ -114,6 +107,11 @@ public class button_one_fragment_storage extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_button_one_call, container, false);
 
+        SharedPreferences pref = this.getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        //SharedPreferences.Editor editor = pref.edit();
+
+        //Log.d("TAG","test : " +pref.getString("key_name", "No data!!")) ; // getting String
+        family_uid = pref.getString("key_name", "No data!!");
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -122,16 +120,40 @@ public class button_one_fragment_storage extends Fragment {
 
 
 
-
         recyclerView_list = (RecyclerView) list_view.findViewById(R.id.recycle_list_one);
-        recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        /** View How the GridLayoutManger will work */
+
+        // ToDo: value to store preference - layout in settings.
+
+        // old working
+        //recyclerView_list.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // working all so!!
+        //recyclerView_list.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+        recyclerView_list.setLayoutManager( new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
+
+        //GridLayoutManager layoutManager = new GridLayoutManager(getContext(),2);
+        //recyclerView_list.setLayoutManager( layoutManager );
+
+        /** View How the GridLayoutManger will work */
 
 
+
+/* old Path
         ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("Family").
                 child("List").
                 child("Refrigerator");
+*/
 
+
+
+
+        ref = database.getReference("Groups").child(family_uid).child("Data")
+                .child("List").
+                child("Refrigerator");
         // this works with delete on option
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
@@ -162,23 +184,72 @@ public class button_one_fragment_storage extends Fragment {
                 vh.txt_company.setText(emp.getCompany().toUpperCase());
                 //int temp = emp.getAmount();
                 //String tmpStr10 = String.valueOf(temp);
-                vh.txt_amount.setText(String.valueOf(emp.getAmount()));
+                //vh.txt_amount.setText(String.valueOf(emp.getAmount()));
 
+                // default will be the last entry !!!
+                // getting the last storage key eks c d = we get d;
+                // getting the last storage key eks d c = we get c;
+                String storage ="";
+                String storage_made_string ="";
+                String storage_one ="";
+                String storage_two ="";
+                if(!emp.getStorage().isEmpty()){
 
-                //vh.txt_amount.setText(emp.getAmount());
-                switch (emp.getStorage()){
-                    case "c":
-                        vh.txt_storage.setText("STORAGE COLD +4");
-                        break;
-                    case "f":
-                        vh.txt_storage.setText("STORAGE FREEZER -18");
-                        break;
-                    case "d":
-                        vh.txt_storage.setText("STORAGE DRY");
-                        break;
+                    switch (emp.getStorage().size()){
+                        case 1: // == 1;
+                            storage_one = emp.getStorage().get(0).toLowerCase();
+
+                            switch (storage_one){
+                                case "c":
+                                    //vh.txt_storage.setText("STORAGE COLD +4");
+                                    storage_made_string = "STORAGE COLD +4";
+                                    break;
+                                case "f":
+                                    //vh.txt_storage.setText("STORAGE FREEZER -18");
+                                    storage_made_string = "STORAGE FREEZER -18";
+                                    break;
+                                case "d":
+                                    //vh.txt_storage.setText("STORAGE DRY");
+                                    storage_made_string = "STORAGE DRY";
+                                    break;
+                            }
+                            break;
+                        case 2: // = 2;
+                            storage_one = emp.getStorage().get(0).toLowerCase();
+                            storage_two = emp.getStorage().get(1).toLowerCase();
+                            switch (storage_one){
+                                case "c":
+                                    storage_made_string = "Cold +4";
+                                    break;
+                                case "f":
+                                    storage_made_string = "FREEZER -18";
+                                    break;
+                                case "d":
+                                    storage_made_string = "DRY";
+                                    break;
+                            }
+                            switch (storage_two){
+                                case "c":
+                                    storage_made_string = storage_made_string + " | " + "Cold +4";
+                                    //vh.txt_storage.setText(storage_made_string);
+                                    break;
+                                case "f":
+                                    storage_made_string = storage_made_string + " | " + "FREEZER -18";
+                                    //vh.txt_storage.setText(storage_made_string);
+                                    break;
+                                case "d":
+                                    storage_made_string = storage_made_string + " | " + "DRY";
+                                    //vh.txt_storage.setText(storage_made_string);
+                                    break;
+                            }
+                            break;
+                    }
+                    Log.d("STORAGE","to string: " + emp.getStorage());
+                    Log.d("STORAGE","Made String is : " + storage_made_string);
+                    vh.txt_storage.setText(storage_made_string);
+
                 }
-                //vh.txt_storage.setText(emp.getStorage());
-                //vh.txt_position.setText(emp.getPosition());
+
                 vh.txt_option.setOnClickListener(v->
                 {
                     PopupMenu popupMenu =new PopupMenu( getContext(),vh.txt_option);
@@ -187,16 +258,14 @@ public class button_one_fragment_storage extends Fragment {
                     {
                         switch (item.getItemId())
                         {
-                            case R.id.menu_edit:
-                                //Intent intent=new Intent(getContext(), EmployeeMainActivity.class);
-                                //intent.putExtra("EDIT",emp);
-                                //startActivity(intent);
+                            case R.id.add_fav:
+
                                 break;
                             case R.id.menu_remove:
 
-                                DatabaseReference ref = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .child("Family").
-                                        child("List").
+                                DatabaseReference ref = database.getReference("Groups")
+                                        .child(family_uid).child("Data")
+                                        .child("List").
                                         child("Refrigerator").child(emp.getKey()); //.child("N");
 
                                 ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -235,6 +304,8 @@ public class button_one_fragment_storage extends Fragment {
             }
 
         };
+
+
         recyclerView_list.setAdapter(firebaseRecyclerAdapter);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView_list);
         return list_view;
@@ -301,21 +372,6 @@ public class button_one_fragment_storage extends Fragment {
 */
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder{
-
-        TextView product_name, product_amount;
-        public ProductViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            product_name = itemView.findViewById(R.id.txt_name);
-            //product_amount = itemView.findViewById(R.id.txt_position);
-        }
-    }
-
-
-
-
-
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -337,7 +393,10 @@ public class button_one_fragment_storage extends Fragment {
             }
 
 
-            DatabaseReference ref_shopping_list_in_use = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Family").child("List").child("Option");
+            // on user sett Option
+            DatabaseReference ref_shopping_list_in_use = database.getReference("Users").child(mAuth.getCurrentUser().getUid())
+                    .child("shoppingList");//.child("Option");
+
             ref_shopping_list_in_use.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> dataSnapshot) {
@@ -375,8 +434,8 @@ public class button_one_fragment_storage extends Fragment {
 
 
             /** getKey() from firebaseRecyclerAdapter position of object */
-            DatabaseReference refquery = database.getReference(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Family").
+            DatabaseReference refquery = database.getReference("Groups").child(family_uid)
+                    .child("Data").
                     child("List").
                     child("Refrigerator").child(firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
             if(!firebaseRecyclerAdapter.getSnapshots().isEmpty()){
@@ -403,6 +462,7 @@ public class button_one_fragment_storage extends Fragment {
                                                 child.getValue(Product.class).getName(),
                                                 child.getValue(Product.class).getCompany(),
                                                 child.getValue(Product.class).getAmount(),
+                                                child.getValue(Product.class).getQuantity(),
                                                 child.getValue(Product.class).getStorage()
                                         ));
                                     Log.d("TAG Key Stor", "key we tak out: "  + firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey());
@@ -410,7 +470,10 @@ public class button_one_fragment_storage extends Fragment {
 
 
                                         Log.d("TAG ViewHolder Pos Stor","int " + recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
-                                        recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        // old null point after list was over 4 - 7 long
+                                        //recyclerView_list.removeViewAt(recyclerView_list.getChildLayoutPosition(viewHolder.itemView));
+                                        //check with list over 20 looks good!!!!
+                                        recyclerView_list.getLayoutManager().removeViewAt(viewHolder.itemView.getId());
 
                                         break;
                                    }
@@ -431,18 +494,22 @@ public class button_one_fragment_storage extends Fragment {
 
                                 String id = database.getReference().push().getKey(); // makes a new key on the move
                                 //String id = firebaseRecyclerAdapter.getRef(viewHolder.getBindingAdapterPosition()).getRef().getKey();
+
+
+
+
                                 Product product = new Product(((Product) product_List.get(0)).getBarcode(),
                                         ((Product) product_List.get(0)).getName(), ((Product) product_List.get(0)).getCompany(),
-                                        ((Product) product_List.get(0)).getAmount(), ((Product) product_List.get(0)).getStorage());
+                                        ((Product) product_List.get(0)).getAmount(),((Product) product_List.get(0)).getQuantity(), ((Product) product_List.get(0)).getStorage());
 
-
-                                database.getReference().child(mAuth.getCurrentUser().getUid()).child("Family").child("List")
-                                    .child("ShoppingList").child(user_shopping_list_in_use).child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
+//Todo:user_shopping_list_in_use as Main!!!
+                                database.getReference().child("Groups").child(family_uid).child("Data")
+                                    .child("List").child("ShoppingList").child("Main").child(id).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Log.e("query begin", "Product moved/saved to shopping list");
-                                                Toast.makeText(getActivity(), "Product moved/saved to shopping list: " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Moved to shopping list: " + user_shopping_list_in_use, Toast.LENGTH_LONG).show();
                                             }
                                             if(task.isComplete()) {
                                                 Log.e("query end", "Product moved/saved to shopping list");
@@ -464,6 +531,9 @@ public class button_one_fragment_storage extends Fragment {
                             }
                             if(direction == 4){
                                 /** removers query key and data from the realtime db **/
+
+                                /** Check if user has sett item to move from one storage to another storage **/
+
                                 refquery.getRef().removeValue();
                             }
                         }
@@ -472,11 +542,6 @@ public class button_one_fragment_storage extends Fragment {
             }else{
                 //Toast.makeText( getActivity(), "Swipe empty call", Toast.LENGTH_LONG).show();
             }
-
-
-
-            //recyclerView_list.getAdapter().notifyDataSetChanged();
-
         }
     };
 

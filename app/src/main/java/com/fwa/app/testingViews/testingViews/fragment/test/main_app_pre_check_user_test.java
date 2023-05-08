@@ -1,6 +1,5 @@
-package com.fwa.app.testingViews.testingViews.fragment;
+package com.fwa.app.testingViews.testingViews.fragment.test;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,13 +14,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-public class main_app_pre_check_user extends AppCompatActivity {
+
+public class main_app_pre_check_user_test extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -37,7 +34,7 @@ public class main_app_pre_check_user extends AppCompatActivity {
         /** Check if user id Uid have a User in the database  Yes direct him to main app,
          *  else we direct him/her to Option Menu
          ***/
-// On user gets first the uid group
+        // On user gets first the uid group
         Query user = database.getReference("Users").child(mAuth.getCurrentUser().getUid())
                 .child("FamilyUid").orderByKey().equalTo("role");//.child("role"); // null // .child("hashFamily") // ok
 

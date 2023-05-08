@@ -1,4 +1,4 @@
-package com.fwa.app.testingViews.testingViews.fragment.storage;
+package com.fwa.app.testingViews.testingViews.fragment.storage.menu;
 
 import android.os.Bundle;
 
@@ -12,6 +12,9 @@ import android.widget.Button;
 
 import com.fwa.app.familyshoppingplanner.R;
 import com.fwa.app.testingViews.testingViews.fragment.button_menu_fragment_option_product;
+import com.fwa.app.testingViews.testingViews.fragment.storage.button_one_fragment_storage;
+import com.fwa.app.testingViews.testingViews.fragment.storage.button_three_fragment_storage;
+import com.fwa.app.testingViews.testingViews.fragment.storage.button_two_fragment_storage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,8 +84,8 @@ public class button_menu_fragment_storage_list extends Fragment {
             public void onClick(View view) {
                 /**   call on replace the fragments on there container's and we send string "storage to use on" to Search product_option_menu with **/
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewList, button_one_fragment_storage.newInstance("",""),null)
-                        .replace(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null) //add(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null)
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, button_one_fragment_storage.newInstance("",""),null)
+                        .replace(R.id.Fragment_ContainerView_Main_Button_Menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null) //add(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null)
                         .commit();
 
 
@@ -103,8 +106,8 @@ public class button_menu_fragment_storage_list extends Fragment {
 
                 /**   call on replace the fragments on there container's and we send string "storage to use on" to Search product_option_menu with **/
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewList, button_two_fragment_storage.newInstance("",""),null)
-                        .replace(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Freezer",""),null) //add(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null)
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, button_two_fragment_storage.newInstance("",""),null)
+                        .replace(R.id.Fragment_ContainerView_Main_Button_Menu, button_menu_fragment_option_product.newInstance("Freezer",""),null) //add(R.id.fragmentContainerViewButton_menu, button_menu_fragment_option_product.newInstance("Refrigerator",""),null)
                         .commit();
                 /*
                 fragmentManager.beginTransaction()
@@ -121,7 +124,7 @@ public class button_menu_fragment_storage_list extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewList, button_three_fragment_storage.class, null,"storage_three" ).
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, button_three_fragment_storage.class, null,"storage_three" ).
                         setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();

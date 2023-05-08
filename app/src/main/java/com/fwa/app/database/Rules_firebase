@@ -1,0 +1,156 @@
+when testing use easy rules
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+
+// In Use Now since 07 Nov 22 read write checked for one user and one owner ok!!
+{
+  "rules": {
+    "Groups" : {
+      "$group": {
+        // If this group doesn't exist, allow the read.
+        // If the group does exist, only the owner & it's members
+        // can read this group's entire data tree.
+        ".read": "(data.child('Allowed').val() == auth.token.email) || (data.child('Owner').val() == auth.uid)",
+
+        "Owner": {
+          // Only the current owner can write data to this key if it exists.
+          // If the owner is not yet set, they can only claim it for themselves.
+          ".write": "auth != null && (data.val() === auth.uid || (!data.exists() && newData.val() === auth.uid))",
+
+          // Force this value to be a string
+          //".validate": "newData.isString()"
+        },
+
+        "Allowed": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed').val() == auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))",
+
+
+            "$member": {
+            // Allows the user to remove themselves from the group
+            ".write": "auth != null && auth.uid === $member && !newData.exists()",
+
+            // Force this value to be a boolean
+            //".validate": "newData.isBoolean()"
+          }
+        },
+
+        "Data": {
+          // The owner and members can edit anything under "Data"
+          // Currently this includes deleting everything under it!
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          // TODO: tighten structure of "Data" like above
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed').val() == auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        }
+      }
+    },
+   "Family":{
+     ".indexOn": ["email"],
+       ".read": "auth != null",
+      ".write": "auth != null",
+    },
+    "Users":{
+      ".indexOn": ["Email"],
+				"$uid":{
+          ".read": "auth != null && $uid == auth.uid",
+          ".write": "auth != null && $uid == auth.uid"
+      }
+    }
+  }
+}
+
+
+
+
+// old
+{
+  "rules": {
+    "Groups" : {
+      "$group": {
+        // If this group doesn't exist, allow the read.
+        // If the group does exist, only the owner & it's members
+        // can read this group's entire data tree.
+        ".read": "!data.exists() || (auth != null && (data.child('Owner').val() === auth.uid || data.child('Allowed_1').child(auth.token.email).val() === auth.token.email)) || (data.child('Allowed_2').child(auth.token.email).val() === auth.token.email) || (data.child('Allowed_3').child(auth.token.email).val() === auth.token.email) || (data.child('Allowed_4').child(auth.token.email).val() === auth.token.email) || (data.child('Allowed_5').child(auth.token.email).val() === auth.token.email) || (data.child('Allowed_6').child(auth.token.email).val() === auth.token.email)",
+
+    "Owner": {
+          // Only the current owner can write data to this key if it exists.
+          // If the owner is not yet set, they can only claim it for themselves.
+          ".write": "auth != null && (data.val() === auth.uid || (!data.exists() && newData.val() === auth.uid))",
+
+          // Force this value to be a string
+          //".validate": "newData.isString()"
+        },
+
+    "Allowed_1": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_1').child(auth.uid).val() === true || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        },
+    "Allowed_2": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_2').child(auth.uid).val() === true || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        },
+		"Allowed_3": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_3').child(auth.uid).val() === true || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        },
+		"Allowed_4": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_4').child(auth.uid).val() === true || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        },
+		"Allowed_5": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_5').child(auth.uid).val() === true || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        },
+		"Allowed_6": {
+          // Only the owner can edit the entire member list
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_6').child(auth.uid).val() === true || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))"
+        },
+		"Data": {
+          // The owner and members can edit anything under "Data"
+          // Currently this includes deleting everything under it!
+          // For a new group, the owner is also granted write access
+          // for it's creation
+          // TODO: tighten structure of "Data" like above
+          ".write": "auth != null && (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_1').child(auth.token.email).val() === auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid)) || (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_2').child(auth.token.email).val() === auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid)) || (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_3').child(auth.token.email).val() === auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid)) || (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_4').child(auth.token.email).val() === auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid)) || (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_5').child(auth.token.email).val() === auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid)) || (data.parent().child('Owner').val() === auth.uid || data.parent().child('Allowed_6').child(auth.token.email).val() === auth.token.email || (!data.exists() && newData.parent().child('Owner').val() === auth.uid))",
+          ".read": "auth != null && (data.parent().child('Allowed_1').val() === auth.token.email) ||
+		  auth != null && (data.parent().child('Allowed_2').val() === auth.token.email) ||
+		  auth != null && (data.parent().child('Allowed_3').val() === auth.token.email) ||
+		  auth != null && (data.parent().child('Allowed_4').val() === auth.token.email) ||
+		  auth != null && (data.parent().child('Allowed_5').val() === auth.token.email) ||
+		  auth != null && (data.parent().child('Allowed_6').val() === auth.token.email)",
+        }
+      }
+    },
+   "Family":{
+     ".indexOn": ["email"],
+       ".read": "auth != null",
+      ".write": "auth != null",
+    },
+    "Users":{
+      ".indexOn": ["Email"],
+				"$uid":{
+          ".read": "auth != null && $uid == auth.uid",
+          ".write": "auth != null && $uid == auth.uid"
+      }
+    }
+  }
+}
