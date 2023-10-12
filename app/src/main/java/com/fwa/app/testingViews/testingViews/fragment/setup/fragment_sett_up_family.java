@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -410,9 +411,19 @@ public class fragment_sett_up_family extends Fragment {
 
                 /** sett string and value as database rules checks on value on the string key. **/
 
-/** Groups -DB **/
+
+                HashMap<String, Object> allowedMap = new HashMap<>();
+                allowedMap.put("Allowed_1", "user1@example.com");
+                allowedMap.put("Allowed_2", "user2@example.com");
+
+
+
+
+
+
+/** Groups -DB **/ // toDo: test on Allowed change to add database.getReference().push().getKey() // and test on database rule change from Allowed to Allowed_1 etc
                 database.getReference("Groups").child(mAuth.getCurrentUser().getUid())
-                        .child("Allowed").setValue(family_email_member_1.getText().toString().trim().toLowerCase()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .child("Allowed_1").setValue(family_email_member_1.getText().toString().trim().toLowerCase()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
@@ -543,6 +554,102 @@ public class fragment_sett_up_family extends Fragment {
         });
 
 
+        //ToDo: error on adding a second member : On users FamilyUid - hasFamily got changed from 1. user to the 2. user // we want to add the 2 user etc.
+        //ToDo: Groups on adding a second member : On owner Uid - Allowed: got all so changed to the 2. user etc // again we want to add the 2 user etc.
+
+
+        add_member_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+
+//family_email.getText()
+                Log.d("TAG UID","mAuth : " + mAuth.getCurrentUser().getUid());
+                Log.d("TAG QUERY","ADD FAMILY BUTTON PRESSED");
+/** Test on second db store user strings with Owner !!!  **/
+
+                /** sett string and value as database rules checks on value on the string key. **/
+
+/** Groups -DB **/
+                database.getReference("Groups").child(mAuth.getCurrentUser().getUid())
+                        .child("Allowed_2").setValue(family_email_member_2.getText().toString().trim().toLowerCase()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG QUERY", "Exceptiong Middle task " + e);
+                            }
+                        });
+/** Family -DB **/
+                FamilyMember member = new FamilyMember(family_email_member_2.getText().toString().trim().toLowerCase(), mAuth.getUid(),"false");
+                database.getReference("Family")
+                        .child("Members").child(database.getReference().push().getKey())
+                        .setValue(member).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete()){
+
+                                    //ToDo: info ? not sure
+                                    //family_members_txt.setText("Family members search on there @mail to be added. Added: " + member.getEmail());
+
+
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG QUERY", "Exceptiong Middle task " + e);
+                            }
+                        });
+/** Users -DB **/
+                /* don't use this
+                UserData userData = new UserData(mAuth.getCurrentUser().getEmail(),mAuth.getCurrentUser().getUid(),
+                        "false","owner","Main","",null,
+                        database.getReference().push().getKey(),family_email_member_2.getText().toString().trim().toLowerCase());
+                */
+
+                // sett: UserUid ? mAuth.getCurrentUser().getUid()
+                // sett: FamilyUid ? mAuth.getCurrentUser().getUid()
+                database.getReference("Users").child(mAuth.getCurrentUser().getUid())
+                        .child("FamilyUid").child("hashFamily").child(database.getReference().push().getKey()).setValue(family_email_member_2.getText().toString().trim().toLowerCase()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG QUERY", "Exceptiong Middle task " + e);
+                            }
+                        });
+
+                add_member_2.setEnabled(false);
+                //add_member_1.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E0E8E7"))); // inactive
+                add_member_2.setVisibility(View.GONE);
+
+                remove_member_2.setEnabled(true);
+                remove_member_2.setVisibility(View.VISIBLE);
+
+                family_email_member_2.setEnabled(false);
+                family_email_member_2.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#E0E8E7"))); // inactive
+
+                add_member_3.setEnabled(true);
+                add_member_3.setVisibility(View.VISIBLE);
+
+                family_email_member_3.setEnabled(true);
+                family_email_member_3.setVisibility(View.VISIBLE);
+
+                family_email_member_3.setFocusable(true);
+                family_email_member_3.requestFocus();
+
+                Toast.makeText(getActivity(), "Family Member Added", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
         /*

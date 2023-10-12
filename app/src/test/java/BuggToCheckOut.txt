@@ -1,0 +1,134 @@
+test mails:
+larsen.robin75@gmail.com
+frameworkgames1975@gmail.com
+robin.larsen75@gmail.com
+
+test mail's:
+
+player one: gameworks1975.playerone@gmail.com
+player two: gameworks1975.playertwo@gmail.com
+
+FATAL EXCEPTION: main
+Process: com.fwa.app.familyshoppingplanner, PID: 30127
+java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String com.google.firebase.auth.FirebaseUser.getDisplayName()'
+on a null object reference
+at com.fwa.app.familyshoppingplanner.MainActivity$2$1.onComplete(MainActivity.java:203)
+
+Listen at /Groups/oGm09XrH8tekko4bB0No7Qyp2oM2/Data/List/Refrigerator failed: DatabaseError: This client does not have permission to perform this operation
+2023-10-08 16:00:45.214 24955-25073 FirebaseDatabase        com.fwa.app.familyshoppingplanner    W  Assertion failed:
+2023-10-08 16:00:45.214 24955-25073 FirebaseDatabase        com.fwa.app.familyshoppingplanner    W  Assertion failed:
+2023-10-08 16:00:45.214 24955-25073 FirebaseDatabase        com.fwa.app.familyshoppingplanner    W  Assertion failed:
+2023-10-08 16:00:45.214 24955-25073 FirebaseDatabase        com.fwa.app.familyshoppingplanner    W  Assertion failed:
+2023-10-08 16:00:45.214 24955-24955 FirebaseRecyclerAdapter com.fwa.app.familyshoppingplanner    W  com.google.firebase.database.DatabaseException: Firebase Database error: This client does not have permission
+
+
+{
+  "Family": {
+    "Members": {
+      "-NgE_NULZnYJUreW153g": {
+        "delete": "false",
+        "email": "gameworks1975.playertwo@gmail.com",
+        "uid": "Pbwky3XaqWXhB7X27UZ6ZWeDR393"
+      }
+    }
+  },
+  "Groups": {
+    "Pbwky3XaqWXhB7X27UZ6ZWeDR393": {
+      "Allowed_1": "gameworks1975.playertwo@gmail.com",
+      "Data": {
+        "List": {
+          "Refrigerator": {
+            "-NgE_fQkra3H2u6C6nIQ": {
+              "amount": "1L",
+              "barcode": "45677",
+              "company": "fam2",
+              "name": "melk2",
+              "quantity": 1,
+              "storage": [
+                "c"
+              ]
+            }
+          },
+          "ShoppingList": "Main"
+        }
+      },
+      "Owner": "Pbwky3XaqWXhB7X27UZ6ZWeDR393"
+    },
+    "oGm09XrH8tekko4bB0No7Qyp2oM2": {
+      "Allowed_1": "robin.larsen75@gmail.com",
+      "Allowed_2": "larsen.robin75@gmail.com",
+      "Data": {
+        "List": {
+          "Refrigerator": {
+            "-NgE_XoWgPiK63wg3AGt": {
+              "amount": "1L",
+              "barcode": "56678",
+              "company": "fam1",
+              "name": "melk1",
+              "quantity": 1,
+              "storage": [
+                "c"
+              ]
+            }
+          },
+          "ShoppingList": "Main"
+        }
+      },
+      "Owner": "oGm09XrH8tekko4bB0No7Qyp2oM2"
+    }
+  },
+  "Users": {
+    "1EVjntbMGsZtgtHVgs60IbqujID2": {
+      "FamilyUid": {
+        "delete": "false",
+        "email": "larsen.robin75@gmail.com",
+        "hashFamily": {
+          "1EVjntbMGsZtgtHVgs60IbqujID2": "oGm09XrH8tekko4bB0No7Qyp2oM2"
+        },
+        "role": "member",
+        "shoppingList": "Main",
+        "uid": "1EVjntbMGsZtgtHVgs60IbqujID2"
+      }
+    },
+    "Pbwky3XaqWXhB7X27UZ6ZWeDR393": {
+      "FamilyUid": {
+        "delete": "false",
+        "email": "gameworks1975.playerone@gmail.com",
+        "hashFamily": {
+          "-NgE_NULZnYJUreW153h": "gameworks1975.playertwo@gmail.com"
+        },
+        "role": "owner",
+        "shoppingList": "Main",
+        "uid": "Pbwky3XaqWXhB7X27UZ6ZWeDR393"
+      }
+    },
+    "eIwMFE9sr8bv4POibeQQsCeF9v82": {
+      "FamilyUid": {
+        "delete": "false",
+        "email": "robin.larsen75@gmail.com",
+        "hashFamily": {
+          "eIwMFE9sr8bv4POibeQQsCeF9v82": "oGm09XrH8tekko4bB0No7Qyp2oM2"
+        },
+        "role": "member",
+        "shoppingList": "Main",
+        "uid": "eIwMFE9sr8bv4POibeQQsCeF9v82"
+      }
+    },
+    "oGm09XrH8tekko4bB0No7Qyp2oM2": {
+      "FamilyUid": {
+        "delete": "false",
+        "email": "frameworkgames1975@gmail.com",
+        "hashFamily": {
+          "-NgE_1O0gZoWEk1KRyHi": "robin.larsen75@gmail.com",
+          "-NgE_3t5v0PzvdG7ZAj4": "larsen.robin75@gmail.com"
+        },
+        "role": "owner",
+        "shoppingList": "Main",
+        "uid": "oGm09XrH8tekko4bB0No7Qyp2oM2"
+      }
+    }
+  }
+}
+
+family more then 1 family uid - find and add family - members : to the right family etc and
+check on family uid when logged inn so we dont need to go throu All of -Users etc

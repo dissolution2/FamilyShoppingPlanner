@@ -1,0 +1,12 @@
+MainActivit.java (activity_main.xml)
+FragmentMainClass.java (activity_framgent_main_class.xml)
+fragment_blank_check_user.java (here we check user from logInn if new, owner or member)
+
+
+fragmentMainSettUp.java (called if no user or member is found) so they can start a family tree
+next()
+fragment_sett_up_family.java ( user have pressed start a new family etc ) add user this user will be owner!!
+Uses: classes - UserData
+
+button_one_fragment_storage.java (called if a member or a owner is found of a family)
+

@@ -1,0 +1,21 @@
+Family 1
+is Owner  :
+	frameworkgames1975@gmail
+- Members is :
+	larsen.robin75@gmail.com
+
+	Family 2
+is Owner  :
+	gameworks1975.playerone@gmail
+-Members is :
+	robin.larsen75@gmail.com
+
+need more test mails !!! have
+test mail's:
+
+1.  larsen.robin75@gmail.com
+2.  frameworkgames1975@gmail.com
+3.  robin.larsen75@gmail.com
+4.  gameworks1975.playerone@gmail.com
+5.  player two: gameworks1975.playertwo@gmail.com
+6. larsen.kolaas758120@gmail.com -- denied -- cant use :(

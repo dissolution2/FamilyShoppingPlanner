@@ -104,7 +104,7 @@ public class fragment_blank_check_user extends Fragment {
 
         if(!uid_user.equals("NO_USER")){
 
-            Log.d("!NO_USER", "Inn Blank user check");
+            Log.d("!NO_USER", "Inn Blank user check uid_user: " + uid_user );
 
             FragmentManager fragmentManager = getParentFragmentManager();
             fragmentManager.beginTransaction()
@@ -145,6 +145,7 @@ public class fragment_blank_check_user extends Fragment {
                                     child.getValue(FamilyMember.class).getDelete()
                             ));
                         }
+                        Log.d("Member", "found: " + members_list);
                         for (int i = 0; i < members_list.size(); i++) {
 
                             if (((FamilyMember) members_list.get(i)).getEmail().equals(mAuth.getCurrentUser().getEmail())) {

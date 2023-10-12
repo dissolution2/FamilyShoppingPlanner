@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-
+            Log.d("TAG startForResult", "this is called result: " + result);
            if(result != null && result.getResultCode() == RESULT_OK) {
-
+                Log.d("TAG onActivityResult", "== RESULT_OK");
                if(result.getData() != null ){
                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                    try {
@@ -128,18 +128,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                    }
 
                }
+           }else{
+               Log.d("TAG startForResult", "this is NUll ???");
+               progressBar.setVisibility(View.GONE);
+               Toast.makeText(getApplicationContext(), "resultCode=RESULT_CANCELED", Toast.LENGTH_SHORT).show();
            }
 
         }
     });
 
     void signIn(){
+
         Intent signInIntent = gsc.getSignInIntent();
+
         startForResult.launch(signInIntent);
+
+        Log.d("TAG signIn()", "signInIntent is called" + signInIntent);
     }
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(String idToken) {
-        //Log.d("START auth_with_google", "We CLEAR getSharedPreferences");
+        Log.d("START auth_with_google", "We CLEAR getSharedPreferences");
         //getApplicationContext().getSharedPreferences("MyPref",0).edit().clear().commit();
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -223,6 +231,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                         Log.d("QUERY hashFamily", "Key: " + task_has_family.getResult().child(mAuth.getCurrentUser().getUid()).getValue());
                                                         //editor.clear();
                                                         getApplicationContext().getSharedPreferences("MyPref",0).edit().clear().commit();
+
+
+                                                        Log.d("Member check", "sett's editor with: " + task_has_family.getResult().child(mAuth.getCurrentUser().getUid()).getValue().toString());
+
+
                                                         editor.putString("key_name", task_has_family.getResult().child(mAuth.getCurrentUser().getUid()).getValue().toString());
                                                         editor.commit(); // commit changes
 
@@ -294,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.google_btn:
                 progressBar.setVisibility(View.VISIBLE);
+                Log.d("AUTH", "call: signIn()" );
                 signIn();
                 break;
         }

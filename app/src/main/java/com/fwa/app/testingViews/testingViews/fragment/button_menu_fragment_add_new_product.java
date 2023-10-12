@@ -1,5 +1,6 @@
 package com.fwa.app.testingViews.testingViews.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.fwa.app.familyshoppingplanner.R;
+import com.fwa.app.product.manualy.add.main_add_product_shopping_list_with_barcode_reader_db;
 import com.fwa.app.testingViews.testingViews.fragment.setup.fragment_sett_up_family;
 
 /**
@@ -30,7 +32,7 @@ public class button_menu_fragment_add_new_product extends Fragment {
     private String mParam2;
     private View list_view;
 
-    private ImageButton temp_manual_add_product_btn;
+    private ImageButton temp_manual_add_product_btn, temp_barcode_add_product_btn;
 
     public button_menu_fragment_add_new_product() {
         // Required empty public constructor
@@ -71,6 +73,7 @@ public class button_menu_fragment_add_new_product extends Fragment {
         FragmentManager fragmentManager = getParentFragmentManager();
 
         temp_manual_add_product_btn = list_view.findViewById(R.id.imageBtnOptionOne);
+        temp_barcode_add_product_btn = list_view.findViewById(R.id.imageBtnOptionThree);
         temp_manual_add_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +89,22 @@ public class button_menu_fragment_add_new_product extends Fragment {
             }
         });
 
+        temp_barcode_add_product_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                //startActivity(new Intent(this, main_add_product_shopping_list_with_barcode_reader_db.class));
+
+                // open inn main view app
+                fragmentManager.beginTransaction()
+                        .replace(R.id.Fragment_Container_Recycle_View_Main, fragment_add_product_fragment_barcode.class,null) // fragment_add_product_fragment_barcode
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+
+
+            }
+        });
 
 
 

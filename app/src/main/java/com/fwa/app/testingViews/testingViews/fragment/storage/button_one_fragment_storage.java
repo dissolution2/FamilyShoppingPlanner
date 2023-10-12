@@ -148,8 +148,9 @@ public class button_one_fragment_storage extends Fragment {
                 child("Refrigerator");
 */
 
-
-
+        Log.d("family_uid","family_uid : " + family_uid) ; // getting String
+        Log.d("mAuth","mAuthUser : " + mAuth.getCurrentUser() + " Uid: " + mAuth.getUid()) ; // getting String
+        Log.d("mAuth","email : " + mAuth.getCurrentUser().getEmail() + " Uid: " + mAuth.getUid()) ;
 
         ref = database.getReference("Groups").child(family_uid).child("Data")
                 .child("List").
@@ -182,6 +183,8 @@ public class button_one_fragment_storage extends Fragment {
 
                 vh.txt_name.setText(emp.getName().toUpperCase());
                 vh.txt_company.setText(emp.getCompany().toUpperCase());
+
+                //vh.product_image.setImageBitmap(); // first admin - add pic to database, if just to test!!
                 //int temp = emp.getAmount();
                 //String tmpStr10 = String.valueOf(temp);
                 //vh.txt_amount.setText(String.valueOf(emp.getAmount()));
@@ -280,7 +283,7 @@ public class button_one_fragment_storage extends Fragment {
                                 //DAOEmployee dao=new DAOEmployee();
                                 //dao.remove(emp.getKey()).addOnSuccessListener(suc->
                                 //{
-                                    Toast.makeText(getContext(), "toDo: move Record shoppinglist", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), "toDo: move Record shoppinglist", Toast.LENGTH_SHORT).show();
                                     //notifyItemRemoved(position);
                                     //list.remove(emp);
                                 //}).addOnFailureListener(er->

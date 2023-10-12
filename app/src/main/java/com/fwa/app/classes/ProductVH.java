@@ -1,6 +1,7 @@
 package com.fwa.app.classes;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import com.fwa.app.familyshoppingplanner.R;
 
 public class ProductVH extends RecyclerView.ViewHolder{
     public TextView txt_name,txt_amount,txt_storage,txt_company,txt_position,txt_option;
+    public ImageView product_image;
     public ProductVH(@NonNull View itemView)
     {
         super(itemView);
@@ -19,5 +21,7 @@ public class ProductVH extends RecyclerView.ViewHolder{
         txt_amount = itemView.findViewById(R.id.txt_amount);
         //txt_position = itemView.findViewById(R.id.txt_position);
         txt_option = itemView.findViewById(R.id.txt_option);
+
+        product_image = itemView.findViewById(R.id.img_emp);
     }
 }
